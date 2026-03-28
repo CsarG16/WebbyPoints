@@ -1,8 +1,80 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+    
+    <div class="w-full md:w-5/12 bg-[#1A4BDE] flex flex-col justify-center p-12 text-white md:rounded-r-[4rem] shadow-2xl z-10">
+        <div class="max-w-md mx-auto md:mx-0">
+            <span class="inline-block bg-blue-400/30 text-blue-100 px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
+                Explora tu campus
+            </span>
+            <h1 class="text-5xl md:text-6xl font-black mb-6 leading-tight">
+                Webby<br/>Points
+            </h1>
+            <p class="text-blue-100 text-lg mb-10 opacity-90 leading-relaxed">
+                La plataforma diseñada por y para estudiantes. Encuentra el lugar perfecto según tu estado de ánimo.
+            </p>
+            
+            <div class="space-y-5">
+                <div class="flex items-center gap-4">
+                    <div class="bg-white/10 p-2 rounded-lg"><i class="bi bi-geo-alt"></i></div>
+                    <span class="text-sm font-medium">Cerca de tu sede UPC</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="bg-white/10 p-2 rounded-lg"><i class="bi bi-star"></i></div>
+                    <span class="text-sm font-medium">Reseñas reales</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full md:w-7/12 flex flex-col justify-center items-center p-8 bg-slate-50">
+        <div class="w-full max-w-md">
+            <h2 class="text-3xl font-extrabold text-slate-800 mb-2">¿Qué quieres hacer hoy?</h2>
+            <p class="text-slate-500 mb-10">Selecciona el tipo de plan para recomendarte lo mejor.</p>
+
+            <div class="grid gap-6">
+                <a href="/Home/Explorar?plan=solo" 
+                   class="group flex items-center p-6 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:bg-[#1A4BDE] transition-colors duration-300">
+                        <i class="bi bi-person-fill text-3xl text-[#1A4BDE] group-hover:text-white"></i>
+                    </div>
+                    <div class="ml-6 flex-grow">
+                        <h4 class="text-xl font-bold text-slate-800">Plan solo</h4>
+                        <p class="text-slate-500 text-sm">Productividad y relax</p>
+                    </div>
+                    <i class="bi bi-arrow-right text-slate-300 group-hover:text-[#1A4BDE] text-xl"></i>
+                </a>
+
+                <a href="/Home/Explorar?plan=pareja" 
+                   class="group flex items-center p-6 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-pink-500/10 hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-16 h-16 bg-pink-50 rounded-2xl flex items-center justify-center group-hover:bg-pink-500 transition-colors duration-300">
+                        <i class="bi bi-heart-fill text-3xl text-pink-500 group-hover:text-white"></i>
+                    </div>
+                    <div class="ml-6 flex-grow">
+                        <h4 class="text-xl font-bold text-slate-800">Plan pareja</h4>
+                        <p class="text-slate-500 text-sm">Momentos especiales</p>
+                    </div>
+                    <i class="bi bi-arrow-right text-slate-300 group-hover:text-pink-500 text-xl"></i>
+                </a>
+
+                <a href="/Home/Explorar?plan=amigos" 
+                   class="group flex items-center p-6 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300">
+                        <i class="bi bi-people-fill text-3xl text-orange-500 group-hover:text-white"></i>
+                    </div>
+                    <div class="ml-6 flex-grow">
+                        <h4 class="text-xl font-bold text-slate-800">Plan amigos</h4>
+                        <p class="text-slate-500 text-sm">Diversión garantizada</p>
+                    </div>
+                    <i class="bi bi-arrow-right text-slate-300 group-hover:text-orange-500 text-xl"></i>
+                </a>
+            </div>
+
+            <footer class="mt-12 text-center text-slate-400 text-xs">
+                &copy; 2026 Webby Points · Facultad de Ingeniería UPC
+            </footer>
+        </div>
+    </div>
 </div>

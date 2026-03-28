@@ -14,6 +14,6 @@ public class PuntoInteres
     // CAMPOS NUEVOS PARA TU DISEÑO:
     public double Calificacion { get; set; } // Ejemplo: 4.5
     public double Distancia { get; set; }    // Ejemplo: 0.5 (en km)
-    public string PrecioRango { get; set; }  // Ejemplo: "S/", "S/S/", "S/S/S/"
-    public string Etiquetas { get; set; }    // Ejemplo: "equipado,limpio,popular"
+    public string PrecioRango { get; set; }  = string.Empty;// Ejemplo: "S/", "S/S/", "S/S/S/"
+    public string Etiquetas { get; set; }    = string.Empty; // Ejemplo: "equipado,limpio,popular"
 }

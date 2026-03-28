@@ -131,13 +131,14 @@ C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\WebbyPoints.csproj.CoreComp
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\WebbyPoints.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\WebbyPoints.RazorAssemblyInfo.cache
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\WebbyPoints.RazorAssemblyInfo.cs
+C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\WebbyPoints.sourcelink.json
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\scopedcss\bundle\WebbyPoints.styles.css
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\scopedcss\projectbundle\WebbyPoints.bundle.scp.css
-C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\lnf7xqmr5g-{0}-b9sayid5wm-b9sayid5wm.gz
+C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\lnf7xqmr5g-{0}-bxg73qd4ep-bxg73qd4ep.gz
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\t56svqcxrh-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\7fyc6qkvnq-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\ol0tbr20ss-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -199,8 +200,6 @@ C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\f5yrb610db-{0}-2
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\bgn95raxcn-{0}-muycvpuwrr-muycvpuwrr.gz
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\5vj9gwudxc-{0}-87fc7y1x7t-87fc7y1x7t.gz
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\jr5v47s0oj-{0}-mlv21k5csn-mlv21k5csn.gz
-C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\4faw0j17og-{0}-0f0gt561w8-0f0gt561w8.gz
-C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\95ffsebjlf-{0}-0f0gt561w8-0f0gt561w8.gz
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\staticwebassets.build.json
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\staticwebassets.build.json.cache
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\staticwebassets.development.json
@@ -212,3 +211,5 @@ C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\refint\WebbyPoints.dll
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\WebbyPoints.pdb
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\WebbyPoints.genruntimeconfig.cache
 C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\ref\WebbyPoints.dll
+C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\4faw0j17og-{0}-rb5dqfhmlu-rb5dqfhmlu.gz
+C:\Users\Jualo\Desktop\WebbyPoints\obj\Debug\net10.0\compressed\95ffsebjlf-{0}-rb5dqfhmlu-rb5dqfhmlu.gz

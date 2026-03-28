@@ -9,6 +9,7 @@ public class ApplicationDbContext : DbContext
         : base(options) { }
 
     // Aquí registras tus modelos como tablas
+    public DbSet<Usuario> Usuarios { get; set; } 
     public DbSet<PuntoInteres> PuntosInteres { get; set; }
     public DbSet<Reseña> Reseñas { get; set; }
 }
