@@ -1,25 +1,12 @@
-## --- CARPETAS DE COMPILACIÓN (Lo más importante) ---
+## --- CARPETAS DE COMPILACIÓN ---
 [Bb]in/
 [Ob]j/
 
-## --- CONFIGURACIÓN DE IDE (VS Code / Visual Studio) ---
-.vscode/
-.vs/
-*.user
-*.userosscache
-*.sln.docstates
-
-## --- PAQUETES Y LIBRERÍAS ---
-project.lock.json
-project.fragment.lock.json
-artifacts/
-nupkg/
-
-## --- BASE DE DATOS SQLITE (Para que cada uno tenga su propia data) ---
+## --- BASE DE DATOS SQLITE ---
 *.db
 *.db-shm
 *.db-wal
 
-## --- OTROS ---
-.DS_Store
-.fake
+## --- CONFIGURACIÓN DE VS CODE ---
+.vscode/
+.vs/
