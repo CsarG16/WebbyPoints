@@ -28,7 +28,223 @@ body {
 .bg-wp-primary { background-color: var(--wp-primary); }
 .text-wp-primary { color: var(--wp-primary); }
 
-/* --- Sidebar azul (Login, Registro) --- */
+/* ===================================================
+   HERO FULLSCREEN - Estilo "Into The Wild"
+   =================================================== */
+.hero-fullscreen {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg-image {
+    position: absolute;
+    inset: 0;
+    background: url('/images/hero-bg.png') center center / cover no-repeat;
+    background-attachment: fixed;
+    z-index: 1;
+}
+
+
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.25) 0%,
+        rgba(0, 0, 0, 0.15) 30%,
+        rgba(0, 0, 0, 0.50) 70%,
+        rgba(0, 0, 0, 0.80) 100%
+    );
+}
+
+/* --- Hero Badge --- */
+.hero-badge {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: 50rem;
+}
+
+/* --- Hero Typography --- */
+.hero-subtitle {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0;
+}
+
+.hero-title {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 0.95;
+    color: #ffffff;
+    text-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.02em;
+}
+
+.hero-description {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 480px;
+}
+
+/* --- Hero Buttons --- */
+.btn-hero-primary {
+    background: #fff;
+    color: #111;
+    border: 2px solid #fff;
+    padding: 0.8rem 2rem;
+    border-radius: 50rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: var(--wp-transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+.btn-hero-primary:hover {
+    background: transparent;
+    color: #fff;
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+}
+
+.btn-hero-outline {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 0.8rem 2rem;
+    border-radius: 50rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--wp-transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+.btn-hero-outline:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #fff;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
+}
+
+/* --- Hero Indicators (carousel dots) --- */
+.hero-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: var(--wp-transition);
+}
+.hero-dot.active {
+    background: #fff;
+    width: 28px;
+    border-radius: 50rem;
+}
+
+.hero-progress-bar {
+    width: 120px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50rem;
+    overflow: hidden;
+}
+
+.hero-progress-fill {
+    width: 40%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50rem;
+    animation: progressSlide 5s ease-in-out infinite;
+}
+
+@keyframes progressSlide {
+    0%   { width: 10%; }
+    50%  { width: 80%; }
+    100% { width: 10%; }
+}
+
+/* --- Hero Floating Card --- */
+.hero-floating-card {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 3rem;
+    z-index: 4;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    padding: 1.2rem 1.5rem;
+    color: #fff;
+    max-width: 280px;
+    animation: floatUp 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatUp {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-8px); }
+}
+
+/* ===================================================
+   NAVBAR - Transparente, estático sobre el Hero
+   =================================================== */
+.wp-navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: transparent;
+    border-bottom: none;
+    z-index: 1030;
+}
+
+/* Navbar links (texto blanco sobre el hero) */
+.wp-navbar .navbar-brand span,
+.wp-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+.wp-navbar .navbar-brand span:first-child {
+    color: #fff !important;
+}
+.wp-navbar .nav-link:hover {
+    color: #fff !important;
+}
+
+/* Botón "Registrarse" en navbar */
+.wp-navbar .btn-wp {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+.wp-navbar .btn-wp:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+}
+
+/* Hamburger icon color */
+.wp-navbar .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* ===================================================
+   SIDEBAR AZUL (Login, Registro)
+   =================================================== */
 .wp-sidebar {
     background-color: var(--wp-primary);
     border-top-right-radius: 3rem;
@@ -157,9 +373,8 @@ body {
     border-left: 0;
 }
 
-/* --- Navbar --- */
-.wp-navbar {
-    backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.9);
-    border-bottom: 1px solid var(--wp-border);
-}
+/* ===================================================
+   Z-INDEX UTILITIES
+   =================================================== */
+.z-3 { z-index: 3; }
+.z-4 { z-index: 4; }
