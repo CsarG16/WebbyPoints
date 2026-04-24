@@ -20,48 +20,69 @@ public class HomeController : Controller
         return View();
     }
 
+// =====================================================
+    // EXPLORAR: Filtra, busca y ordena puntos de interés
     // =====================================================
-    // EXPLORAR: Filtra puntos de interés según plan y
-    // preferencias del usuario logueado
-    // =====================================================
-    public async Task<IActionResult> Explorar(string plan)
+    public async Task<IActionResult> Explorar(string plan, string searchTerm, string sortBy)
     {
-        ViewData["Plan"] = plan;
+        ViewData["Plan"] = plan ?? "todos";
+        ViewData["SearchTerm"] = searchTerm; // Guardamos lo que buscó para dejarlo escrito
+        ViewData["SortBy"] = sortBy;
 
-        // 1. Obtener todos los puntos que coinciden con el plan seleccionado
-        var query = _context.PuntosInteres
-            .AsQueryable()
-            .Where(p => p.PlanTipo.ToLower() == plan.ToLower());
+        var query = _context.PuntosInteres.AsQueryable();
 
-        // 2. Si hay un usuario en sesión, personalizar con sus preferencias
-        var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
-        if (usuarioId.HasValue)
+        // 1. Filtrar por Plan (Solo, Pareja, Amigos)
+        if (!string.IsNullOrEmpty(plan) && plan.ToLower() != "todos")
         {
-            var usuario = await _context.Usuarios.FindAsync(usuarioId.Value);
-            if (usuario != null && !string.IsNullOrEmpty(usuario.Preferencias))
-            {
-                // Convertir las preferencias guardadas en una lista
-                // Ej: "Gym,Cafés,Cine" → ["Gym", "Cafés", "Cine"]
-                var preferencias = usuario.Preferencias
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(p => p.Trim().ToLower())
-                    .ToList();
-
-                // Dar prioridad a puntos cuya Categoría coincida con las preferencias
-                // Los que sí coinciden van primero, ordenados por calificación
-                query = query.OrderByDescending(p =>
-                    preferencias.Contains(p.Categoria.ToLower()) ? 1 : 0
-                ).ThenByDescending(p => p.Calificacion);
-            }
+            query = query.Where(p => p.PlanTipo.ToLower() == plan.ToLower());
         }
-        else
+
+        // 2. Búsqueda por Texto (Busca en Nombre o Categoría)
+        if (!string.IsNullOrEmpty(searchTerm))
         {
-            // Sin sesión: ordenar solo por calificación descendente
-            query = query.OrderByDescending(p => p.Calificacion);
+            var termino = searchTerm.ToLower();
+            query = query.Where(p => p.Nombre.ToLower().Contains(termino) || 
+                                     p.Categoria.ToLower().Contains(termino));
+        }
+
+        // 3. Ordenamiento (Select de la vista)
+        switch (sortBy)
+        {
+            case "calificacion":
+                query = query.OrderByDescending(p => p.Calificacion);
+                break;
+            case "cercanos":
+                query = query.OrderBy(p => p.Distancia);
+                break;
+            case "baratos":
+                query = query.OrderBy(p => p.PrecioRango); // Ordena $, $$, $$$
+                break;
+            default:
+                // Si no eligió filtro, usamos tu Lógica de Match con la sesión
+                var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+                if (usuarioId.HasValue)
+                {
+                    var usuario = await _context.Usuarios.FindAsync(usuarioId.Value);
+                    if (usuario != null && !string.IsNullOrEmpty(usuario.Preferencias))
+                    {
+                        var preferencias = usuario.Preferencias
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(p => p.Trim().ToLower())
+                            .ToList();
+
+                        query = query.OrderByDescending(p =>
+                            preferencias.Contains(p.Categoria.ToLower()) ? 1 : 0
+                        ).ThenByDescending(p => p.Calificacion);
+                    }
+                }
+                else
+                {
+                    query = query.OrderByDescending(p => p.Calificacion);
+                }
+                break;
         }
 
         var puntos = await query.Take(20).ToListAsync();
-
         return View(puntos);
     }
 
