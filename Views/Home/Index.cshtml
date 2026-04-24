@@ -1,68 +1,102 @@
 @{
     ViewData["Title"] = "Inicio";
+    Layout = "_Layout";
 }
 
-<!-- Hero Section -->
-<section class="bg-wp-primary text-white py-5">
-    <div class="container py-5">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <span class="badge rounded-pill bg-white bg-opacity-10 border border-white border-opacity-25 mb-3 py-2 px-3 text-uppercase small">
-                    <i class="bi bi-geo-alt me-1"></i>Explora tu campus
+<!-- ============================================
+     HERO SECTION - Fullscreen con imagen de fondo
+     ============================================ -->
+<section class="hero-fullscreen position-relative d-flex align-items-end" id="heroSection">
+    <!-- Imagen de fondo -->
+    <div class="hero-bg-image"></div>
+    <!-- Overlay oscuro degradado -->
+    <div class="hero-overlay"></div>
+
+    <!-- Contenido del Hero -->
+    <div class="container position-relative z-3 pb-5 mb-4">
+        <div class="row">
+            <div class="col-lg-7 col-xl-6">
+                <!-- Badge superior -->
+                <span class="badge hero-badge mb-3">
+                    <i class="bi bi-geo-alt-fill me-1"></i>Explora tu campus
                 </span>
-                <h1 class="display-3 fw-black mb-4">
-                    Webby<br/>Points
+
+                <!-- Título principal estilo "INTO THE WILD" -->
+                <p class="hero-subtitle mb-1">DESCUBRE TU</p>
+                <h1 class="hero-title mb-3">
+                    LUGAR<br/>FAVORITO
                 </h1>
-                <p class="lead opacity-75 mb-4" style="max-width: 480px;">
-                    La plataforma diseñada por y para estudiantes. Encuentra el lugar perfecto según tu estado de ánimo.
+
+                <!-- Descripción -->
+                <p class="hero-description mb-4">
+                    La plataforma diseñada por y para estudiantes. Encuentra
+                    cafés, restaurantes, bares y espacios únicos cerca de tu
+                    universidad, según tu estado de ánimo.
                 </p>
 
-                <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
+                <!-- Botones CTA -->
+                <div class="d-flex flex-wrap gap-3 mb-4">
                     @if (Context.Session.GetInt32("UsuarioId") == null)
                     {
-                        <a href="/Account/RegistroPaso1" class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-primary shadow-sm">
+                        <a href="/Account/RegistroPaso1" class="btn btn-hero-primary">
                             <i class="bi bi-rocket-takeoff me-2"></i>¡Unirme ahora!
                         </a>
-                        <a href="/Account/Login" class="btn btn-outline-light btn-lg rounded-pill px-4 fw-medium">
+                        <a href="/Account/Login" class="btn btn-hero-outline">
                             Ya tengo cuenta
                         </a>
                     }
                     else
                     {
-                        <a href="/Home/Explorar?plan=solo" class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-primary shadow-sm">
+                        <a href="/Home/Explorar?plan=solo" class="btn btn-hero-primary">
                             <i class="bi bi-compass me-2"></i>Empezar a explorar
+                        </a>
+                        <a href="#planesSection" class="btn btn-hero-outline">
+                            Ver planes
                         </a>
                     }
                 </div>
-
-                <div class="d-flex gap-4">
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="bg-white bg-opacity-10 p-2 rounded-3"><i class="bi bi-geo-alt"></i></div>
-                        <span class="small fw-medium">Cerca de tu sede USMP</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="bg-white bg-opacity-10 p-2 rounded-3"><i class="bi bi-star"></i></div>
-                        <span class="small fw-medium">Reseñas reales</span>
-                    </div>
-                </div>
             </div>
+        </div>
 
-            <div class="col-lg-5 offset-lg-1">
-                <div class="bg-white bg-opacity-10 rounded-4 p-4 border border-white border-opacity-10">
-                    <h5 class="fw-bold mb-1 text-white"><i class="bi bi-lightning-charge me-2"></i>Dato rápido</h5>
-                    <p class="small opacity-75 mb-0">Cada reseña que publiques te da puntos para subir de rango. ¡Comienza como Explorador y conviértete en Leyenda!</p>
-                </div>
+        <!-- Indicadores estilo carousel -->
+        <div class="hero-indicators d-flex align-items-center gap-3 mt-3">
+            <div class="d-flex gap-2 align-items-center">
+                <span class="hero-dot active"></span>
+                <span class="hero-dot"></span>
+                <span class="hero-dot"></span>
+            </div>
+            <div class="hero-progress-bar">
+                <div class="hero-progress-fill"></div>
             </div>
         </div>
     </div>
+
+    <!-- Dato rápido flotante (esquina inferior derecha) -->
+    <div class="hero-floating-card d-none d-lg-block">
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <i class="bi bi-lightning-charge-fill text-warning"></i>
+            <span class="fw-semibold small">Dato rápido</span>
+        </div>
+        <p class="mb-0 small opacity-75">
+            Cada reseña te da puntos para subir de rango.<br/>
+            ¡Sé un <strong>Explorador</strong> y conviértete en <strong>Leyenda</strong>!
+        </p>
+    </div>
 </section>
 
-<!-- Planes Section -->
-<section class="py-5">
+<!-- ============================================
+     PLANES SECTION - Cards de selección de plan
+     ============================================ -->
+<section class="py-5" id="planesSection">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold text-dark mb-2">¿Qué quieres hacer hoy?</h2>
-            <p class="text-muted">Selecciona el tipo de plan para recomendarte lo mejor.</p>
+            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 mb-3 fw-semibold small text-uppercase">
+                <i class="bi bi-stars me-1"></i>Elige tu aventura
+            </span>
+            <h2 class="fw-bold text-dark mb-2 display-6">¿Qué quieres hacer hoy?</h2>
+            <p class="text-muted mx-auto" style="max-width: 500px;">
+                Selecciona el tipo de plan y te recomendaremos los mejores lugares cerca de ti.
+            </p>
         </div>
 
         <div class="row g-4 justify-content-center">
