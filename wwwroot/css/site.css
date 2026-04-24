@@ -1,5 +1,165 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+/* ===================================================
+   WebbyPoints - Estilos Base (Bootstrap 5 + Custom)
+   Luego se agregará glassmorphism encima de esto.
+   =================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+
+/* --- Variables globales --- */
+:root {
+    --wp-primary: #1A4BDE;
+    --wp-primary-dark: #163eb8;
+    --wp-primary-light: #f0f4ff;
+    --wp-bg: #f8fafc;
+    --wp-border: #e2e8f0;
+    --wp-text-muted: #94a3b8;
+    --wp-radius: 1rem;
+    --wp-radius-lg: 2rem;
+    --wp-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 body {
     font-family: 'Inter', sans-serif;
+    background-color: var(--wp-bg);
+}
+
+/* --- Utilidades personalizadas --- */
+.fw-black { font-weight: 900; }
+.bg-wp-primary { background-color: var(--wp-primary); }
+.text-wp-primary { color: var(--wp-primary); }
+
+/* --- Sidebar azul (Login, Registro) --- */
+.wp-sidebar {
+    background-color: var(--wp-primary);
+    border-top-right-radius: 3rem;
+    border-bottom-right-radius: 3rem;
+}
+
+/* --- Formularios personalizados --- */
+.form-control-wp {
+    background-color: var(--wp-bg);
+    border: 1px solid var(--wp-border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--wp-radius);
+    transition: var(--wp-transition);
+    font-size: 0.95rem;
+}
+.form-control-wp:focus {
+    background-color: #fff;
+    border-color: var(--wp-primary);
+    box-shadow: 0 0 0 0.2rem rgba(26, 75, 222, 0.12);
+}
+
+/* --- Botón principal --- */
+.btn-wp {
+    background-color: var(--wp-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--wp-radius);
+    padding: 0.85rem 1.5rem;
+    font-weight: 700;
+    transition: var(--wp-transition);
+}
+.btn-wp:hover {
+    background-color: var(--wp-primary-dark);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1.5rem rgba(26, 75, 222, 0.25);
+}
+
+/* --- Cards de planes (Home) --- */
+.plan-card {
+    transition: var(--wp-transition);
+    border-radius: var(--wp-radius-lg) !important;
+    border: 1px solid var(--wp-border) !important;
+}
+.plan-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.08) !important;
+    border-color: var(--wp-primary) !important;
+}
+
+/* --- Cards de categorías (Registro Paso 2) --- */
+.cat-card {
+    cursor: pointer;
+    border-radius: var(--wp-radius-lg);
+    padding: 1.5rem;
+    text-align: center;
+    border: 2px solid #f1f5f9;
+    transition: var(--wp-transition);
+    background-color: #fff;
+    position: relative;
+}
+.cat-card:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+}
+.cat-input:checked + .cat-card {
+    border-color: var(--wp-primary);
+    background-color: var(--wp-primary-light);
+}
+.cat-input:checked + .cat-card i {
+    color: var(--wp-primary) !important;
+}
+.cat-input:checked + .cat-card .cat-name {
+    color: var(--wp-primary) !important;
+}
+.check-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: var(--wp-primary);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.cat-input:checked + .cat-card .check-badge {
+    opacity: 1;
+}
+
+/* --- Divider "o" (Login) --- */
+.divider-text {
+    position: relative;
+    text-align: center;
+    color: var(--wp-text-muted);
+}
+.divider-text::before,
+.divider-text::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 42%;
+    height: 1px;
+    background-color: var(--wp-border);
+}
+.divider-text::before { left: 0; }
+.divider-text::after  { right: 0; }
+
+/* --- Punto de interés card (Explorar) --- */
+.poi-card {
+    border: 1px solid var(--wp-border);
+    border-radius: var(--wp-radius);
+    transition: var(--wp-transition);
+    overflow: hidden;
+}
+.poi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.06);
+}
+
+/* --- Input groups con iconos redondeados --- */
+.input-icon-start {
+    border-radius: var(--wp-radius) 0 0 var(--wp-radius) !important;
+    border-right: 0;
+}
+.input-icon-end {
+    border-radius: 0 var(--wp-radius) var(--wp-radius) 0 !important;
+    border-left: 0;
+}
+
+/* --- Navbar --- */
+.wp-navbar {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid var(--wp-border);
 }
