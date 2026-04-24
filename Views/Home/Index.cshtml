@@ -2,101 +2,126 @@
     ViewData["Title"] = "Inicio";
 }
 
-<div class="container-fluid p-0 overflow-hidden">
-    <div class="row g-0 min-vh-100">
-        <!-- Sidebar Izquierda -->
-        <div class="col-md-5 d-flex flex-column justify-content-center p-5 text-white shadow-lg z-1" 
-             style="background-color: #1A4BDE; border-top-right-radius: 4rem; border-bottom-right-radius: 4rem;">
-            <div class="mx-auto" style="max-width: 400px;">
-                <span class="badge rounded-pill mb-4 py-2 px-3 tracking-widest text-uppercase" 
-                      style="background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
-                    Explora tu campus
+<!-- Hero Section -->
+<section class="bg-wp-primary text-white py-5">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <span class="badge rounded-pill bg-white bg-opacity-10 border border-white border-opacity-25 mb-3 py-2 px-3 text-uppercase small">
+                    <i class="bi bi-geo-alt me-1"></i>Explora tu campus
                 </span>
-                <h1 class="display-1 fw-black mb-4">
+                <h1 class="display-3 fw-black mb-4">
                     Webby<br/>Points
                 </h1>
-                <p class="lead mb-5 opacity-75">
+                <p class="lead opacity-75 mb-4" style="max-width: 480px;">
                     La plataforma diseñada por y para estudiantes. Encuentra el lugar perfecto según tu estado de ánimo.
                 </p>
-                
-                <div class="vstack gap-4">
-                    <div class="d-flex align-items-center gap-3">
+
+                <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
+                    @if (Context.Session.GetInt32("UsuarioId") == null)
+                    {
+                        <a href="/Account/RegistroPaso1" class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-primary shadow-sm">
+                            <i class="bi bi-rocket-takeoff me-2"></i>¡Unirme ahora!
+                        </a>
+                        <a href="/Account/Login" class="btn btn-outline-light btn-lg rounded-pill px-4 fw-medium">
+                            Ya tengo cuenta
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/Home/Explorar?plan=solo" class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-primary shadow-sm">
+                            <i class="bi bi-compass me-2"></i>Empezar a explorar
+                        </a>
+                    }
+                </div>
+
+                <div class="d-flex gap-4">
+                    <div class="d-flex align-items-center gap-2">
                         <div class="bg-white bg-opacity-10 p-2 rounded-3"><i class="bi bi-geo-alt"></i></div>
-                        <span class="small fw-medium">Cerca de tu sede UPC</span>
+                        <span class="small fw-medium">Cerca de tu sede USMP</span>
                     </div>
-                    <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-2">
                         <div class="bg-white bg-opacity-10 p-2 rounded-3"><i class="bi bi-star"></i></div>
                         <span class="small fw-medium">Reseñas reales</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Contenido Derecha -->
-        <div class="col-md-7 d-flex flex-column justify-content-center align-items-center p-4 p-md-5 bg-light">
-            <div class="w-100" style="max-width: 450px;">
-                <h2 class="fw-bold text-dark mb-2">¿Qué quieres hacer hoy?</h2>
-                <p class="text-muted mb-5">Selecciona el tipo de plan para recomendarte lo mejor.</p>
-
-                <div class="vstack gap-4">
-                    <!-- Plan Solo -->
-                    <a href="/Home/Explorar?plan=solo" 
-                       class="text-decoration-none group d-flex align-items-center p-4 bg-white rounded-5 border shadow-sm transition-all hover-shadow">
-                        <div class="rounded-4 d-flex align-items-center justify-content-center bg-primary-subtle text-primary" 
-                             style="width: 64px; height: 64px;">
-                            <i class="bi bi-person-fill fs-2"></i>
-                        </div>
-                        <div class="ms-4 flex-grow-1">
-                            <h4 class="mb-1 fw-bold text-dark">Plan solo</h4>
-                            <p class="mb-0 text-muted small">Productividad y relax</p>
-                        </div>
-                        <i class="bi bi-arrow-right text-secondary fs-4"></i>
-                    </a>
-
-                    <!-- Plan Pareja -->
-                    <a href="/Home/Explorar?plan=pareja" 
-                       class="text-decoration-none group d-flex align-items-center p-4 bg-white rounded-5 border shadow-sm transition-all hover-shadow">
-                        <div class="rounded-4 d-flex align-items-center justify-content-center bg-danger-subtle text-danger" 
-                             style="width: 64px; height: 64px;">
-                            <i class="bi bi-heart-fill fs-2"></i>
-                        </div>
-                        <div class="ms-4 flex-grow-1">
-                            <h4 class="mb-1 fw-bold text-dark">Plan pareja</h4>
-                            <p class="mb-0 text-muted small">Momentos especiales</p>
-                        </div>
-                        <i class="bi bi-arrow-right text-secondary fs-4"></i>
-                    </a>
-
-                    <!-- Plan Amigos -->
-                    <a href="/Home/Explorar?plan=amigos" 
-                       class="text-decoration-none group d-flex align-items-center p-4 bg-white rounded-5 border shadow-sm transition-all hover-shadow">
-                        <div class="rounded-4 d-flex align-items-center justify-content-center bg-warning-subtle text-warning" 
-                             style="width: 64px; height: 64px;">
-                            <i class="bi bi-people-fill fs-2"></i>
-                        </div>
-                        <div class="ms-4 flex-grow-1">
-                            <h4 class="mb-1 fw-bold text-dark">Plan amigos</h4>
-                            <p class="mb-0 text-muted small">Diversión garantizada</p>
-                        </div>
-                        <i class="bi bi-arrow-right text-secondary fs-4"></i>
-                    </a>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="bg-white bg-opacity-10 rounded-4 p-4 border border-white border-opacity-10">
+                    <h5 class="fw-bold mb-1 text-white"><i class="bi bi-lightning-charge me-2"></i>Dato rápido</h5>
+                    <p class="small opacity-75 mb-0">Cada reseña que publiques te da puntos para subir de rango. ¡Comienza como Explorador y conviértete en Leyenda!</p>
                 </div>
-
-                <footer class="mt-5 text-center text-muted small">
-                    &copy; 2026 Webby Points · Facultad de Ingeniería UPC
-                </footer>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<style>
-    .hover-shadow:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 1rem 3rem rgba(0,0,0,.1) !important;
-    }
-    .fw-black { font-weight: 900; }
-    .rounded-5 { border-radius: 2rem !important; }
-</style>
->
-</div>
+<!-- Planes Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark mb-2">¿Qué quieres hacer hoy?</h2>
+            <p class="text-muted">Selecciona el tipo de plan para recomendarte lo mejor.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <!-- Plan Solo -->
+            <div class="col-md-4">
+                <a href="/Home/Explorar?plan=solo" class="text-decoration-none">
+                    <div class="card plan-card bg-white p-4 h-100 shadow-sm">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center bg-primary-subtle text-primary" style="width: 56px; height: 56px;">
+                                <i class="bi bi-person-fill fs-3"></i>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <h5 class="mb-0 fw-bold text-dark">Plan solo</h5>
+                                <small class="text-muted">Productividad y relax</small>
+                            </div>
+                            <i class="bi bi-arrow-right text-secondary fs-5"></i>
+                        </div>
+                        <p class="text-muted small mb-0">Cafés tranquilos, bibliotecas, espacios de estudio y más para tu tiempo a solas.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Plan Pareja -->
+            <div class="col-md-4">
+                <a href="/Home/Explorar?plan=pareja" class="text-decoration-none">
+                    <div class="card plan-card bg-white p-4 h-100 shadow-sm">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center bg-danger-subtle text-danger" style="width: 56px; height: 56px;">
+                                <i class="bi bi-heart-fill fs-3"></i>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <h5 class="mb-0 fw-bold text-dark">Plan pareja</h5>
+                                <small class="text-muted">Momentos especiales</small>
+                            </div>
+                            <i class="bi bi-arrow-right text-secondary fs-5"></i>
+                        </div>
+                        <p class="text-muted small mb-0">Restaurantes románticos, parques y lugares ideales para una cita perfecta.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Plan Amigos -->
+            <div class="col-md-4">
+                <a href="/Home/Explorar?plan=amigos" class="text-decoration-none">
+                    <div class="card plan-card bg-white p-4 h-100 shadow-sm">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center bg-warning-subtle text-warning" style="width: 56px; height: 56px;">
+                                <i class="bi bi-people-fill fs-3"></i>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <h5 class="mb-0 fw-bold text-dark">Plan amigos</h5>
+                                <small class="text-muted">Diversión garantizada</small>
+                            </div>
+                            <i class="bi bi-arrow-right text-secondary fs-5"></i>
+                        </div>
+                        <p class="text-muted small mb-0">Bares, gaming, restaurantes grupales y todo lo que necesitas para pasarla bien.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

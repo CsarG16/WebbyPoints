@@ -1,0 +1,102 @@
+@model List<WebbyPoints.Models.PuntoInteres>
+@{
+    ViewData["Title"] = "Explorar";
+    var plan = ViewData["Plan"]?.ToString() ?? "solo";
+
+    // Configuración visual por tipo de plan
+    var planConfig = plan.ToLower() switch {
+        "pareja" => new { Icon = "bi-heart-fill", Color = "danger", Label = "Pareja" },
+        "amigos" => new { Icon = "bi-people-fill", Color = "warning", Label = "Amigos" },
+        _        => new { Icon = "bi-person-fill", Color = "primary", Label = "Solo" }
+    };
+}
+
+<section class="py-5">
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-5">
+            <div class="col-lg-8">
+                <span class="badge bg-@(planConfig.Color)-subtle text-@(planConfig.Color) mb-3 py-2 px-3 rounded-pill">
+                    <i class="bi @planConfig.Icon me-1"></i>Plan @planConfig.Label
+                </span>
+                <h1 class="display-5 fw-bold mb-2">Descubre los mejores puntos</h1>
+                <p class="lead text-muted">
+                    Recomendaciones personalizadas para tu plan <strong>@planConfig.Label</strong>.
+                </p>
+            </div>
+            <div class="col-lg-4 d-flex align-items-end justify-content-lg-end">
+                <div class="d-flex gap-2">
+                    <a href="/Home/Explorar?plan=solo" class="btn btn-sm @(plan == "solo" ? "btn-primary" : "btn-outline-secondary") rounded-pill px-3">
+                        <i class="bi bi-person me-1"></i>Solo
+                    </a>
+                    <a href="/Home/Explorar?plan=pareja" class="btn btn-sm @(plan == "pareja" ? "btn-danger" : "btn-outline-secondary") rounded-pill px-3">
+                        <i class="bi bi-heart me-1"></i>Pareja
+                    </a>
+                    <a href="/Home/Explorar?plan=amigos" class="btn btn-sm @(plan == "amigos" ? "btn-warning" : "btn-outline-secondary") rounded-pill px-3">
+                        <i class="bi bi-people me-1"></i>Amigos
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="row g-4">
+                @foreach (var punto in Model)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card poi-card bg-white shadow-sm h-100">
+                            @if (!string.IsNullOrEmpty(punto.ImagenUrl))
+                            {
+                                <img src="@punto.ImagenUrl" class="card-img-top" alt="@punto.Nombre" style="height: 180px; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                    <i class="bi bi-image text-muted fs-1"></i>
+                                </div>
+                            }
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="fw-bold mb-0">@punto.Nombre</h5>
+                                    <span class="badge bg-warning-subtle text-warning">
+                                        <i class="bi bi-star-fill me-1"></i>@punto.Calificacion.ToString("0.0")
+                                    </span>
+                                </div>
+                                <p class="text-muted small mb-3">@punto.Descripcion</p>
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <span class="badge bg-light text-dark border"><i class="bi bi-tag me-1"></i>@punto.Categoria</span>
+                                    <span class="badge bg-light text-dark border"><i class="bi bi-geo me-1"></i>@punto.Distancia km</span>
+                                    <span class="badge bg-light text-dark border">@punto.PrecioRango</span>
+                                </div>
+                                @if (!string.IsNullOrEmpty(punto.Horario))
+                                {
+                                    <p class="small text-muted mb-0">
+                                        <i class="bi bi-clock me-1"></i>@punto.Horario
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <!-- Estado vacío -->
+            <div class="text-center py-5">
+                <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 100px; height: 100px;">
+                    <i class="bi bi-compass fs-1 text-muted"></i>
+                </div>
+                <h4 class="fw-bold mb-2">Aún no hay lugares registrados</h4>
+                <p class="text-muted mb-4" style="max-width: 400px; margin: 0 auto;">
+                    Sé el primero en recomendar un lugar para el plan <strong>@planConfig.Label</strong>. ¡La comunidad USMP te lo agradecerá!
+                </p>
+                <a href="/" class="btn btn-outline-secondary rounded-pill px-4">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al inicio
+                </a>
+            </div>
+        }
+    </div>
+</section>
