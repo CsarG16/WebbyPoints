@@ -1,7 +1,7 @@
-# Proyecto de Programación I - [Nombre del Proyecto]
+# Proyecto de Programación I - WebbyPoints
 
 ## Requerimientos de Software
-* **SDK de .NET:** 8.0 (o la versión que estés usando)
+* **SDK de .NET:** 10.0
 * **IDE:** VS Code o Visual Studio 2022
 * **Base de Datos:** SQLite (No requiere instalación de servidor)
 

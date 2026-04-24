@@ -10,88 +10,145 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Webby Points - Tus preferencias</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
+        .bg-custom-blue { background-color: #1A4BDE; }
+        .rounded-sidebar { border-top-right-radius: 3rem; border-bottom-right-radius: 3rem; }
+        
+        /* Custom Checkbox Cards */
+        .cat-card {
+            cursor: pointer;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid #f1f5f9;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: white;
+            position: relative;
+        }
+        .cat-card:hover {
+            border-color: #cbd5e1;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .cat-input:checked + .cat-card {
+            border-color: #1A4BDE;
+            background-color: #f0f4ff;
+        }
+        .cat-input:checked + .cat-card i {
+            color: #1A4BDE !important;
+        }
+        .cat-input:checked + .cat-card .cat-name {
+            color: #1A4BDE !important;
+        }
+        .check-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #1A4BDE;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .cat-input:checked + .cat-card .check-badge {
+            opacity: 1;
+        }
+        
+        .btn-custom {
+            background-color: #1A4BDE;
+            border-radius: 1rem;
+            padding: 1rem;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .btn-custom:hover {
+            background-color: #163eb8;
+            transform: scale(1.01);
+            box-shadow: 0 0.5rem 1rem rgba(26, 75, 222, 0.2);
+        }
     </style>
 </head>
-<body class="bg-slate-50 antialiased">
-    <div class="flex flex-col md:flex-row min-h-screen">
-        
-        <div class="hidden md:flex md:w-1/3 bg-[#1A4BDE] flex-col justify-center items-center p-12 text-white rounded-r-[3rem] shadow-2xl">
-            <div class="text-center">
-                <i class="bi bi-person-circle text-6xl mb-6 block"></i>
-                <h2 class="text-4xl font-bold mb-4">Completa tu perfil</h2>
-                <p class="text-blue-100 text-lg opacity-80 leading-relaxed">
-                    Cuéntanos un poco sobre ti para personalizar tu experiencia. Esto nos ayudará a recomendarte los mejores lugares según tus intereses.
-                </p>
+<body class="bg-light">
+    <div class="container-fluid p-0 overflow-hidden">
+        <div class="row g-0 min-vh-100">
+            
+            <!-- Sidebar Informativa -->
+            <div class="col-md-4 bg-custom-blue d-none d-md-flex flex-column justify-content-center align-items-center p-5 text-white rounded-sidebar shadow-lg z-1">
+                <div class="text-center">
+                    <i class="bi bi-person-circle display-1 mb-4"></i>
+                    <h2 class="display-5 fw-bold mb-3">Completa tu perfil</h2>
+                    <p class="lead opacity-75 leading-relaxed">
+                        Cuéntanos un poco sobre ti para personalizar tu experiencia. Esto nos ayudará a recomendarte los mejores lugares según tus intereses.
+                    </p>
+                </div>
             </div>
-        </div>
 
-        <div class="flex-1 p-6 md:p-16 overflow-y-auto">
-            <div class="max-w-3xl mx-auto">
-                <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Paso 2 de 2 — Preferencias</p>
-                <h3 class="text-3xl font-bold text-slate-800 mb-1">Tus preferencias</h3>
-                <p class="text-slate-500 mb-10">Selecciona las actividades que más te gusten</p>
+            <!-- Contenido -->
+            <div class="col-md-8 p-4 p-md-5 overflow-auto">
+                <div class="mx-auto" style="max-width: 800px;">
+                    <p class="text-uppercase tracking-wider text-muted small fw-bold mb-2">Paso 2 de 2 — Preferencias</p>
+                    <h3 class="fw-bold text-dark mb-1">Tus preferencias</h3>
+                    <p class="text-muted mb-5">Selecciona las actividades que más te gusten</p>
 
-                <form asp-action="ConfirmarRegistro" method="post">
-                    <input type="hidden" asp-for="Nombre" />
-                    <input type="hidden" asp-for="Email" />
-                    <input type="hidden" asp-for="Password" />
-                    <input type="hidden" asp-for="ConfirmarContraseña" />
-                    <input type="hidden" asp-for="Edad" />
-                    <input type="hidden" asp-for="Universidad" />
-                    <input type="hidden" asp-for="Carrera" />
+                    <form asp-action="ConfirmarRegistro" method="post">
+                        <input type="hidden" asp-for="Nombre" />
+                        <input type="hidden" asp-for="Email" />
+                        <input type="hidden" asp-for="Password" />
+                        <input type="hidden" asp-for="ConfirmarContraseña" />
+                        <input type="hidden" asp-for="Edad" />
+                        <input type="hidden" asp-for="Universidad" />
+                        <input type="hidden" asp-for="Carrera" />
 
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
-                        @{
-                            var categorias = new[] { 
-                                new { Id = "Gym", Nom = "Gimnasio", Icon = "bi-pumping-iron" },
-                                new { Id = "Cafe", Nom = "Cafés", Icon = "bi-cup-hot" },
-                                new { Id = "Study", Nom = "Estudiar", Icon = "bi-pencil-square" },
-                                new { Id = "Food", Nom = "Comida", Icon = "bi-egg-fried" },
-                                new { Id = "Parks", Nom = "Parques", Icon = "bi-tree" },
-                                new { Id = "Bares", Nom = "Bares", Icon = "bi-glass-margin" },
-                                new { Id = "Gaming", Nom = "Gaming", Icon = "bi-controller" },
-                                new { Id = "Cine", Nom = "Cine", Icon = "bi-film" },
-                                new { Id = "Rest", Nom = "Restaurantes", Icon = "bi-utensils" }
-                            };
-                        }
+                        <div class="row g-4">
+                            @{
+                                var categorias = new[] { 
+                                    new { Id = "Gym", Nom = "Gimnasio", Icon = "bi-pumping-iron" },
+                                    new { Id = "Cafe", Nom = "Cafés", Icon = "bi-cup-hot" },
+                                    new { Id = "Study", Nom = "Estudiar", Icon = "bi-pencil-square" },
+                                    new { Id = "Food", Nom = "Comida", Icon = "bi-egg-fried" },
+                                    new { Id = "Parks", Nom = "Parques", Icon = "bi-tree" },
+                                    new { Id = "Bares", Nom = "Bares", Icon = "bi-glass-margin" },
+                                    new { Id = "Gaming", Nom = "Gaming", Icon = "bi-controller" },
+                                    new { Id = "Cine", Nom = "Cine", Icon = "bi-film" },
+                                    new { Id = "Rest", Nom = "Restaurantes", Icon = "bi-utensils" }
+                                };
+                            }
 
-                        @foreach (var cat in categorias)
-                        {
-                            <div class="relative">
-                                <input type="checkbox" name="CategoriasFavoritas" value="@cat.Nom" id="@cat.Id" class="peer hidden" />
-                                
-                                <label for="@cat.Id" 
-                                       class="flex flex-col items-center justify-center p-6 bg-white border-2 border-slate-100 rounded-[2rem] cursor-pointer shadow-sm transition-all duration-300
-                                              hover:border-blue-200 hover:-translate-y-1 hover:shadow-md
-                                              peer-checked:border-[#1A4BDE] peer-checked:bg-blue-50 peer-checked:shadow-inner">
+                            @foreach (var cat in categorias)
+                            {
+                                <div class="col-6 col-sm-4">
+                                    <input type="checkbox" name="CategoriasFavoritas" value="@cat.Nom" id="@cat.Id" class="cat-input d-none" />
                                     
-                                    <i class="bi @cat.Icon text-3xl mb-3 text-slate-400 transition-colors duration-300 peer-checked:text-[#1A4BDE]"></i>
-                                    <span class="font-bold text-slate-700 transition-colors duration-300 peer-checked:text-[#1A4BDE]">@cat.Nom</span>
-                                </label>
-                                
-                                <div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 transition-opacity">
-                                    <i class="bi bi-check-circle-fill text-[#1A4BDE]"></i>
+                                    <label for="@cat.Id" class="cat-card h-100 d-flex flex-column align-items-center justify-content-center">
+                                        <i class="bi @cat.Icon fs-1 text-secondary mb-3"></i>
+                                        <span class="fw-bold text-dark cat-name">@cat.Nom</span>
+                                        <i class="bi bi-check-circle-fill check-badge"></i>
+                                    </label>
                                 </div>
-                            </div>
-                        }
-                    </div>
+                            }
+                        </div>
 
-                    <div class="mt-12 mb-10">
-                        <button type="submit" 
-                                class="w-full bg-[#1A4BDE] hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 transition-all transform hover:scale-[1.01] active:scale-[0.98]">
-                            Finalizar registro
-                        </button>
-                    </div>
-                </form>
+                        <div class="mt-5 mb-4">
+                            <button type="submit" class="btn btn-primary btn-custom w-100 text-white border-0">
+                                Finalizar registro
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+</html>
+
 </html>
