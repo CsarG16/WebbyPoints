@@ -43,4 +43,6 @@ public class Usuario
 
     // Un usuario puede escribir muchas reseñas
     public List<Reseña> Reseñas { get; set; } = new List<Reseña>();
+
+    public bool EsAdmin { get; set; } = false;
 }

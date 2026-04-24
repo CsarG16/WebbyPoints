@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebbyPoints.Data;
 
@@ -10,9 +11,11 @@ using WebbyPoints.Data;
 namespace WebbyPoints.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260424230545_SeedPuntosInteres")]
+    partial class SeedPuntosInteres
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.5");
@@ -210,9 +213,6 @@ namespace WebbyPoints.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("EsAdmin")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("FechaRegistro")
                         .HasColumnType("TEXT");
 
@@ -245,23 +245,6 @@ namespace WebbyPoints.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 100,
-                            Carrera = "Ingeniería de Computación y Sistemas",
-                            Edad = 21,
-                            Email = "cesar_paredes7@usmp.pe",
-                            EsAdmin = true,
-                            FechaRegistro = new DateTime(2026, 4, 24, 18, 25, 53, 254, DateTimeKind.Local).AddTicks(8849),
-                            Nombre = "César Paredes",
-                            Password = "Vinicola14//",
-                            Preferencias = "Todo",
-                            Puntos = 999,
-                            Rango = "Administrador",
-                            Universidad = "USMP"
-                        });
                 });
 
             modelBuilder.Entity("WebbyPoints.Models.Reseña", b =>

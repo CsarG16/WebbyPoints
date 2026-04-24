@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebbyPoints.Data;
 
@@ -10,9 +11,11 @@ using WebbyPoints.Data;
 namespace WebbyPoints.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260424232006_SeedDataFinal")]
+    partial class SeedDataFinal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.5");
@@ -249,12 +252,12 @@ namespace WebbyPoints.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 100,
-                            Carrera = "Ingeniería de Computación y Sistemas",
-                            Edad = 21,
+                            Id = 99,
+                            Carrera = "Sistemas",
+                            Edad = 20,
                             Email = "cesar_paredes7@usmp.pe",
                             EsAdmin = true,
-                            FechaRegistro = new DateTime(2026, 4, 24, 18, 25, 53, 254, DateTimeKind.Local).AddTicks(8849),
+                            FechaRegistro = new DateTime(2026, 4, 24, 18, 20, 5, 819, DateTimeKind.Local).AddTicks(8411),
                             Nombre = "César Paredes",
                             Password = "Vinicola14//",
                             Preferencias = "Todo",
