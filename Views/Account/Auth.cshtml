@@ -1,0 +1,334 @@
+@{
+    Layout = null;
+    var initialMode = ViewData["AuthMode"]?.ToString() ?? "register";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebbyPoints - Acceso</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- Auth-specific CSS (separated for maintainability) -->
+    <link rel="stylesheet" href="~/css/auth.css" />
+<body class="auth-body">
+<!-- SVG para Curvas Bézier (Soporta responsive con objectBoundingBox) -->
+<svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="wave-register" clipPathUnits="objectBoundingBox">
+      <path d="M0,0 L0.45,0 
+               C0.48,0.1 0.42,0.2 0.45,0.3
+               C0.48,0.4 0.42,0.5 0.45,0.6
+               C0.48,0.7 0.42,0.8 0.45,0.9
+               C0.46,0.95 0.45,1 0.45,1 
+               L0,1 Z" />
+    </clipPath>
+    <clipPath id="wave-login" clipPathUnits="objectBoundingBox">
+      <path d="M1,0 L0.55,0 
+               C0.52,0.1 0.58,0.2 0.55,0.3
+               C0.52,0.4 0.58,0.5 0.55,0.6
+               C0.52,0.7 0.58,0.8 0.55,0.9
+               C0.54,0.95 0.55,1 0.55,1 
+               L1,1 Z" />
+    </clipPath>
+  </defs>
+</svg>
+<div class="auth-container" id="authBox" data-state="@(initialMode == "login" ? "login" : "register-1")">
+
+    <!-- ============ IMAGE PANEL ============ -->
+    <div class="auth-image">
+        <img src="/images/campus-hero.png" alt="Campus USMP"/>
+        <div class="overlay"></div>
+        <div class="glass-wrap">
+            <div class="glass">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold small">+500 estudiantes activos</div>
+                        <div style="font-size:.72rem;opacity:.7">Comunidad USMP en crecimiento</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ PANEL: REGISTRO PASO 1 ============ -->
+    <div class="auth-panel panel-r @(initialMode != "login" ? "active" : "")" id="panel-register-1">
+        <div class="auth-nav">
+            <a href="/" class="brand">Webby<span>Points</span></a>
+            <a href="/" class="nl">Inicio</a>
+            <a href="javascript:void(0)" class="nl" onclick="switchTo('login')">Ingresar</a>
+        </div>
+        <div style="width:100%;max-width:480px">
+            <div class="steps"><div class="dot on"></div><div class="dot"></div></div>
+            <p class="text-uppercase text-muted small fw-bold mb-1" style="letter-spacing:2px;font-size:.72rem">Empieza gratis</p>
+            <h1 class="fw-black mb-1" style="font-size:2.1rem">Crea tu cuenta<span style="color:#1A4BDE">.</span></h1>
+            <p class="text-muted mb-4">¿Ya tienes cuenta? <a href="javascript:void(0)" onclick="switchTo('login')" class="text-decoration-none fw-semibold" style="color:#1A4BDE">Inicia sesión</a></p>
+            <div class="err-box" id="err1"><i class="bi bi-exclamation-triangle me-1"></i><span></span></div>
+            <form id="formReg1" onsubmit="return false">
+                <div class="d-flex gap-3">
+                    <div class="fg flex-grow-1">
+                        <input name="Nombre" type="text" placeholder="x" id="r-nom" required/>
+                        <label for="r-nom">Nombre completo</label><i class="bi bi-person fi"></i>
+                    </div>
+                    <div class="fg" style="width:130px">
+                        <input name="Edad" type="number" placeholder="x" id="r-age" required min="15" max="99"/>
+                        <label for="r-age">Edad</label><i class="bi bi-calendar3 fi"></i>
+                    </div>
+                </div>
+                <div class="fg">
+                    <input name="Email" type="email" placeholder="x" id="r-email" required/>
+                    <label for="r-email">Correo institucional</label><i class="bi bi-envelope fi"></i>
+                </div>
+                <div class="d-flex gap-3">
+                    <div class="fg flex-grow-1">
+                        <input name="Universidad" type="text" placeholder="x" id="r-uni" required/>
+                        <label for="r-uni">Universidad</label><i class="bi bi-building fi"></i>
+                    </div>
+                    <div class="fg flex-grow-1">
+                        <input name="Carrera" type="text" placeholder="x" id="r-car" required/>
+                        <label for="r-car">Carrera</label><i class="bi bi-mortarboard fi"></i>
+                    </div>
+                </div>
+                <div class="d-flex gap-3">
+                    <div class="fg flex-grow-1">
+                        <input name="Password" type="password" placeholder="x" id="r-pw" required minlength="6"/>
+                        <label for="r-pw">Contraseña</label>
+                        <i class="bi bi-eye fi tog" data-target="r-pw" style="cursor:pointer"></i>
+                    </div>
+                    <div class="fg flex-grow-1">
+                        <input name="ConfirmarPassword" type="password" placeholder="x" id="r-cpw" required/>
+                        <label for="r-cpw">Confirmar</label>
+                        <i class="bi bi-eye fi tog" data-target="r-cpw" style="cursor:pointer"></i>
+                    </div>
+                </div>
+                <div class="d-flex gap-3 mt-3">
+                    <a href="/" class="btn-alt text-center"><i class="bi bi-arrow-left me-1"></i>Inicio</a>
+                    <button type="button" class="btn-main flex-grow-1" onclick="goToStep2()">Siguiente <i class="bi bi-arrow-right ms-1"></i></button>
+                </div>
+            </form>
+            <p class="text-muted mt-4 mb-0" style="font-size:.75rem">&copy; 2026 Webby Points · USMP</p>
+        </div>
+    </div>
+
+    <!-- ============ PANEL: REGISTRO PASO 2 ============ -->
+    <div class="auth-panel panel-r" id="panel-register-2">
+        <div class="auth-nav">
+            <a href="/" class="brand">Webby<span>Points</span></a>
+            <a href="/" class="nl">Inicio</a>
+            <a href="javascript:void(0)" class="nl" onclick="switchTo('login')">Ingresar</a>
+        </div>
+        <div style="width:100%;max-width:680px">
+            <div class="steps"><div class="dot on"></div><div class="dot on"></div></div>
+            <p class="text-uppercase text-muted small fw-bold mb-1" style="letter-spacing:2px;font-size:.72rem">Casi listo</p>
+            <h1 class="fw-black mb-1" style="font-size:2.1rem">Elige tus intereses<span style="color:#1A4BDE">.</span></h1>
+            <p class="text-muted mb-4">Selecciona las categorías que más te gusten.</p>
+            <div class="err-box" id="err2"><i class="bi bi-exclamation-triangle me-1"></i><span></span></div>
+            <form id="formReg2" onsubmit="return false">
+                <div class="row g-3 mb-3">
+                    @{
+                        var cats = new[]{
+                            new{I="Gym",N="Gimnasio",Ic="bi-heart-pulse"},
+                            new{I="Cafe",N="Cafés",Ic="bi-cup-hot"},
+                            new{I="Study",N="Estudiar",Ic="bi-pencil-square"},
+                            new{I="Food",N="Comida",Ic="bi-egg-fried"},
+                            new{I="Parks",N="Parques",Ic="bi-tree"},
+                            new{I="Bares",N="Bares",Ic="bi-cup-straw"},
+                            new{I="Gaming",N="Gaming",Ic="bi-controller"},
+                            new{I="Cine",N="Cine",Ic="bi-film"},
+                            new{I="Rest",N="Restaurantes",Ic="bi-shop"}
+                        };
+                    }
+                    @foreach(var c in cats){
+                        <div class="col-6 col-sm-4 col-lg-3">
+                            <input type="checkbox" name="CategoriasFavoritas" value="@c.N" id="@c.I" class="ci d-none"/>
+                            <label for="@c.I" class="cc h-100 d-flex flex-column align-items-center justify-content-center">
+                                <i class="bi @c.Ic ico mb-2"></i>
+                                <span class="fw-bold cn" style="font-size:.82rem;color:#475569">@c.N</span>
+                                <i class="bi bi-check-circle-fill cb"></i>
+                            </label>
+                        </div>
+                    }
+                </div>
+                <p class="text-muted small mb-3"><i class="bi bi-info-circle me-1"></i>Mínimo 2 categorías. <span id="counter" class="fw-bold" style="color:#1A4BDE">0 seleccionadas</span></p>
+                <div class="d-flex gap-3">
+                    <button type="button" class="btn-alt" onclick="switchTo('register-1')"><i class="bi bi-arrow-left me-1"></i>Atrás</button>
+                    <button type="button" class="btn-main flex-grow-1" onclick="submitRegistro()" id="btnFinalizar"><i class="bi bi-check-lg me-2"></i>Finalizar registro</button>
+                </div>
+            </form>
+            <p class="text-muted mt-4 mb-0" style="font-size:.75rem">&copy; 2026 Webby Points · USMP</p>
+        </div>
+    </div>
+
+    <!-- ============ PANEL: LOGIN ============ -->
+    <div class="auth-panel panel-l @(initialMode == "login" ? "active" : "")" id="panel-login">
+        <div class="auth-nav">
+            <a href="/" class="brand">Webby<span>Points</span></a>
+            <a href="/" class="nl">Inicio</a>
+            <a href="javascript:void(0)" class="nl" onclick="switchTo('register-1')">Registrarse</a>
+        </div>
+        <div style="width:100%;max-width:420px">
+            <p class="text-uppercase text-muted small fw-bold mb-1" style="letter-spacing:2px;font-size:.72rem">Bienvenido de vuelta</p>
+            <h1 class="fw-black mb-1" style="font-size:2.1rem">Inicia sesión<span style="color:#1A4BDE">.</span></h1>
+            <p class="text-muted mb-4">¿No tienes cuenta? <a href="javascript:void(0)" onclick="switchTo('register-1')" class="text-decoration-none fw-semibold" style="color:#1A4BDE">Regístrate gratis</a></p>
+            <div class="err-box" id="errLogin"><i class="bi bi-exclamation-triangle me-1"></i><span></span></div>
+            <form id="formLogin" onsubmit="return false">
+                <div class="fg">
+                    <input name="Email" type="email" placeholder="x" id="l-email" required/>
+                    <label for="l-email">Correo institucional</label><i class="bi bi-envelope fi"></i>
+                </div>
+                <div class="fg">
+                    <input name="Password" type="password" placeholder="x" id="l-pw" required/>
+                    <label for="l-pw">Contraseña</label>
+                    <i class="bi bi-eye fi tog" data-target="l-pw" style="cursor:pointer"></i>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="rem" style="border-radius:4px">
+                    <label class="form-check-label small text-muted" for="rem">Recordarme</label>
+                </div>
+                <button type="button" class="btn-main w-100 mb-3" onclick="submitLogin()" id="btnLogin"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</button>
+                <div class="sep small">o</div>
+                <button type="button" class="btn-alt w-100" onclick="switchTo('register-1')"><i class="bi bi-person-plus me-2"></i>Crear cuenta nueva</button>
+            </form>
+            <p class="text-muted mt-4 mb-0" style="font-size:.75rem">&copy; 2026 Webby Points · USMP</p>
+        </div>
+    </div>
+</div>
+
+<!-- Success toast -->
+<div class="toast-ok" id="toast"><i class="bi bi-check-circle me-2"></i><span></span></div>
+
+<script>
+// ========== PANEL SWITCHING ==========
+function switchTo(state) {
+    const box = document.getElementById('authBox');
+    // Remove active from all panels
+    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+    // Set new state (drives CSS for image position + wave)
+    box.dataset.state = state;
+    // Determine delay: same-side = short, cross-side = longer
+    const isSameSide = (box._prev || '').startsWith('register') && state.startsWith('register');
+    const delay = isSameSide ? 150 : 400;
+    setTimeout(() => {
+        document.getElementById('panel-' + state).classList.add('active');
+    }, delay);
+    box._prev = state;
+}
+
+// ========== STEP 1 → STEP 2 (client-side validation) ==========
+function goToStep2() {
+    const form = document.getElementById('formReg1');
+    const errBox = document.getElementById('err1');
+    // Basic HTML5 validation
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+    // Check passwords match
+    const pw = form.querySelector('[name="Password"]').value;
+    const cpw = form.querySelector('[name="ConfirmarPassword"]').value;
+    if (pw !== cpw) {
+        showErr(errBox, 'Las contraseñas no coinciden.');
+        return;
+    }
+    hideErr(errBox);
+    switchTo('register-2');
+}
+
+// ========== SUBMIT REGISTRO (AJAX) ==========
+async function submitRegistro() {
+    const btn = document.getElementById('btnFinalizar');
+    const errBox = document.getElementById('err2');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creando cuenta...';
+
+    // Build FormData from both steps
+    const fd = new FormData();
+    const f1 = document.getElementById('formReg1');
+    new FormData(f1).forEach((v, k) => fd.append(k, v));
+    // Categories from step 2
+    document.querySelectorAll('.ci:checked').forEach(cb => {
+        fd.append('CategoriasFavoritas', cb.value);
+    });
+
+    try {
+        const res = await fetch('/Account/RegistroAjax', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.success) {
+            showToast('¡Cuenta creada! Redirigiendo...');
+            setTimeout(() => window.location.href = data.redirect, 1200);
+        } else {
+            showErr(errBox, data.errors?.join(' · ') || 'Error al registrar.');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Finalizar registro';
+        }
+    } catch {
+        showErr(errBox, 'Error de conexión. Intenta de nuevo.');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Finalizar registro';
+    }
+}
+
+// ========== SUBMIT LOGIN (AJAX) ==========
+async function submitLogin() {
+    const btn = document.getElementById('btnLogin');
+    const errBox = document.getElementById('errLogin');
+    const form = document.getElementById('formLogin');
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Ingresando...';
+
+    const fd = new FormData(form);
+    try {
+        const res = await fetch('/Account/LoginAjax', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.success) {
+            showToast('¡Bienvenido de vuelta!');
+            setTimeout(() => window.location.href = data.redirect, 1000);
+        } else {
+            showErr(errBox, data.errors?.join(' · ') || 'Credenciales incorrectas.');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Entrar';
+        }
+    } catch {
+        showErr(errBox, 'Error de conexión.');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Entrar';
+    }
+}
+
+// ========== HELPERS ==========
+function showErr(el, msg) { el.querySelector('span').textContent = msg; el.classList.add('show'); }
+function hideErr(el) { el.classList.remove('show'); }
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.querySelector('span').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Toggle password visibility
+document.querySelectorAll('.tog').forEach(icon => {
+    icon.addEventListener('click', function() {
+        const inp = document.getElementById(this.dataset.target);
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+        this.classList.toggle('bi-eye');
+        this.classList.toggle('bi-eye-slash');
+    });
+});
+
+// Category counter
+document.querySelectorAll('.ci').forEach(cb => {
+    cb.addEventListener('change', () => {
+        const n = document.querySelectorAll('.ci:checked').length;
+        document.getElementById('counter').textContent = n + ' seleccionada' + (n !== 1 ? 's' : '');
+    });
+});
+</script>
+</body>
+</html>

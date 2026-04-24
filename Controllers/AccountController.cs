@@ -15,54 +15,76 @@ public class AccountController : Controller
     }
 
     // =====================================================
-    // REGISTRO - PASO 1: Captura datos personales
+    // AUTH UNIFICADO - Página con animaciones
     // =====================================================
     [HttpGet]
     public IActionResult RegistroPaso1()
     {
-        return View();
+        ViewData["AuthMode"] = "register";
+        return View("Auth");
     }
 
-    [HttpPost]
-    public IActionResult RegistroPaso1(RegistroViewModel model)
+    [HttpGet]
+    public IActionResult Login()
     {
-        // No validamos CategoriasFavoritas aquí, eso es del Paso 2
+        ViewData["AuthMode"] = "login";
+        return View("Auth");
+    }
+
+    // =====================================================
+    // AJAX: Login
+    // =====================================================
+    [HttpPost]
+    public async Task<IActionResult> LoginAjax([FromForm] string Email, [FromForm] string Password)
+    {
+        if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
+            return Json(new { success = false, errors = new[] { "Completa todos los campos." } });
+
+        var usuario = await _context.Usuarios
+            .FirstOrDefaultAsync(u => u.Email == Email && u.Password == Password);
+
+        if (usuario == null)
+            return Json(new { success = false, errors = new[] { "Correo o contraseña incorrectos." } });
+
+        HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
+        HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre);
+
+        return Json(new { success = true, redirect = "/" });
+    }
+
+    // =====================================================
+    // AJAX: Registro completo (Paso 1 + Paso 2)
+    // =====================================================
+    [HttpPost]
+    public async Task<IActionResult> RegistroAjax([FromForm] RegistroViewModel model)
+    {
         ModelState.Remove("CategoriasFavoritas");
 
         if (!ModelState.IsValid)
         {
-            return View("RegistroPaso1", model);
+            var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+            return Json(new { success = false, errors });
         }
 
-        return View("RegistroPaso2", model);
-    }
-
-    // =====================================================
-    // REGISTRO - PASO 2: Confirma y guarda en DB
-    // =====================================================
-    [HttpPost]
-    public async Task<IActionResult> ConfirmarRegistro(RegistroViewModel model)
-    {
-        // Verificar si el correo ya está en uso
         var emailExiste = await _context.Usuarios.AnyAsync(u => u.Email == model.Email);
         if (emailExiste)
-        {
-            ModelState.AddModelError("Email", "Este correo ya está registrado.");
-            return View("RegistroPaso1", model);
-        }
+            return Json(new { success = false, errors = new[] { "Este correo ya está registrado." } });
 
         var nuevoUsuario = new Usuario
         {
-            Nombre      = model.Nombre,
-            Email       = model.Email,
-            Password    = model.Password, // TODO: reemplazar con BCrypt en la expo
-            Edad        = model.Edad,
-            Universidad = model.Universidad,
-            Carrera     = model.Carrera,
+            Nombre       = model.Nombre,
+            Email        = model.Email,
+            Password     = model.Password,
+            Edad         = model.Edad,
+            Universidad  = model.Universidad,
+            Carrera      = model.Carrera,
             Preferencias = model.CategoriasFavoritas != null
                            ? string.Join(",", model.CategoriasFavoritas)
                            : string.Empty,
-            Puntos        = 0,
+            Puntos        = 10,
             Rango         = "Explorador",
             FechaRegistro = DateTime.Now
         };
@@ -70,52 +92,14 @@ public class AccountController : Controller
         _context.Usuarios.Add(nuevoUsuario);
         await _context.SaveChangesAsync();
 
-        // Sesión simple para simular autenticación
         HttpContext.Session.SetInt32("UsuarioId", nuevoUsuario.Id);
         HttpContext.Session.SetString("UsuarioNombre", nuevoUsuario.Nombre);
 
-        return RedirectToAction("Index", "Home");
+        return Json(new { success = true, redirect = "/" });
     }
 
     // =====================================================
-    // LOGIN - GET: Muestra el formulario
-    // =====================================================
-    [HttpGet]
-    public IActionResult Login()
-    {
-        return View();
-    }
-
-    // =====================================================
-    // LOGIN - POST: Valida credenciales
-    // =====================================================
-    [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
-        }
-
-        // Buscar usuario por email y password (texto plano por ahora)
-        var usuario = await _context.Usuarios
-            .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-
-        if (usuario == null)
-        {
-            ModelState.AddModelError(string.Empty, "Correo o contraseña incorrectos.");
-            return View(model);
-        }
-
-        // Guardar sesión
-        HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
-        HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre);
-
-        return RedirectToAction("Index", "Home");
-    }
-
-    // =====================================================
-    // LOGOUT: Cierra sesión
+    // LOGOUT
     // =====================================================
     public IActionResult Logout()
     {
