@@ -1,12 +1,35 @@
 ## --- CARPETAS DE COMPILACIÓN ---
 [Bb]in/
-[Ob]j/
+[Oo]bj/
 
 ## --- BASE DE DATOS SQLITE ---
 *.db
 *.db-shm
 *.db-wal
 
-## --- CONFIGURACIÓN DE VS CODE ---
-.vscode/
+## --- CONFIGURACIÓN DE IDEs (VS Code, Visual Studio, Rider) ---
+.vscode/!launch.json
 .vs/
+.idea/
+*.user
+*.userosscache
+*.sln.docstates
+
+## --- PUBLICACIONES ---
+*.pubxml
+*.pubxml.user
+publish/
+
+## --- ARCHIVOS DE LOG Y CACHÉ ---
+*.log
+*.cache
+ 
+## --- DEPENDENCIAS ---
+packages/
+node_modules/
+
+## --- PRUEBAS ---
+TestResults/
+
+## --- MAC OS ---
+.DS_Store
