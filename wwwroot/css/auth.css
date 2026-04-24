@@ -1,0 +1,432 @@
+/* ===========================================================
+   auth.css — WebbyPoints Authentication Styles
+   Dedicated stylesheet for Login / Register flow
+   =========================================================== */
+
+/* ========== RESET & BASE ========== */
+* { box-sizing: border-box; margin: 0; padding: 0 }
+
+body.auth-body {
+    font-family: 'Inter', sans-serif;
+    background: #eef2f7;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.fw-black { font-weight: 900 }
+
+
+/* ========== CONTAINER ========== */
+.auth-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+/* ========== IMAGE PANEL (full-width, clipped with wave) ========== */
+.auth-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 15;
+    transition: clip-path .8s cubic-bezier(.77, 0, .175, 1);
+}
+
+.auth-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.auth-image .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(26, 75, 222, .2), rgba(0, 0, 0, .15));
+    z-index: 1;
+}
+
+
+/* ========== CLIP-PATH WAVE STATES ========== */
+/* Register states: image visible on LEFT ~45%, smooth wavy right edge */
+[data-state="register-1"] .auth-image,
+[data-state="register-2"] .auth-image {
+    clip-path: url(#wave-register);
+    -webkit-clip-path: url(#wave-register);
+}
+
+/* Login state: image visible on RIGHT ~45%, smooth wavy left edge */
+[data-state="login"] .auth-image {
+    clip-path: url(#wave-login);
+    -webkit-clip-path: url(#wave-login);
+}
+
+
+/* ========== GLASS CARD (on image) ========== */
+.glass {
+    backdrop-filter: blur(14px);
+    background: rgba(255, 255, 255, .12);
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+}
+
+.glass-wrap {
+    position: absolute;
+    bottom: 2.5rem;
+    color: #fff;
+    z-index: 7;
+    transition: left .8s cubic-bezier(.77, 0, .175, 1),
+                right .8s cubic-bezier(.77, 0, .175, 1);
+}
+
+/* Glass card follows the image side */
+[data-state="register-1"] .glass-wrap,
+[data-state="register-2"] .glass-wrap {
+    left: 2rem;
+    right: calc(100% - 42%);
+}
+
+[data-state="login"] .glass-wrap {
+    left: calc(100% - 42%);
+    right: 2rem;
+}
+
+
+/* ========== FORM PANELS ========== */
+.auth-panel {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: #fff;
+    z-index: 5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity .3s ease,
+        transform .3s ease,
+        visibility 0s .3s;
+}
+
+.auth-panel.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transition:
+        opacity .45s ease .4s,
+        transform .45s ease .4s,
+        visibility 0s 0s;
+}
+
+/* Register panels = RIGHT side. Extend under the image */
+.panel-r {
+    left: 35%;
+    width: 65%;
+    padding-left: 10%; /* offset content to keep it centered in visual area */
+    transform: translateX(30px);
+}
+
+.panel-r.active {
+    transform: translateX(0);
+}
+
+/* Login panel = LEFT side. Extend under the image */
+.panel-l {
+    left: 0;
+    width: 65%;
+    padding-right: 10%; /* offset content to keep it centered in visual area */
+    transform: translateX(-30px);
+}
+
+.panel-l.active {
+    transform: translateX(0);
+}
+
+
+/* ========== NAVBAR (inside auth) ========== */
+.auth-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    z-index: 10;
+}
+
+.auth-nav .brand {
+    font-weight: 900;
+    font-size: 1.15rem;
+    text-decoration: none;
+    color: #1A4BDE;
+}
+
+.auth-nav .brand span {
+    color: #1e293b;
+}
+
+.auth-nav a.nl {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: .9rem;
+    font-weight: 500;
+    transition: color .2s;
+}
+
+.auth-nav a.nl:hover {
+    color: #1A4BDE;
+}
+
+
+/* ========== FORM INPUTS ========== */
+.fg {
+    position: relative;
+    margin-bottom: 1.15rem;
+}
+
+.fg input {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: .75rem;
+    font-size: .95rem;
+    background: #f8fafc;
+    transition: all .25s ease;
+    outline: none;
+    color: #1e293b;
+}
+
+.fg input:focus {
+    border-color: #1A4BDE;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(26, 75, 222, .08);
+}
+
+.fg input::placeholder {
+    color: transparent;
+}
+
+.fg label {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    font-size: .9rem;
+    color: #94a3b8;
+    transition: all .2s ease;
+    pointer-events: none;
+    background: transparent;
+    padding: 0 .25rem;
+}
+
+.fg input:focus + label,
+.fg input:not(:placeholder-shown) + label {
+    top: -.1rem;
+    left: .75rem;
+    font-size: .72rem;
+    color: #1A4BDE;
+    font-weight: 600;
+    background: #fff;
+}
+
+.fg .fi {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #cbd5e1;
+    font-size: 1.1rem;
+}
+
+
+/* ========== BUTTONS ========== */
+.btn-main {
+    background: linear-gradient(135deg, #1A4BDE, #3b6ef7);
+    border: none;
+    color: #fff;
+    padding: .9rem 2.5rem;
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: .95rem;
+    transition: all .3s ease;
+    cursor: pointer;
+}
+
+.btn-main:hover {
+    transform: translateY(-2px);
+    color: #fff;
+    box-shadow: 0 8px 25px rgba(26, 75, 222, .3);
+}
+
+.btn-alt {
+    background: transparent;
+    border: 1.5px solid #e2e8f0;
+    color: #64748b;
+    padding: .9rem 2rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: .9rem;
+    transition: all .2s;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-alt:hover {
+    border-color: #1A4BDE;
+    color: #1A4BDE;
+}
+
+
+/* ========== STEPPER ========== */
+.steps {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+
+.dot {
+    width: 32px;
+    height: 4px;
+    border-radius: 2px;
+    background: #e2e8f0;
+    transition: background .3s;
+}
+
+.dot.on {
+    background: #1A4BDE;
+}
+
+
+/* ========== DIVIDER ========== */
+.sep {
+    position: relative;
+    text-align: center;
+    color: #94a3b8;
+    margin: 1.25rem 0;
+}
+
+.sep::before,
+.sep::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.sep::before { left: 0 }
+.sep::after  { right: 0 }
+
+
+/* ========== CATEGORY CARDS (Step 2) ========== */
+.cc {
+    cursor: pointer;
+    border-radius: 1.25rem;
+    padding: 1.15rem .75rem;
+    text-align: center;
+    border: 2px solid #f1f5f9;
+    transition: all .3s cubic-bezier(.4, 0, .2, 1);
+    background: #fafbfc;
+    position: relative;
+}
+
+.cc:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px -5px rgba(0, 0, 0, .08);
+}
+
+.ci:checked + .cc {
+    border-color: #1A4BDE;
+    background: linear-gradient(135deg, #f0f4ff, #e8edff);
+    box-shadow: 0 4px 15px rgba(26, 75, 222, .12);
+}
+
+.ci:checked + .cc .ico {
+    color: #1A4BDE !important;
+    transform: scale(1.1);
+}
+
+.ci:checked + .cc .cn {
+    color: #1A4BDE !important;
+}
+
+.cb {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #1A4BDE;
+    opacity: 0;
+    transition: opacity .2s;
+    font-size: .85rem;
+}
+
+.ci:checked + .cc .cb {
+    opacity: 1;
+}
+
+.ico {
+    font-size: 1.6rem;
+    transition: all .3s;
+    color: #94a3b8;
+}
+
+
+/* ========== ERROR BOX ========== */
+.err-box {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: .75rem;
+    padding: .6rem 1rem;
+    margin-bottom: 1rem;
+    font-size: .82rem;
+    color: #dc2626;
+    display: none;
+}
+
+.err-box.show {
+    display: block;
+}
+
+
+/* ========== SUCCESS TOAST ========== */
+.toast-ok {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: #059669;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all .3s ease;
+}
+
+.toast-ok.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .auth-image { display: none }
+    .panel-r,
+    .panel-l { left: 0 !important; width: 100% !important }
+    body.auth-body { overflow: auto }
+}
