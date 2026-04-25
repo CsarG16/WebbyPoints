@@ -5,8 +5,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-// Habilitar sesiones para autenticación simple
-builder.Services.AddDistributedMemoryCache();
+// =========================================================
+// REDIS CLOUD: Usamos Redis en la nube como caché distribuida
+// para almacenar las sesiones de cada usuario.
+// =========================================================
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = "redis-10393.crce181.sa-east-1-2.ec2.cloud.redislabs.com:10393,password=dvSBxVTX5ljVrqPPY4FXAU0CdZbeFdC3,ssl=false,abortConnect=false";
+    options.InstanceName = "WebbyPoints_";
+});
+
+// =========================================================
+// SESIONES: Datos privados de cada usuario (guardados en Redis)
+// =========================================================
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);

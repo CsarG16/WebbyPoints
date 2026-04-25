@@ -60,7 +60,7 @@
                 <span>· @totalReseñas reseña@(totalReseñas != 1 ? "s" : "")</span>
             </span>
             <span class="d-flex align-items-center gap-1">
-                <i class="bi bi-geo-alt"></i>
+                <i class="bi bi-geo-alt text-primary"></i>
                 @Model.Ubicacion
             </span>
             <span class="badge bg-light text-dark border py-1 px-2">
@@ -165,7 +165,7 @@
                                 var icon = iconMap.ContainsKey(tag) ? iconMap[tag] : "bi-check-circle";
                                 <div class="col-sm-6">
                                     <div class="d-flex align-items-center gap-3 py-2">
-                                        <i class="bi @icon fs-5 text-muted" style="width: 24px;"></i>
+                                        <i class="bi @icon fs-5 text-primary" style="width: 24px;"></i>
                                         <span style="font-size: 0.95rem;">@tag</span>
                                     </div>
                                 </div>

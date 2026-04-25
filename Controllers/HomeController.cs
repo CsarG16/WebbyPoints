@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebbyPoints.Data;
@@ -83,6 +84,36 @@ public class HomeController : Controller
         }
 
         var puntos = await query.Take(20).ToListAsync();
+
+        // ==========================================================
+        // SESIONES + REDIS: Leer los IDs de "Vistos Recientemente"
+        // desde la sesión privada de ESTE usuario (guardada en Redis Cloud)
+        // ==========================================================
+        var vistosJson = HttpContext.Session.GetString("VistosRecientes");
+        var vistosIds = new List<int>();
+
+        if (!string.IsNullOrEmpty(vistosJson))
+        {
+            vistosIds = JsonSerializer.Deserialize<List<int>>(vistosJson) ?? new List<int>();
+        }
+
+        if (vistosIds.Any())
+        {
+            var vistoPuntos = await _context.PuntosInteres
+                .Where(p => vistosIds.Contains(p.Id))
+                .ToListAsync();
+
+            // Ordenar en el mismo orden que la lista de IDs (más reciente primero)
+            ViewBag.VistosRecientes = vistosIds
+                .Select(id => vistoPuntos.FirstOrDefault(p => p.Id == id))
+                .Where(p => p != null)
+                .ToList();
+        }
+        else
+        {
+            ViewBag.VistosRecientes = new List<PuntoInteres>();
+        }
+
         return View(puntos);
     }
 
@@ -99,6 +130,32 @@ public class HomeController : Controller
 
         if (punto == null)
             return NotFound();
+
+        // ==========================================================
+        // SESIONES + REDIS: Guardar este punto en "Vistos Recientemente"
+        // Cada usuario tiene su propia lista privada en su sesión.
+        // La sesión se almacena físicamente en Redis Cloud.
+        // ==========================================================
+        var vistosJson = HttpContext.Session.GetString("VistosRecientes");
+        var vistosIds = new List<int>();
+
+        if (!string.IsNullOrEmpty(vistosJson))
+        {
+            vistosIds = JsonSerializer.Deserialize<List<int>>(vistosJson) ?? new List<int>();
+        }
+
+        // Eliminar si ya existía (para moverlo al inicio)
+        vistosIds.Remove(id);
+
+        // Insertar al inicio (el más reciente primero)
+        vistosIds.Insert(0, id);
+
+        // Máximo 5 elementos para no sobrecargar
+        if (vistosIds.Count > 5)
+            vistosIds = vistosIds.Take(5).ToList();
+
+        // Guardar de vuelta en la sesión → viaja a Redis Cloud automáticamente
+        HttpContext.Session.SetString("VistosRecientes", JsonSerializer.Serialize(vistosIds));
 
         return View(punto);
     }
