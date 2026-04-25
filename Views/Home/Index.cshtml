@@ -23,7 +23,7 @@
             </div>
 
             <div class="carousel-item">
-                <div class="hero-bg-image" style="background-image: url('/images/imagen3.jpg');"></div>
+                <div class="hero-bg-image" style="background-image: url('/images/fondo3.jpg');"></div>
             </div>
 
         </div>
@@ -34,27 +34,22 @@
     <div class="hero-overlay"></div>
 
     <!-- CONTENIDO -->
-    <div class="container position-relative z-3 d-flex align-items-center pb-5 mb-4" style="height: 85vh;">
-        <div class="row">
-            <div class="col-lg-7 col-xl-6">
+    <div class="container position-relative z-3 hero-content-wrapper">
+        <div class="row w-100">
+            <div class="col-lg-8 col-xl-7 text-start">
 
-                <span class="badge hero-badge mb-3">
-                    <i class="bi bi-geo-alt-fill me-1"></i>Explora tu campus
-                </span>
-
-                <p class="hero-subtitle mb-1">DESCUBRE TU</p>
-
-                <h1 class="hero-title mb-3">
-                    LUGAR<br/>FAVORITO
+                <span class="d-block hero-subtitle mb-2">ENCUENTRA TU</span>
+                <h1 class="hero-title mb-4">
+                    LUGAR FAVORITO
                 </h1>
 
-                <p class="hero-description mb-4">
+                <p class="hero-description mb-5">
                     La plataforma diseñada por y para estudiantes. Encuentra
                     cafés, restaurantes, bares y espacios únicos cerca de tu
                     universidad, según tu estado de ánimo.
                 </p>
 
-                <div class="d-flex flex-wrap gap-3 mb-4">
+                <div class="d-flex flex-wrap justify-content-start gap-3 mb-4">
                     @if (Context.Session.GetInt32("UsuarioId") == null)
                     {
                         <!-- PRUEBA DIRECTA -->
