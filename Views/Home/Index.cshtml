@@ -34,7 +34,7 @@
     <div class="hero-overlay"></div>
 
     <!-- CONTENIDO -->
-    <div class="container position-relative z-3 d-flex align-items-end pb-5 mb-4" style="height: 100vh;">
+    <div class="container position-relative z-3 d-flex align-items-center pb-5 mb-4" style="height: 85vh;">
         <div class="row">
             <div class="col-lg-7 col-xl-6">
 
@@ -57,9 +57,11 @@
                 <div class="d-flex flex-wrap gap-3 mb-4">
                     @if (Context.Session.GetInt32("UsuarioId") == null)
                     {
+                        <!-- PRUEBA DIRECTA -->
                         <a href="/Account/RegistroPaso1" class="btn btn-hero-primary">
                             <i class="bi bi-rocket-takeoff me-2"></i>¡Unirme ahora!
                         </a>
+
                         <a href="/Account/Login" class="btn btn-hero-outline">
                             Ya tengo cuenta
                         </a>
@@ -69,7 +71,8 @@
                         <a href="/Home/Explorar?plan=solo" class="btn btn-hero-primary">
                             <i class="bi bi-compass me-2"></i>Empezar a explorar
                         </a>
-                        <a href="#planesSection" class="btn btn-hero-outline">
+
+                        <a href="/Home/Explorar" class="btn btn-hero-outline">
                             Ver planes
                         </a>
                     }
