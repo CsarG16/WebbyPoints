@@ -3,44 +3,65 @@
     Layout = "_Layout";
 }
 
-<!-- ============================================
-     HERO SECTION - Fullscreen con imagen de fondo
-     ============================================ -->
-<section class="hero-fullscreen position-relative d-flex align-items-end" id="heroSection">
-    <!-- Imagen de fondo -->
-    <div class="hero-bg-image"></div>
-    <!-- Overlay oscuro degradado -->
+<section class="hero-fullscreen position-relative" id="heroSection">
+
+    <!-- CARRUSEL DE FONDO -->
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+        
+        <div class="carousel-inner">
+
+            <div class="carousel-item active">
+                <div class="hero-bg-image" style="background-image: url('/images/fondo1.jpg');"></div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="hero-bg-image" style="background-image: url('/images/fondoIndex.png');"></div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="hero-bg-image" style="background-image: url('/images/fondo2.jpg');"></div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="hero-bg-image" style="background-image: url('/images/imagen3.jpg');"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- OVERLAY -->
     <div class="hero-overlay"></div>
 
-    <!-- Contenido del Hero -->
-    <div class="container position-relative z-3 pb-5 mb-4">
+    <!-- CONTENIDO -->
+    <div class="container position-relative z-3 d-flex align-items-center pb-5 mb-4" style="height: 85vh;">
         <div class="row">
             <div class="col-lg-7 col-xl-6">
-                <!-- Badge superior -->
+
                 <span class="badge hero-badge mb-3">
                     <i class="bi bi-geo-alt-fill me-1"></i>Explora tu campus
                 </span>
 
-                <!-- Título principal estilo "INTO THE WILD" -->
                 <p class="hero-subtitle mb-1">DESCUBRE TU</p>
+
                 <h1 class="hero-title mb-3">
                     LUGAR<br/>FAVORITO
                 </h1>
 
-                <!-- Descripción -->
                 <p class="hero-description mb-4">
                     La plataforma diseñada por y para estudiantes. Encuentra
                     cafés, restaurantes, bares y espacios únicos cerca de tu
                     universidad, según tu estado de ánimo.
                 </p>
 
-                <!-- Botones CTA -->
                 <div class="d-flex flex-wrap gap-3 mb-4">
                     @if (Context.Session.GetInt32("UsuarioId") == null)
                     {
+                        <!-- PRUEBA DIRECTA -->
                         <a href="/Account/RegistroPaso1" class="btn btn-hero-primary">
                             <i class="bi bi-rocket-takeoff me-2"></i>¡Unirme ahora!
                         </a>
+
                         <a href="/Account/Login" class="btn btn-hero-outline">
                             Ya tengo cuenta
                         </a>
@@ -50,24 +71,15 @@
                         <a href="/Home/Explorar?plan=solo" class="btn btn-hero-primary">
                             <i class="bi bi-compass me-2"></i>Empezar a explorar
                         </a>
-                        <a href="#planesSection" class="btn btn-hero-outline">
+
+                        <a href="/Home/Explorar" class="btn btn-hero-outline">
                             Ver planes
                         </a>
                     }
                 </div>
-            </div>
-        </div>
 
-        <!-- Indicadores estilo carousel -->
-        <div class="hero-indicators d-flex align-items-center gap-3 mt-3">
-            <div class="d-flex gap-2 align-items-center">
-                <span class="hero-dot active"></span>
-                <span class="hero-dot"></span>
-                <span class="hero-dot"></span>
-            </div>
-            <div class="hero-progress-bar">
-                <div class="hero-progress-fill"></div>
             </div>
         </div>
     </div>
+
 </section>

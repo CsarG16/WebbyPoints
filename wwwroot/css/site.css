@@ -40,7 +40,8 @@ body {
 .hero-bg-image {
     position: absolute;
     inset: 0;
-    background: url('/images/hero-bg.png') center center / cover no-repeat;
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
     z-index: 1;
 }
@@ -202,86 +203,60 @@ body {
 }
 
 /* ===================================================
-   NAVBAR - Transparente, estático sobre el Hero
+   NAVBAR PRO (Efecto Apple)
    =================================================== */
+
 .wp-navbar {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background-color: transparent;
-    border-bottom: none;
+    background: transparent;
     z-index: 1030;
+    transition: all 0.35s ease;
+    padding: 1rem 0;
 }
 
-/* Navbar links (texto blanco sobre el hero) */
-.wp-navbar .navbar-brand span,
-.wp-navbar .nav-link {
-    color: rgba(255, 255, 255, 0.85) !important;
-}
-.wp-navbar .navbar-brand span:first-child {
-    color: #fff !important;
-}
-.wp-navbar .nav-link:hover {
-    color: #fff !important;
+/* Estado inicial (sobre el hero) */
+.wp-navbar .nav-link,
+.wp-navbar .navbar-brand span {
+    color: rgba(255,255,255,0.9) !important;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
-/* Botón "Registrarse" en navbar */
 .wp-navbar .btn-wp {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #fff;
-}
-.wp-navbar .btn-wp:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
     color: #fff;
 }
 
-/* Hamburger icon color */
-.wp-navbar .navbar-toggler-icon {
-    filter: invert(1);
+/* ===== ESTADO AL HACER SCROLL ===== */
+.wp-navbar.scrolled {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    padding: 0.6rem 0;
 }
 
-/* ===================================================
-   SIDEBAR AZUL (Login, Registro)
-   =================================================== */
-.wp-sidebar {
-    background-color: var(--wp-primary);
-    border-top-right-radius: 3rem;
-    border-bottom-right-radius: 3rem;
+/* Texto oscuro cuando scrolleas */
+.wp-navbar.scrolled .nav-link,
+.wp-navbar.scrolled .navbar-brand span {
+    color: #111 !important;
 }
 
-/* --- Formularios personalizados --- */
-.form-control-wp {
-    background-color: var(--wp-bg);
-    border: 1px solid var(--wp-border);
-    padding: 0.75rem 1rem;
-    border-radius: var(--wp-radius);
-    transition: var(--wp-transition);
-    font-size: 0.95rem;
-}
-.form-control-wp:focus {
-    background-color: #fff;
-    border-color: var(--wp-primary);
-    box-shadow: 0 0 0 0.2rem rgba(26, 75, 222, 0.12);
-}
-
-/* --- Botón principal --- */
-.btn-wp {
-    background-color: var(--wp-primary);
-    color: #fff;
+/* Botón cuando scrolleas */
+.wp-navbar.scrolled .btn-wp {
+    background: var(--wp-primary);
     border: none;
-    border-radius: var(--wp-radius);
-    padding: 0.85rem 1.5rem;
-    font-weight: 700;
-    transition: var(--wp-transition);
-}
-.btn-wp:hover {
-    background-color: var(--wp-primary-dark);
     color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 0.5rem 1.5rem rgba(26, 75, 222, 0.25);
 }
+
+/* Hover bonito */
+.wp-navbar .nav-link:hover {
+    opacity: 0.8;
+}
+
 
 /* --- Cards de planes (Home) --- */
 .plan-card {
@@ -378,3 +353,68 @@ body {
    =================================================== */
 .z-3 { z-index: 3; }
 .z-4 { z-index: 4; }
+
+/* ===== FIX CARRUSEL HERO ===== */
+
+.carousel,
+.carousel-inner,
+.carousel-item {
+    height: 100vh;
+}
+
+.carousel-item {
+    position: relative;
+}
+
+.carousel-item .hero-bg-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed;
+}
+/* ===== FIX DEFINITIVO HERO CARRUSEL ===== */
+
+#heroCarousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#heroCarousel .carousel-inner,
+#heroCarousel .carousel-item {
+    height: 100vh;
+}
+
+#heroCarousel .carousel-item {
+    position: relative;
+}
+
+/* Fondo de cada slide */
+#heroCarousel .hero-bg-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed;
+}
+
+/* Capas */
+#heroCarousel {
+    z-index: 0;
+}
+
+.hero-overlay {
+    z-index: 1;
+}
+
+.container.z-3 {
+    position: relative;
+    z-index: 3;
+}
