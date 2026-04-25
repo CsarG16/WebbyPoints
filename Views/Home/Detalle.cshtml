@@ -1,0 +1,374 @@
+@model WebbyPoints.Models.PuntoInteres
+@{
+    ViewData["Title"] = Model.Nombre;
+    Layout = "_Layout";
+
+    var totalReseñas = Model.Reseñas?.Count ?? 0;
+    var usuarioLogueado = Context.Session.GetInt32("UsuarioId") != null;
+
+    // Parsear etiquetas del campo Etiquetas (separadas por coma)
+    var etiquetas = !string.IsNullOrEmpty(Model.Etiquetas)
+        ? Model.Etiquetas.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(e => e.Trim()).ToList()
+        : new List<string>();
+
+    // Mapeo de etiquetas a iconos de Bootstrap Icons
+    var iconMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        { "WiFi", "bi-wifi" },
+        { "Enchufes", "bi-plug" },
+        { "Pet Friendly", "bi-heart" },
+        { "Estacionamiento", "bi-car-front" },
+        { "Terraza", "bi-sun" },
+        { "Aire Acondicionado", "bi-snow" },
+        { "Música en vivo", "bi-music-note-beamed" },
+        { "Accesible", "bi-universal-access" },
+        { "Silencioso", "bi-volume-mute" },
+        { "Delivery", "bi-truck" },
+        { "Reservaciones", "bi-calendar-check" },
+        { "Happy Hour", "bi-cup-straw" },
+        { "Comida vegana", "bi-flower1" },
+        { "Barra libre", "bi-cup-hot" },
+        { "Juegos de mesa", "bi-dice-5" },
+        { "Karaoke", "bi-mic" },
+        { "Pantallas", "bi-display" },
+        { "Zona de estudio", "bi-book" },
+    };
+}
+
+<!-- ============================================
+     BREADCRUMB + HEADER (Estilo Airbnb)
+     ============================================ -->
+<section class="pb-2" style="padding-top: 5rem;">
+    <div class="container">
+        <!-- Breadcrumb sutil -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb small mb-0">
+                <li class="breadcrumb-item"><a href="/" class="text-muted text-decoration-none">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/Home/Explorar" class="text-muted text-decoration-none">Explorar</a></li>
+                <li class="breadcrumb-item active text-dark" aria-current="page">@Model.Nombre</li>
+            </ol>
+        </nav>
+
+        <!-- Título -->
+        <h1 class="fw-bold mb-2" style="font-size: 1.75rem;">@Model.Nombre</h1>
+
+        <!-- Meta line: calificación · ubicación · categoría -->
+        <div class="d-flex flex-wrap align-items-center gap-3 text-muted small mb-3">
+            <span class="d-flex align-items-center gap-1">
+                <i class="bi bi-star-fill text-warning"></i>
+                <strong class="text-dark">@Model.Calificacion.ToString("0.0")</strong>
+                <span>· @totalReseñas reseña@(totalReseñas != 1 ? "s" : "")</span>
+            </span>
+            <span class="d-flex align-items-center gap-1">
+                <i class="bi bi-geo-alt"></i>
+                @Model.Ubicacion
+            </span>
+            <span class="badge bg-light text-dark border py-1 px-2">
+                @Model.Categoria
+            </span>
+            <span class="badge bg-primary-subtle text-primary border-0 py-1 px-2">
+                <i class="bi bi-people me-1"></i>Plan @Model.PlanTipo
+            </span>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     IMAGEN PRINCIPAL (Estilo Airbnb hero)
+     ============================================ -->
+<section class="pb-4">
+    <div class="container">
+        <div class="rounded-4 overflow-hidden shadow-sm" style="max-height: 420px;">
+            @if (!string.IsNullOrEmpty(Model.ImagenUrl))
+            {
+                <img src="@Model.ImagenUrl" alt="@Model.Nombre"
+                     class="w-100" style="height: 420px; object-fit: cover;">
+            }
+            else
+            {
+                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 420px;">
+                    <div class="text-center text-muted">
+                        <i class="bi bi-image fs-1 opacity-25 d-block mb-2"></i>
+                        <span class="small">Sin imagen disponible</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     CONTENIDO: Grid 8/4 (Airbnb layout)
+     ============================================ -->
+<section class="pb-5">
+    <div class="container">
+        <div class="row g-4 g-lg-5">
+
+            <!-- ====== COLUMNA IZQUIERDA (8) ====== -->
+            <div class="col-lg-8">
+
+                <!-- Descripción -->
+                <div class="mb-4 pb-4 border-bottom">
+                    <h5 class="fw-bold mb-3">Acerca de este lugar</h5>
+                    <p class="text-muted lh-lg mb-0" style="font-size: 0.95rem;">
+                        @Model.Descripcion
+                    </p>
+                </div>
+
+                <!-- Info rápida -->
+                <div class="mb-4 pb-4 border-bottom">
+                    <div class="row g-3">
+                        <div class="col-sm-4">
+                            <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
+                                <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px;">
+                                    <i class="bi bi-clock text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="small text-muted">Horario</div>
+                                    <div class="fw-semibold small">@(string.IsNullOrEmpty(Model.Horario) ? "No disponible" : Model.Horario)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
+                                <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px;">
+                                    <i class="bi bi-geo-alt text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="small text-muted">Distancia</div>
+                                    <div class="fw-semibold small">@Model.Distancia km</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
+                                <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px;">
+                                    <i class="bi bi-currency-dollar text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="small text-muted">Precio</div>
+                                    <div class="fw-semibold small">@(string.IsNullOrEmpty(Model.PrecioRango) ? "No disponible" : Model.PrecioRango)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lo que ofrece este lugar (Amenities) -->
+                @if (etiquetas.Any())
+                {
+                    <div class="mb-4 pb-4 border-bottom">
+                        <h5 class="fw-bold mb-3">Lo que ofrece este lugar</h5>
+                        <div class="row g-3">
+                            @foreach (var tag in etiquetas)
+                            {
+                                var icon = iconMap.ContainsKey(tag) ? iconMap[tag] : "bi-check-circle";
+                                <div class="col-sm-6">
+                                    <div class="d-flex align-items-center gap-3 py-2">
+                                        <i class="bi @icon fs-5 text-muted" style="width: 24px;"></i>
+                                        <span style="font-size: 0.95rem;">@tag</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Sección de Reseñas -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-center gap-2 mb-4">
+                        <h5 class="fw-bold mb-0">
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            @Model.Calificacion.ToString("0.0") · @totalReseñas reseña@(totalReseñas != 1 ? "s" : "")
+                        </h5>
+                    </div>
+
+                    @if (Model.Reseñas != null && Model.Reseñas.Any())
+                    {
+                        <div class="row g-4">
+                            @foreach (var reseña in Model.Reseñas.OrderByDescending(r => r.FechaPublicacion))
+                            {
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded-3 h-100">
+                                        <!-- Header de la reseña -->
+                                        <div class="d-flex align-items-center gap-3 mb-2">
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 0.85rem;">
+                                                @(reseña.Usuario?.Nombre?.Substring(0, 1).ToUpper() ?? "?")
+                                            </div>
+                                            <div>
+                                                <div class="fw-semibold small">@(reseña.Usuario?.Nombre ?? "Usuario")</div>
+                                                <div class="text-muted" style="font-size: 0.75rem;">
+                                                    @reseña.FechaPublicacion.ToString("MMMM yyyy")
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Estrellas -->
+                                        <div class="mb-2">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                <i class="bi @(i <= reseña.Calificacion ? "bi-star-fill text-warning" : "bi-star text-muted")" style="font-size: 0.8rem;"></i>
+                                            }
+                                        </div>
+                                        <!-- Comentario -->
+                                        <p class="text-muted small mb-0 lh-base">@reseña.Comentario</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 bg-light rounded-3">
+                            <i class="bi bi-chat-dots fs-2 text-muted opacity-50 d-block mb-2"></i>
+                            <p class="text-muted small mb-0">Aún no hay reseñas. ¡Sé el primero en opinar!</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- ====== COLUMNA DERECHA (4) - Action Card ====== -->
+            <div class="col-lg-4">
+                <div class="card shadow border rounded-4 p-4 sticky-top" style="top: 1.5rem;">
+
+                    <!-- Precio y calificación (estilo Airbnb header) -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                        <div>
+                            <span class="fs-5 fw-bold">@(string.IsNullOrEmpty(Model.PrecioRango) ? "Gratis" : Model.PrecioRango)</span>
+                            <span class="text-muted small"> / visita</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-1 small">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <strong>@Model.Calificacion.ToString("0.0")</strong>
+                            <span class="text-muted">(@totalReseñas)</span>
+                        </div>
+                    </div>
+
+                    <!-- Info compacta -->
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center gap-2 py-2 small">
+                            <i class="bi bi-clock text-muted"></i>
+                            <span>@(string.IsNullOrEmpty(Model.Horario) ? "Horario no disponible" : Model.Horario)</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 py-2 small">
+                            <i class="bi bi-geo-alt text-muted"></i>
+                            <span>@Model.Ubicacion</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 py-2 small">
+                            <i class="bi bi-tag text-muted"></i>
+                            <span>@Model.Categoria · Plan @Model.PlanTipo</span>
+                        </div>
+                    </div>
+
+                    <!-- Botón guardar en favoritos -->
+                    <button class="btn btn-outline-dark w-100 rounded-3 py-2 mb-4 fw-semibold" id="btnFavorito" onclick="toggleFavorito(this)">
+                        <i class="bi bi-heart me-2"></i>Guardar en Favoritos
+                    </button>
+
+                    <hr class="my-0 mb-3">
+
+                    <!-- Formulario de reseña -->
+                    <h6 class="fw-bold mb-3">Dejar una reseña</h6>
+
+                    @if (usuarioLogueado)
+                    {
+                        <form method="post" action="/Home/CrearReseña">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="puntoId" value="@Model.Id" />
+
+                            <!-- Selector de estrellas -->
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Tu calificación</label>
+                                <div class="d-flex gap-1" id="starRating">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="bi bi-star fs-4 text-muted star-btn" data-value="@i" style="cursor: pointer; transition: all 0.15s;"></i>
+                                    }
+                                </div>
+                                <input type="hidden" name="calificacion" id="calificacionInput" value="5" />
+                            </div>
+
+                            <!-- Comentario -->
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Tu comentario</label>
+                                <textarea name="comentario" class="form-control border rounded-3 bg-light" rows="3"
+                                          placeholder="¿Qué te pareció este lugar?" required maxlength="500"
+                                          style="resize: none; font-size: 0.9rem;"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold">
+                                <i class="bi bi-send me-2"></i>Publicar reseña
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="text-center py-3 bg-light rounded-3">
+                            <i class="bi bi-lock fs-4 text-muted d-block mb-2"></i>
+                            <p class="small text-muted mb-2">Inicia sesión para dejar tu reseña</p>
+                            <a href="/Account/Login" class="btn btn-primary btn-sm rounded-pill px-4">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Entrar
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+<script>
+    // ===== Star Rating Interactive =====
+    const stars = document.querySelectorAll('.star-btn');
+    const calInput = document.getElementById('calificacionInput');
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const val = parseInt(star.dataset.value);
+            calInput.value = val;
+            stars.forEach((s, idx) => {
+                if (idx < val) {
+                    s.classList.remove('bi-star', 'text-muted');
+                    s.classList.add('bi-star-fill', 'text-warning');
+                } else {
+                    s.classList.remove('bi-star-fill', 'text-warning');
+                    s.classList.add('bi-star', 'text-muted');
+                }
+            });
+        });
+
+        star.addEventListener('mouseenter', () => {
+            const val = parseInt(star.dataset.value);
+            stars.forEach((s, idx) => {
+                if (idx < val) {
+                    s.classList.add('text-warning');
+                }
+            });
+        });
+
+        star.addEventListener('mouseleave', () => {
+            const currentVal = parseInt(calInput.value);
+            stars.forEach((s, idx) => {
+                if (idx >= currentVal) {
+                    s.classList.remove('text-warning');
+                }
+            });
+        });
+    });
+
+    // ===== Toggle Favorito =====
+    function toggleFavorito(btn) {
+        const icon = btn.querySelector('i');
+        if (icon.classList.contains('bi-heart')) {
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill', 'text-danger');
+            btn.innerHTML = '<i class="bi bi-heart-fill text-danger me-2"></i>Guardado';
+        } else {
+            icon.classList.remove('bi-heart-fill', 'text-danger');
+            icon.classList.add('bi-heart');
+            btn.innerHTML = '<i class="bi bi-heart me-2"></i>Guardar en Favoritos';
+        }
+    }
+</script>
+}

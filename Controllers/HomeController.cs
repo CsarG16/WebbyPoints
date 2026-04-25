@@ -86,6 +86,77 @@ public class HomeController : Controller
         return View(puntos);
     }
 
+    // =====================================================
+    // DETALLE: Muestra la ficha completa de un punto
+    // con sus reseñas y datos del usuario que las escribió
+    // =====================================================
+    public async Task<IActionResult> Detalle(int id)
+    {
+        var punto = await _context.PuntosInteres
+            .Include(p => p.Reseñas)
+                .ThenInclude(r => r.Usuario)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (punto == null)
+            return NotFound();
+
+        return View(punto);
+    }
+
+    // =====================================================
+    // CREAR RESEÑA: POST desde la tarjeta lateral de Detalle
+    // =====================================================
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CrearReseña(int puntoId, int calificacion, string comentario)
+    {
+        var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+        if (usuarioId == null)
+            return RedirectToAction("Login", "Account");
+
+        var reseña = new Reseña
+        {
+            PuntoInteresId = puntoId,
+            UsuarioId = usuarioId.Value,
+            Calificacion = calificacion,
+            Comentario = comentario,
+            FechaPublicacion = DateTime.Now
+        };
+
+        _context.Reseñas.Add(reseña);
+
+        // Recalcular la calificación promedio del punto
+        var punto = await _context.PuntosInteres
+            .Include(p => p.Reseñas)
+            .FirstOrDefaultAsync(p => p.Id == puntoId);
+
+        if (punto != null)
+        {
+            punto.Reseñas.Add(reseña);
+            punto.Calificacion = punto.Reseñas.Average(r => r.Calificacion);
+        }
+
+        // Dar puntos al usuario por la reseña (+10 pts)
+        var usuario = await _context.Usuarios.FindAsync(usuarioId.Value);
+        if (usuario != null)
+        {
+            usuario.Puntos += 10;
+            // Actualizar rango según puntos
+            usuario.Rango = usuario.Puntos switch
+            {
+                >= 500 => "Leyenda",
+                >= 200 => "Experto",
+                >= 100 => "Local",
+                >= 30  => "Explorador",
+                _      => "Novato"
+            };
+        }
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Detalle", new { id = puntoId });
+    }
+
     public IActionResult Privacy()
     {
         return View();
