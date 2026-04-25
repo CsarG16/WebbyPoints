@@ -165,6 +165,14 @@ body.auth-body {
     z-index: 10;
 }
 
+.panel-r .auth-nav {
+    justify-content: flex-end;
+}
+
+.panel-l .auth-nav {
+    justify-content: flex-start;
+}
+
 .auth-nav .brand {
     font-weight: 900;
     font-size: 1.15rem;

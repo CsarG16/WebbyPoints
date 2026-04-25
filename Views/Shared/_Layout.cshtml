@@ -29,16 +29,22 @@
             <div class="collapse navbar-collapse" id="navbarMain">
                 <ul class="navbar-nav ms-auto align-items-center gap-2">
                     <li class="nav-item">
-                        <a class="nav-link fw-medium" href="/Home/Explorar?plan=solo">
+                        <a class="nav-link fw-medium" href="/Home/Explorar">
                             <i class="bi bi-compass me-1"></i>Explorar
                         </a>
                     </li>
 
-                    @if (Context.Session.GetInt32("UsuarioId") != null)
+                    @{
+                        var usuarioId = Context.Session.GetInt32("UsuarioId");
+                        var nombreUsuario = Context.Session.GetString("UsuarioNombre");
+                        var puntosUsuario = Context.Session.GetInt32("UsuarioPuntos") ?? 0;
+                    }
+
+                    @if (usuarioId != null)
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle fw-medium" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle me-1"></i>@Context.Session.GetString("UsuarioNombre")
+                                <i class="bi bi-person-circle me-1"></i>Hola, @nombreUsuario
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3">
                                 <li><a class="dropdown-item py-2" href="#"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
