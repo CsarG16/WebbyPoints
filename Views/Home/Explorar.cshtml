@@ -25,56 +25,44 @@
         </div>
 
         <div class="row g-4 justify-content-center">
-            <div class="col-md-4">
-                <a href="/Home/Explorar?plan=solo" class="text-decoration-none">
-                    <div class="card plan-card border-0 p-4 h-100 shadow-lg @(planActual == "solo" ? "bg-white text-primary scale-up" : "bg-white bg-opacity-10 text-white")">
-                        <div class="d-flex align-items-center">
-                            <div class="rounded-3 d-flex align-items-center justify-content-center @(planActual == "solo" ? "bg-primary text-white" : "bg-white bg-opacity-20 text-white")" style="width: 50px; height: 50px;">
-                                <i class="bi bi-person-fill fs-4"></i>
-                            </div>
-                            <div class="ms-3 flex-grow-1">
-                                <h6 class="mb-0 fw-bold">Plan solo</h6>
-                                <small class="@(planActual == "solo" ? "text-primary opacity-75" : "text-white opacity-50")">Productividad</small>
-                            </div>
-                            @if(planActual == "solo") { <i class="bi bi-check-circle-fill fs-5"></i> }
-                        </div>
-                    </div>
-                </a>
-            </div>
+            @{
+                var planes = new[] {
+                    new { Id = "solo", Label = "Plan solo", Sub = "Productividad", Icon = "bi-person-fill", ActiveColor = "#0d6efd" },
+                    new { Id = "pareja", Label = "Plan pareja", Sub = "Citas & Relax", Icon = "bi-heart-fill", ActiveColor = "#dc3545" },
+                    new { Id = "amigos", Label = "Plan amigos", Sub = "Diversión", Icon = "bi-people-fill", ActiveColor = "#ffc107" }
+                };
+            }
 
-            <div class="col-md-4">
-                <a href="/Home/Explorar?plan=pareja" class="text-decoration-none">
-                    <div class="card plan-card border-0 p-4 h-100 shadow-lg @(planActual == "pareja" ? "bg-white text-danger scale-up" : "bg-white bg-opacity-10 text-white")">
-                        <div class="d-flex align-items-center">
-                            <div class="rounded-3 d-flex align-items-center justify-content-center @(planActual == "pareja" ? "bg-danger text-white" : "bg-white bg-opacity-20 text-white")" style="width: 50px; height: 50px;">
-                                <i class="bi bi-heart-fill fs-4"></i>
-                            </div>
-                            <div class="ms-3 flex-grow-1">
-                                <h6 class="mb-0 fw-bold">Plan pareja</h6>
-                                <small class="@(planActual == "pareja" ? "text-danger opacity-75" : "text-white opacity-50")">Citas & Relax</small>
-                            </div>
-                            @if(planActual == "pareja") { <i class="bi bi-check-circle-fill fs-5"></i> }
-                        </div>
-                    </div>
-                </a>
-            </div>
+            @foreach (var p in planes)
+            {
+                var isActive = planActual == p.Id;
+                <div class="col-md-4">
+                    <a href="/Home/Explorar?plan=@p.Id" class="text-decoration-none">
+                        <div class="card plan-card border-0 p-4 h-100 shadow-lg @(isActive ? "bg-white scale-up" : "bg-white bg-opacity-10 text-white")"
+                             style="transition: all 0.3s ease; border-radius: 1.5rem;">
+                            <div class="d-flex align-items-center">
+                                <!-- Contenedor del Icono -->
+                                <div class="rounded-3 d-flex align-items-center justify-content-center" 
+                                     style="width: 54px; height: 54px; flex-shrink: 0; 
+                                            background-color: @(isActive ? p.ActiveColor : "rgba(255,255,255,0.2)");">
+                                    <i class="bi @p.Icon fs-4 text-white"></i>
+                                </div>
+                                
+                                <!-- Texto -->
+                                <div class="ms-3 flex-grow-1">
+                                    <h6 class="mb-0 fw-bold @(isActive ? "text-dark" : "text-white")">@p.Label</h6>
+                                    <small class="@(isActive ? "text-muted" : "text-white opacity-75")">@p.Sub</small>
+                                </div>
 
-            <div class="col-md-4">
-                <a href="/Home/Explorar?plan=amigos" class="text-decoration-none">
-                    <div class="card plan-card border-0 p-4 h-100 shadow-lg @(planActual == "amigos" ? "bg-white text-warning scale-up" : "bg-white bg-opacity-10 text-white")">
-                        <div class="d-flex align-items-center">
-                            <div class="rounded-3 d-flex align-items-center justify-content-center @(planActual == "amigos" ? "bg-warning text-white" : "bg-white bg-opacity-20 text-white")" style="width: 50px; height: 50px;">
-                                <i class="bi bi-people-fill fs-4"></i>
+                                <!-- Checkmark si está activo -->
+                                @if(isActive) { 
+                                    <i class="bi bi-check-circle-fill fs-5" style="color: @p.ActiveColor;"></i> 
+                                }
                             </div>
-                            <div class="ms-3 flex-grow-1">
-                                <h6 class="mb-0 fw-bold">Plan amigos</h6>
-                                <small class="@(planActual == "amigos" ? "text-warning opacity-75" : "text-white opacity-50")">Diversión</small>
-                            </div>
-                            @if(planActual == "amigos") { <i class="bi bi-check-circle-fill fs-5"></i> }
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            }
         </div>
     </div>
 </section>
@@ -106,6 +94,75 @@
                 </form>
             </div>
         </div>
+
+        @* ==========================================================
+           SECCIÓN: VISTOS RECIENTEMENTE (Sesiones + Redis Cloud)
+           Solo aparece si el usuario ya visitó algún punto de interés.
+           Los datos vienen de la sesión privada de ESTE usuario,
+           que se almacena físicamente en Redis Cloud.
+           ========================================================== *@
+        @{
+            var vistosRecientes = ViewBag.VistosRecientes as List<WebbyPoints.Models.PuntoInteres>;
+        }
+
+        @if (vistosRecientes != null && vistosRecientes.Count > 0)
+        {
+            <div class="vistos-recientes-section rounded-4 p-4 mb-5">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="vistos-icon-wrapper">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Vistos recientemente</h5>
+                        <p class="text-muted small mb-0">Lugares que exploraste en esta sesión</p>
+                    </div>
+
+                </div>
+
+                <div class="row g-3">
+                    @foreach (var punto in vistosRecientes)
+                    {
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <a href="/Home/Detalle/@punto.Id" class="text-decoration-none">
+                                <div class="card visto-card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                                    <div class="row g-0 h-100">
+                                        <div class="col-4">
+                                            @if (!string.IsNullOrEmpty(punto.ImagenUrl))
+                                            {
+                                                <img src="@punto.ImagenUrl" alt="@punto.Nombre"
+                                                     class="w-100 h-100" style="object-fit: cover; min-height: 120px;">
+                                            }
+                                            else
+                                            {
+                                                <div class="bg-light d-flex align-items-center justify-content-center h-100" style="min-height: 120px;">
+                                                    <i class="bi bi-image text-muted fs-3 opacity-25"></i>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="col-8 d-flex align-items-center">
+                                            <div class="card-body py-3 px-3">
+                                                <h6 class="fw-bold mb-1 text-dark">@punto.Nombre</h6>
+                                                <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill small mb-2">
+                                                    @punto.Categoria
+                                                </span>
+                                                <div class="d-flex align-items-center gap-3 text-muted small">
+                                                    <span class="d-flex align-items-center gap-1">
+                                                        <i class="bi bi-star-fill text-warning"></i> @punto.Calificacion.ToString("0.0")
+                                                    </span>
+                                                    <span class="d-flex align-items-center gap-1">
+                                                        <i class="bi bi-currency-dollar text-primary"></i> @punto.PrecioRango
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
 
         <div class="d-flex align-items-center gap-2 mb-4">
             <h3 class="fw-bold mb-0">Recomendaciones para ti</h3>
@@ -200,4 +257,30 @@
     .plan-card:hover { transform: translateY(-5px); cursor: pointer; }
     .poi-card { transition: all 0.3s ease; }
     .poi-card:hover { transform: translateY(-8px); box-shadow: 0 1rem 3rem rgba(0,0,0,0.12) !important; }
+
+    /* Vistos Recientemente (Sesiones + Redis Cloud) */
+    .vistos-recientes-section {
+        background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
+        border: 1px solid rgba(79, 70, 229, 0.1);
+    }
+    .vistos-icon-wrapper {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+    .visto-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .visto-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.1) !important;
+    }
 </style>

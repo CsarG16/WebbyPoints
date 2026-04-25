@@ -62,7 +62,7 @@ public class ApplicationDbContext : DbContext
                 Descripcion = "Bar con ambiente relajado, perfecto para un after-class.",
                 Categoria = "Ocio",
                 Ubicacion = "Calle Universitaria 456",
-                ImagenUrl = "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+                ImagenUrl = "/images/bodega_esquina.png",
                 PlanTipo = "Amigos",
                 Calificacion = 4.8,
                 Horario = "04:00 PM - 02:00 AM"
