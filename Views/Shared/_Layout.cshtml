@@ -18,7 +18,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg wp-navbar py-2">
+    <nav class="navbar navbar-expand-lg wp-navbar py-2 @(ViewData["Title"]?.ToString() != "Inicio" ? "scrolled" : "")">
         <div class="container">
             <a class="navbar-brand fw-black fs-4" href="/">
                 <span class="text-wp-primary">Webby</span><span class="text-dark">Points</span>
@@ -49,6 +49,14 @@
                             <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3">
                                 <li><a class="dropdown-item py-2" href="#"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
                                 <li><a class="dropdown-item py-2" href="#"><i class="bi bi-star me-2"></i>Mis reseñas</a></li>
+                                @{
+                                    var esAdmin = Context.Session.GetInt32("EsAdmin") ?? 0;
+                                }
+                                @if (esAdmin == 1)
+                                {
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item py-2 text-primary fw-semibold" href="/Admin"><i class="bi bi-shield-lock me-2"></i>Panel Admin</a></li>
+                                }
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item py-2 text-danger" href="/Account/Logout"><i class="bi bi-box-arrow-left me-2"></i>Cerrar sesión</a></li>
                             </ul>

@@ -28,7 +28,6 @@ builder.Services.AddSession(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=WebbyPoints.db"));
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

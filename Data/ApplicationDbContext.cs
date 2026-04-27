@@ -38,6 +38,20 @@ public class ApplicationDbContext : DbContext
                 EsAdmin = true,
                 Puntos = 999,
                 Rango = "Administrador"
+            },
+            new Usuario
+            {
+                Id = 200,
+                Nombre = "Fausto Miranda",
+                Email = "fausto_miranda@usmp.pe",
+                Password = "Mimamamemima123",
+                Universidad = "USMP",
+                Carrera = "Ingeniería de Computación y Sistemas",
+                Edad = 21,
+                Preferencias = "Todo",
+                EsAdmin = true,
+                Puntos = 999,
+                Rango = "Administrador"
             }
         );
 

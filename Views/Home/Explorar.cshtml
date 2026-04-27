@@ -126,20 +126,7 @@
                             <a href="/Home/Detalle/@punto.Id" class="text-decoration-none">
                                 <div class="card visto-card border-0 shadow-sm rounded-4 overflow-hidden h-100">
                                     <div class="row g-0 h-100">
-                                        <div class="col-4">
-                                            @if (!string.IsNullOrEmpty(punto.ImagenUrl))
-                                            {
-                                                <img src="@punto.ImagenUrl" alt="@punto.Nombre"
-                                                     class="w-100 h-100" style="object-fit: cover; min-height: 120px;">
-                                            }
-                                            else
-                                            {
-                                                <div class="bg-light d-flex align-items-center justify-content-center h-100" style="min-height: 120px;">
-                                                    <i class="bi bi-image text-muted fs-3 opacity-25"></i>
-                                                </div>
-                                            }
-                                        </div>
-                                        <div class="col-8 d-flex align-items-center">
+                                        <div class="col-12 d-flex align-items-center">
                                             <div class="card-body py-3 px-3">
                                                 <h6 class="fw-bold mb-1 text-dark">@punto.Nombre</h6>
                                                 <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill small mb-2">
@@ -181,7 +168,7 @@
                             <div class="position-relative">
                                 @if (!string.IsNullOrEmpty(punto.ImagenUrl))
                                 {
-                                    <img src="@punto.ImagenUrl" class="card-img-top" alt="@punto.Nombre" style="height: 200px; object-fit: cover;">
+                                    <img src="@punto.ImagenUrl" class="card-img-top" alt="@punto.Nombre" style="height: 200px; object-fit: cover;" loading="lazy">
                                 }
                                 else
                                 {

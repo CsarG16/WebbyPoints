@@ -1,0 +1,134 @@
+@model List<WebbyPoints.Models.PuntoInteres>
+@{
+    ViewData["Title"] = "Gestión de Lugares";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- HEADER -->
+<section class="admin-header py-5">
+    <div class="container">
+        <div class="d-flex align-items-center gap-3 mb-2">
+            <div class="admin-icon-badge">
+                <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div>
+                <h1 class="fw-black mb-0 display-6">Gestión de Lugares</h1>
+                <p class="text-muted mb-0">Agrega, edita o elimina puntos de interés</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pb-5">
+    <div class="container">
+        <!-- Nav Admin -->
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a href="/Admin" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
+                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            </a>
+            <a href="/Admin/Lugares" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold">
+                <i class="bi bi-geo-alt me-1"></i>Lugares
+            </a>
+            <a href="/Admin/Usuarios" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
+                <i class="bi bi-people me-1"></i>Usuarios
+            </a>
+            <a href="/Admin/Reseñas" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
+                <i class="bi bi-chat-square-text me-1"></i>Reseñas
+            </a>
+        </div>
+
+        <!-- Alerta de éxito -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <!-- Botón Agregar -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0">@Model.Count lugares registrados</h5>
+            <a href="/Admin/CrearLugar" class="btn btn-primary rounded-pill px-4">
+                <i class="bi bi-plus-lg me-1"></i>Agregar Lugar
+            </a>
+        </div>
+
+        <!-- Tabla de Lugares -->
+        <div class="bg-white rounded-4 shadow-sm border overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="border-0 ps-4 py-3 fw-semibold">ID</th>
+                            <th class="border-0 py-3 fw-semibold">Nombre</th>
+                            <th class="border-0 py-3 fw-semibold">Categoría</th>
+                            <th class="border-0 py-3 fw-semibold">Plan</th>
+                            <th class="border-0 py-3 fw-semibold text-center">Calificación</th>
+                            <th class="border-0 py-3 fw-semibold text-center">Reseñas</th>
+                            <th class="border-0 pe-4 py-3 fw-semibold text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var lugar in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 text-muted small">#@lugar.Id</td>
+                                <td>
+                                    <div class="fw-semibold">@lugar.Nombre</div>
+                                    <div class="text-muted small">@lugar.Ubicacion</div>
+                                </td>
+                                <td><span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill">@lugar.Categoria</span></td>
+                                <td>
+                                    @{
+                                        var planBadge = lugar.PlanTipo?.ToLower() switch
+                                        {
+                                            "solo" => "primary",
+                                            "pareja" => "danger",
+                                            "amigos" => "warning",
+                                            _ => "secondary"
+                                        };
+                                    }
+                                    <span class="badge bg-@planBadge bg-opacity-10 text-@planBadge rounded-pill">@lugar.PlanTipo</span>
+                                </td>
+                                <td class="text-center">
+                                    <i class="bi bi-star-fill text-warning me-1 small"></i>@lugar.Calificacion.ToString("0.0")
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-light text-dark">@lugar.Reseñas.Count</span>
+                                </td>
+                                <td class="pe-4 text-end">
+                                    <a href="/Admin/EditarLugar/@lugar.Id" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1">
+                                        <i class="bi bi-pencil me-1"></i>Editar
+                                    </a>
+                                    <form method="post" action="/Admin/EliminarLugar/@lugar.Id" class="d-inline"
+                                          onsubmit="return confirm('¿Estás seguro de que quieres eliminar este lugar? Se borrarán también sus reseñas.');">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@lugar.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                                            <i class="bi bi-trash me-1"></i>Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .admin-header {
+        background: linear-gradient(135deg, #f8f9ff 0%, #eef1ff 100%);
+        border-bottom: 1px solid rgba(79, 70, 229, 0.08);
+    }
+    .admin-icon-badge {
+        width: 56px; height: 56px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        border-radius: 16px;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-size: 1.5rem;
+    }
+</style>

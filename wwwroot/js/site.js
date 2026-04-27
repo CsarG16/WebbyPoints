@@ -1,23 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    const navbar = document.querySelector('.wp-navbar');
-    const hero = document.querySelector('#heroSection');
-
-    // NAVBAR SCROLL
-    window.addEventListener('scroll', function () {
-
-        if (!hero) return;
-
-        const heroBottom = hero.getBoundingClientRect().bottom;
-
-        if (heroBottom <= 80) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-
-    });
-
     // SOLO enlaces internos (#)
     document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
         anchor.addEventListener('click', function (e) {

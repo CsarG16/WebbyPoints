@@ -89,6 +89,7 @@ public class HomeController : Controller
         // SESIONES + REDIS: Leer los IDs de "Vistos Recientemente"
         // desde la sesión privada de ESTE usuario (guardada en Redis Cloud)
         // ==========================================================
+        await HttpContext.Session.LoadAsync();
         var vistosJson = HttpContext.Session.GetString("VistosRecientes");
         var vistosIds = new List<int>();
 
@@ -136,12 +137,22 @@ public class HomeController : Controller
         // Cada usuario tiene su propia lista privada en su sesión.
         // La sesión se almacena físicamente en Redis Cloud.
         // ==========================================================
+        // Aseguramos que la sesión cargue de forma asíncrona para evitar deadlocks con Redis
+        await HttpContext.Session.LoadAsync();
         var vistosJson = HttpContext.Session.GetString("VistosRecientes");
         var vistosIds = new List<int>();
 
         if (!string.IsNullOrEmpty(vistosJson))
         {
-            vistosIds = JsonSerializer.Deserialize<List<int>>(vistosJson) ?? new List<int>();
+            try
+            {
+                vistosIds = JsonSerializer.Deserialize<List<int>>(vistosJson) ?? new List<int>();
+            }
+            catch (JsonException)
+            {
+                vistosIds = new List<int>();
+                HttpContext.Session.Remove("VistosRecientes");
+            }
         }
 
         // Eliminar si ya existía (para moverlo al inicio)
@@ -167,6 +178,7 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CrearReseña(int puntoId, int calificacion, string comentario)
     {
+        await HttpContext.Session.LoadAsync();
         var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
         if (usuarioId == null)
             return RedirectToAction("Login", "Account");
