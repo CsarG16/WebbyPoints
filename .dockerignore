@@ -1,0 +1,14 @@
+**/.git
+**/.github
+**/.vscode
+**/bin
+**/obj
+**/out
+**/publish
+.dockerignore
+Dockerfile
+node_modules
+npm-debug.log
+WebbyPoints.db
+WebbyPoints.db-shm
+WebbyPoints.db-wal

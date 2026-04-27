@@ -7,11 +7,12 @@ builder.Services.AddControllersWithViews();
 
 // =========================================================
 // REDIS CLOUD: Usamos Redis en la nube como caché distribuida
-// para almacenar las sesiones de cada usuario.
 // =========================================================
+var redisConfig = builder.Configuration["REDIS_URL"] ?? "redis-10393.crce181.sa-east-1-2.ec2.cloud.redislabs.com:10393,password=dvSBxVTX5ljVrqPPY4FXAU0CdZbeFdC3,ssl=false,abortConnect=false";
+
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = "redis-10393.crce181.sa-east-1-2.ec2.cloud.redislabs.com:10393,password=dvSBxVTX5ljVrqPPY4FXAU0CdZbeFdC3,ssl=false,abortConnect=false";
+    options.Configuration = redisConfig;
     options.InstanceName = "WebbyPoints_";
 });
 
@@ -30,11 +31,26 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 var app = builder.Build();
 
+// Aplicar migraciones automáticamente al iniciar
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrió un error al aplicar las migraciones.");
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -51,7 +67,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();
 
