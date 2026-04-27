@@ -1,0 +1,150 @@
+@model WebbyPoints.Models.PuntoInteres
+@{
+    var isEdit = Model.Id > 0;
+    ViewData["Title"] = isEdit ? "Editar Lugar" : "Crear Lugar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- HEADER -->
+<section class="admin-header py-5">
+    <div class="container">
+        <div class="d-flex align-items-center gap-3 mb-2">
+            <div class="admin-icon-badge">
+                <i class="bi bi-@(isEdit ? "pencil-square" : "plus-lg")"></i>
+            </div>
+            <div>
+                <h1 class="fw-black mb-0 display-6">@(isEdit ? "Editar Lugar" : "Nuevo Lugar")</h1>
+                <p class="text-muted mb-0">@(isEdit ? $"Editando: {Model.Nombre}" : "Registra un nuevo punto de interés para los estudiantes")</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pb-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="bg-white rounded-4 shadow-sm border p-4 p-lg-5">
+                    <form method="post" action="/Admin/@(isEdit ? "EditarLugar" : "CrearLugar")">
+                        @Html.AntiForgeryToken()
+                        
+                        @if (isEdit)
+                        {
+                            <input type="hidden" name="Id" value="@Model.Id" />
+                        }
+
+                        <!-- Nombre -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold"><i class="bi bi-building me-1"></i>Nombre del lugar</label>
+                            <input type="text" name="Nombre" value="@Model.Nombre" class="form-control form-control-lg rounded-3" 
+                                   placeholder="Ej: Starbucks Central" required />
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold"><i class="bi bi-text-paragraph me-1"></i>Descripción</label>
+                            <textarea name="Descripcion" class="form-control rounded-3" rows="3" 
+                                      placeholder="Describe brevemente el lugar...">@Model.Descripcion</textarea>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <!-- Categoría -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold"><i class="bi bi-tag me-1"></i>Categoría</label>
+                                <select name="Categoria" class="form-select rounded-3">
+                                    <option value="Estudio" selected="@(Model.Categoria == "Estudio" ? "selected" : null)">📚 Estudio</option>
+                                    <option value="Comida" selected="@(Model.Categoria == "Comida" ? "selected" : null)">🍕 Comida</option>
+                                    <option value="Ocio" selected="@(Model.Categoria == "Ocio" ? "selected" : null)">🎮 Ocio</option>
+                                    <option value="Romántico" selected="@(Model.Categoria == "Romántico" ? "selected" : null)">💕 Romántico</option>
+                                    <option value="Deporte" selected="@(Model.Categoria == "Deporte" ? "selected" : null)">⚽ Deporte</option>
+                                    <option value="Cultural" selected="@(Model.Categoria == "Cultural" ? "selected" : null)">🎭 Cultural</option>
+                                </select>
+                            </div>
+
+                            <!-- Tipo de Plan -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold"><i class="bi bi-people me-1"></i>Tipo de Plan</label>
+                                <select name="PlanTipo" class="form-select rounded-3">
+                                    <option value="Solo" selected="@(Model.PlanTipo == "Solo" ? "selected" : null)">🧍 Solo</option>
+                                    <option value="Pareja" selected="@(Model.PlanTipo == "Pareja" ? "selected" : null)">💑 Pareja</option>
+                                    <option value="Amigos" selected="@(Model.PlanTipo == "Amigos" ? "selected" : null)">👫 Amigos</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Ubicación -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold"><i class="bi bi-geo-alt me-1"></i>Ubicación</label>
+                            <input type="text" name="Ubicacion" value="@Model.Ubicacion" class="form-control rounded-3"
+                                   placeholder="Ej: Av. Principal 123" />
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <!-- Horario -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold"><i class="bi bi-clock me-1"></i>Horario</label>
+                                <input type="text" name="Horario" value="@Model.Horario" class="form-control rounded-3"
+                                       placeholder="Ej: 08:00 AM - 10:00 PM" />
+                            </div>
+
+                            <!-- Precio -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold"><i class="bi bi-currency-dollar me-1"></i>Rango de Precio</label>
+                                <select name="PrecioRango" class="form-select rounded-3">
+                                    <option value="S/" selected="@(Model.PrecioRango == "S/" ? "selected" : null)">S/ — Económico</option>
+                                    <option value="S/S/" selected="@(Model.PrecioRango == "S/S/" ? "selected" : null)">S/S/ — Moderado</option>
+                                    <option value="S/S/S/" selected="@(Model.PrecioRango == "S/S/S/" ? "selected" : null)">S/S/S/ — Premium</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <!-- Distancia -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold"><i class="bi bi-signpost-split me-1"></i>Distancia (km)</label>
+                                <input type="number" name="Distancia" value="@Model.Distancia" class="form-control rounded-3"
+                                       step="0.1" min="0" placeholder="Ej: 1.5" />
+                            </div>
+
+                            <!-- Imagen URL -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold"><i class="bi bi-image me-1"></i>URL de Imagen</label>
+                                <input type="text" name="ImagenUrl" value="@Model.ImagenUrl" class="form-control rounded-3"
+                                       placeholder="https://..." />
+                            </div>
+                        </div>
+
+                        <!-- Etiquetas -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold"><i class="bi bi-tags me-1"></i>Etiquetas</label>
+                            <input type="text" name="Etiquetas" value="@Model.Etiquetas" class="form-control rounded-3"
+                                   placeholder="wifi, silencioso, terraza (separadas por coma)" />
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex gap-3 pt-3">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5">
+                                <i class="bi bi-@(isEdit ? "check-lg" : "plus-lg") me-2"></i>@(isEdit ? "Guardar Cambios" : "Crear Lugar")
+                            </button>
+                            <a href="/Admin/Lugares" class="btn btn-outline-secondary btn-lg rounded-pill px-4">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .admin-header {
+        background: linear-gradient(135deg, #f8f9ff 0%, #eef1ff 100%);
+        border-bottom: 1px solid rgba(79, 70, 229, 0.08);
+    }
+    .admin-icon-badge {
+        width: 56px; height: 56px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        border-radius: 16px;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-size: 1.5rem;
+    }
+</style>

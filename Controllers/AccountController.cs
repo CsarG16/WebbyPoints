@@ -46,8 +46,10 @@ public class AccountController : Controller
         if (usuario == null)
             return Json(new { success = false, errors = new[] { "Correo o contraseña incorrectos." } });
 
+        await HttpContext.Session.LoadAsync();
         HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
         HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre);
+        HttpContext.Session.SetInt32("EsAdmin", usuario.EsAdmin ? 1 : 0);
 
         return Json(new { success = true, redirect = "/" });
     }
@@ -92,6 +94,7 @@ public class AccountController : Controller
         _context.Usuarios.Add(nuevoUsuario);
         await _context.SaveChangesAsync();
 
+        await HttpContext.Session.LoadAsync();
         HttpContext.Session.SetInt32("UsuarioId", nuevoUsuario.Id);
         HttpContext.Session.SetString("UsuarioNombre", nuevoUsuario.Nombre);
 
@@ -101,8 +104,9 @@ public class AccountController : Controller
     // =====================================================
     // LOGOUT
     // =====================================================
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
+        await HttpContext.Session.LoadAsync();
         HttpContext.Session.Clear();
         return RedirectToAction("Index", "Home");
     }
