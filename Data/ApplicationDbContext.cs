@@ -23,6 +23,11 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Índice Único en la columna Email
+        modelBuilder.Entity<Usuario>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
         // 1. Semilla de Usuarios (Tu Admin con un ID alto para evitar conflictos)
         modelBuilder.Entity<Usuario>().HasData(
             new Usuario

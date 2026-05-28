@@ -70,6 +70,7 @@
             <p class="text-muted mb-4">¿Ya tienes cuenta? <a href="javascript:void(0)" onclick="switchTo('login')" class="text-decoration-none fw-semibold" style="color:#1A4BDE">Inicia sesión</a></p>
             <div class="err-box" id="err1"><i class="bi bi-exclamation-triangle me-1"></i><span></span></div>
             <form id="formReg1" onsubmit="return false">
+                @Html.AntiForgeryToken()
                 <div class="d-flex gap-3">
                     <div class="fg flex-grow-1">
                         <input name="Nombre" type="text" placeholder="x" id="r-nom" required/>
@@ -177,6 +178,7 @@
             <p class="text-muted mb-4">¿No tienes cuenta? <a href="javascript:void(0)" onclick="switchTo('register-1')" class="text-decoration-none fw-semibold" style="color:#1A4BDE">Regístrate gratis</a></p>
             <div class="err-box" id="errLogin"><i class="bi bi-exclamation-triangle me-1"></i><span></span></div>
             <form id="formLogin" onsubmit="return false">
+                @Html.AntiForgeryToken()
                 <div class="fg">
                     <input name="Email" type="email" placeholder="x" id="l-email" required/>
                     <label for="l-email">Correo institucional</label><i class="bi bi-envelope fi"></i>

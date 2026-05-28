@@ -35,6 +35,7 @@ public class AccountController : Controller
     // AJAX: Login
     // =====================================================
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> LoginAjax([FromForm] string Email, [FromForm] string Password)
     {
         if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
@@ -58,6 +59,7 @@ public class AccountController : Controller
     // AJAX: Registro completo (Paso 1 + Paso 2)
     // =====================================================
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> RegistroAjax([FromForm] RegistroViewModel model)
     {
         ModelState.Remove("CategoriasFavoritas");
