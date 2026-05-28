@@ -8,7 +8,9 @@ builder.Services.AddControllersWithViews();
 // =========================================================
 // REDIS CLOUD: Usamos Redis en la nube como caché distribuida
 // =========================================================
-var redisConfig = builder.Configuration["REDIS_URL"] ?? "redis-10393.crce181.sa-east-1-2.ec2.cloud.redislabs.com:10393,password=dvSBxVTX5ljVrqPPY4FXAU0CdZbeFdC3,ssl=false,abortConnect=false";
+var redisConfig = builder.Configuration.GetConnectionString("Redis") 
+                  ?? builder.Configuration["REDIS_URL"] 
+                  ?? "localhost:6379";
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
