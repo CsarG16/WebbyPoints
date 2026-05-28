@@ -35,3 +35,5 @@ TestResults/
 .DS_Store
 
 .vscode/
+.fake
+.antigravitycli/

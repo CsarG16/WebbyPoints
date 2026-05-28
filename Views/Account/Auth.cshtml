@@ -86,7 +86,7 @@
                 </div>
                 <div class="d-flex gap-3">
                     <div class="fg flex-grow-1">
-                        <input name="Universidad" type="text" placeholder="x" id="r-uni" required/>
+                        <input name="Universidad" type="text" value="USMP" id="r-uni" readonly style="background: #f1f5f9; cursor: not-allowed; color: #475569;" required/>
                         <label for="r-uni">Universidad</label><i class="bi bi-building fi"></i>
                     </div>
                     <div class="fg flex-grow-1">
@@ -226,6 +226,12 @@ function goToStep2() {
     // Basic HTML5 validation
     if (!form.checkValidity()) {
         form.reportValidity();
+        return;
+    }
+    // Validar correo institucional
+    const email = form.querySelector('[name="Email"]').value.trim().toLowerCase();
+    if (!email.endsWith('@@usmp.pe')) {
+        showErr(errBox, 'Debes ingresar un correo institucional válido de la USMP (@@usmp.pe).');
         return;
     }
     // Check passwords match

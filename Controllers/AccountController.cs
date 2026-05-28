@@ -71,17 +71,28 @@ public class AccountController : Controller
             return Json(new { success = false, errors });
         }
 
-        var emailExiste = await _context.Usuarios.AnyAsync(u => u.Email == model.Email);
+        var emailLower = model.Email.Trim().ToLower();
+        if (!emailLower.EndsWith("@usmp.pe"))
+        {
+            return Json(new { success = false, errors = new[] { "Debes registrarte con un correo institucional de la USMP (@usmp.pe)." } });
+        }
+
+        if (model.Universidad.Trim().ToUpper() != "USMP")
+        {
+            return Json(new { success = false, errors = new[] { "Esta plataforma es de uso exclusivo para miembros de la USMP." } });
+        }
+
+        var emailExiste = await _context.Usuarios.AnyAsync(u => u.Email == emailLower);
         if (emailExiste)
             return Json(new { success = false, errors = new[] { "Este correo ya está registrado." } });
 
         var nuevoUsuario = new Usuario
         {
             Nombre       = model.Nombre,
-            Email        = model.Email,
+            Email        = emailLower,
             Password     = model.Password,
             Edad         = model.Edad,
-            Universidad  = model.Universidad,
+            Universidad  = "USMP",
             Carrera      = model.Carrera,
             Preferencias = model.CategoriasFavoritas != null
                            ? string.Join(",", model.CategoriasFavoritas)

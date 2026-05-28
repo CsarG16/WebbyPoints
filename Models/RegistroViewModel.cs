@@ -10,6 +10,7 @@ namespace WebbyPoints.Models
 
         [Required(ErrorMessage = "El correo institucional es obligatorio")]
         [EmailAddress(ErrorMessage = "Ingresa un formato de correo válido (ejemplo@usmp.pe)")]
+        [RegularExpression(@"^[a-zA-Z0-9._%+-]+@usmp\.pe$", ErrorMessage = "Debes registrarte con un correo institucional de la USMP (@usmp.pe)")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La contraseña es obligatoria")]
