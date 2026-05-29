@@ -301,3 +301,432 @@ body {
     50%  { width: 80%; }
     100% { width: 10%; }
 }
+
+/* ===================================================
+   7. TIENDA DE RECOMPENSAS
+   =================================================== */
+
+.tienda-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.tienda-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(26, 75, 222, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.badge-glow {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50rem;
+}
+
+.puntos-card-hero {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    text-align: center;
+    color: #fff;
+}
+
+.puntos-card-label { font-size: 0.85rem; opacity: 0.7; }
+.puntos-card-valor {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-top: 0.25rem;
+    background: linear-gradient(135deg, #fff 30%, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Filter Buttons */
+.btn-filter {
+    border: 1px solid var(--wp-border);
+    border-radius: 50rem;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #475569;
+    background: #fff;
+    transition: var(--wp-transition);
+}
+.btn-filter:hover {
+    border-color: var(--wp-primary);
+    color: var(--wp-primary);
+    background: var(--wp-primary-light);
+}
+.btn-filter.active {
+    background: var(--wp-primary);
+    border-color: var(--wp-primary);
+    color: #fff;
+}
+
+/* Reward Cards */
+.reward-card {
+    background: #fff;
+    border: 1px solid var(--wp-border);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    transition: var(--wp-transition);
+    display: flex;
+    flex-direction: column;
+}
+.reward-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.08);
+    border-color: var(--wp-primary);
+}
+.reward-card.agotado { opacity: 0.6; }
+
+.reward-card-img {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+}
+.reward-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.reward-card:hover .reward-card-img img {
+    transform: scale(1.08);
+}
+
+.reward-cat-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.3rem 0.75rem;
+    border-radius: 50rem;
+}
+
+.reward-agotado-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.reward-agotado-overlay span {
+    color: #fff;
+    font-weight: 900;
+    font-size: 1.2rem;
+    letter-spacing: 0.15em;
+}
+
+.reward-card-body {
+    padding: 1.25rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.reward-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.reward-cost { font-size: 1.1rem; }
+
+.reward-card-footer {
+    padding: 0 1.25rem 1.25rem;
+}
+
+.btn-canjear {
+    background: linear-gradient(135deg, var(--wp-primary) 0%, #4f46e5 100%);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    transition: var(--wp-transition);
+}
+.btn-canjear:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(26, 75, 222, 0.35);
+    color: #fff;
+}
+
+/* Voucher Code Display */
+.voucher-code-display {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
+    border: 2px dashed var(--wp-primary);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1.4rem;
+    letter-spacing: 0.15em;
+    color: var(--wp-primary);
+    display: inline-block;
+}
+.voucher-code-display.usado {
+    border-color: #94a3b8;
+    color: #94a3b8;
+    background: #f1f5f9;
+}
+
+/* Modal Gradient Header */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--wp-primary) 0%, #4f46e5 100%) !important;
+}
+
+/* Success animation */
+.canje-success-icon {
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+@keyframes bounceIn {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* ===================================================
+   8. PERFIL DEL ESTUDIANTE
+   =================================================== */
+
+.perfil-hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    position: relative;
+    overflow: hidden;
+}
+.perfil-hero::before {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.perfil-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--wp-primary), #4f46e5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.perfil-rango-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 1.2rem;
+    border-radius: 50rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.perfil-puntos-display {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    color: #fff;
+    display: inline-block;
+}
+
+.perfil-puntos-number {
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 30%, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.perfil-puntos-label { font-size: 0.8rem; opacity: 0.65; margin-top: 0.25rem; }
+
+/* Progress Bar for Rango */
+.progress-rango {
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 50rem;
+    overflow: hidden;
+}
+.progress-rango-bar {
+    height: 100%;
+    border-radius: 50rem;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Stat Cards */
+.stat-card {
+    background: #fff;
+    border: 1px solid var(--wp-border);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    text-align: center;
+    transition: var(--wp-transition);
+}
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.06);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #1e293b;
+}
+.stat-label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* Section Cards */
+.perfil-section-card {
+    background: #fff;
+    border: 1px solid var(--wp-border);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+/* Voucher Mini */
+.voucher-mini {
+    background: #f8fafc;
+    border: 1px solid var(--wp-border);
+    border-radius: 0.75rem;
+    padding: 0.85rem;
+    transition: var(--wp-transition);
+}
+.voucher-mini:hover {
+    border-color: var(--wp-primary);
+    background: var(--wp-primary-light);
+}
+
+.voucher-mini-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.6rem;
+    background: linear-gradient(135deg, var(--wp-primary), #4f46e5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.voucher-mini-code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--wp-primary);
+    background: var(--wp-primary-light);
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.4rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+/* Reseña Mini */
+.reseña-mini {
+    border-bottom: 1px solid var(--wp-border);
+    padding-bottom: 0.85rem;
+}
+.reseña-mini:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.reseña-mini-stars {
+    font-size: 0.65rem;
+    white-space: nowrap;
+    padding-top: 0.15rem;
+}
+
+/* ===================================================
+   9. MIS CANJES (Voucher Cards)
+   =================================================== */
+
+.voucher-card {
+    background: #fff;
+    border: 1px solid var(--wp-border);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    transition: var(--wp-transition);
+}
+.voucher-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.06);
+}
+.voucher-card.usado { opacity: 0.55; }
+
+.voucher-card-header {
+    padding: 1.25rem;
+    border-bottom: 1px dashed var(--wp-border);
+}
+
+.voucher-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, var(--wp-primary), #4f46e5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.voucher-card-body {
+    padding: 1.25rem;
+    text-align: center;
+}

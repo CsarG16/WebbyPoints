@@ -44,5 +44,11 @@ public class Usuario
     // Un usuario puede escribir muchas reseñas
     public List<Reseña> Reseñas { get; set; } = new List<Reseña>();
 
+    // Un usuario puede realizar muchos canjes de recompensas
+    public List<Canje> Canjes { get; set; } = new List<Canje>();
+
+    // Un usuario puede registrar muchas asistencias o check-ins
+    public List<CheckIn> CheckIns { get; set; } = new List<CheckIn>();
+
     public bool EsAdmin { get; set; } = false;
 }

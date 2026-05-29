@@ -33,6 +33,11 @@
                             <i class="bi bi-compass me-1"></i>Explorar
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="/Recompensas">
+                            <i class="bi bi-gift me-1"></i>Tienda
+                        </a>
+                    </li>
 
                     @{
                         var usuarioId = Context.Session.GetInt32("UsuarioId");
@@ -47,8 +52,9 @@
                                 <i class="bi bi-person-circle me-1"></i>Hola, @nombreUsuario
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3">
-                                <li><a class="dropdown-item py-2" href="#"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
-                                <li><a class="dropdown-item py-2" href="#"><i class="bi bi-star me-2"></i>Mis reseñas</a></li>
+                                <li><a class="dropdown-item py-2" href="/Account/Perfil"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
+                                <li><a class="dropdown-item py-2" href="/Recompensas/MisCanjes"><i class="bi bi-ticket-perforated me-2"></i>Mis canjes</a></li>
+                                <li><a class="dropdown-item py-2" href="/Recompensas"><i class="bi bi-gift me-2"></i>Tienda</a></li>
                                 @{
                                     var esAdmin = Context.Session.GetInt32("EsAdmin") ?? 0;
                                 }

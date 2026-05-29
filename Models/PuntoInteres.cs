@@ -30,6 +30,17 @@ public class PuntoInteres
     // Horario de atención (ej: "Lun-Vie: 8am - 10pm")
     public string Horario { get; set; } = "9:00 AM - 10:00 PM";
 
+    // --- GAMIFICACIÓN: Eventos especiales (culturales, ambientales, cívicos) ---
+
+    // Indica si este lugar/evento es de impacto positivo (cultura, ecología, civismo)
+    public bool EsEventoEspecial { get; set; } = false;
+
+    // Puntos extra que otorga al dejar reseña (default 10, especiales 25)
+    public int PuntosRecompensa { get; set; } = 10;
+
     // --- RELACIÓN: Un punto puede tener muchas reseñas ---
     public List<Reseña> Reseñas { get; set; } = new List<Reseña>();
+
+    // --- RELACIÓN: Un punto puede tener muchos check-ins ---
+    public List<CheckIn> CheckIns { get; set; } = new List<CheckIn>();
 }

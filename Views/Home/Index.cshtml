@@ -1,76 +1,284 @@
 @{
     ViewData["Title"] = "Inicio";
     Layout = "_Layout";
+    var destacados = ViewBag.Destacados as List<WebbyPoints.Models.PuntoInteres> ?? new List<WebbyPoints.Models.PuntoInteres>();
+    var recompensas = ViewBag.Recompensas as List<WebbyPoints.Models.Recompensa> ?? new List<WebbyPoints.Models.Recompensa>();
+    var logueado = Context.Session.GetInt32("UsuarioId") != null;
 }
 
-<section class="hero-fullscreen position-relative" id="heroSection">
-
+<!-- ==========================================
+     1. HERO FULLSCREEN CON CARRUSEL ANIMADO
+     ========================================== -->
+<section class="hero-fullscreen position-relative overflow-hidden" id="heroSection">
     <!-- CARRUSEL DE FONDO -->
-    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
-        
-        <div class="carousel-inner">
-
-            <div class="carousel-item active">
+    <div id="heroCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel" data-bs-interval="4500">
+        <div class="carousel-inner h-100">
+            <div class="carousel-item active h-100">
                 <img src="/images/fondoIndex.png" class="hero-bg-image" loading="eager" alt="Fondo WebbyPoints">
             </div>
-
-            <div class="carousel-item">
+            <div class="carousel-item h-100">
                 <img src="/images/fondo2.jpeg" class="hero-bg-image" loading="lazy" alt="Fondo Explorar">
             </div>
-
-            <div class="carousel-item">
+            <div class="carousel-item h-100">
                 <img src="/images/fondo3.jpg" class="hero-bg-image" loading="lazy" alt="Fondo Comunidad">
             </div>
-
         </div>
-
     </div>
 
-    <!-- OVERLAY -->
+    <!-- OVERLAY GRADIENTE PREMIUM -->
     <div class="hero-overlay"></div>
 
-    <!-- CONTENIDO -->
+    <!-- CONTENIDO HERO -->
     <div class="container position-relative z-3 hero-content-wrapper">
         <div class="row w-100">
             <div class="col-lg-8 col-xl-7 text-start">
-
-                <span class="d-block hero-subtitle mb-2">ENCUENTRA TU</span>
-                <h1 class="hero-title mb-4">
-                    LUGAR FAVORITO
+                <span class="d-inline-block hero-subtitle mb-2 text-uppercase fw-bold" style="letter-spacing: 3px; font-size: 0.85rem; color: #60a5fa;">
+                    WEBBYPOINTS
+                </span>
+                <h1 class="hero-title mb-3 fw-black text-white" style="font-size: 3.2rem; line-height: 1.15;">
+                    Encuentra tu <br><span style="background: linear-gradient(135deg, #60a5fa, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">lugar favorito</span>
                 </h1>
-
-                <p class="hero-description mb-5">
-                    La plataforma diseñada por y para estudiantes. Encuentra
-                    cafés, restaurantes, bares y espacios únicos cerca de tu
-                    universidad, según tu estado de ánimo.
+                <p class="hero-description mb-4 text-white text-opacity-80 fs-5 fw-light" style="max-width: 580px; line-height: 1.6;">
+                    Mientras ayudas a tu comunidad universitaria de la USMP y ganas increíbles recompensas reales. ¡Explora, asiste y canjea!
                 </p>
 
-                <div class="d-flex flex-wrap justify-content-start gap-3 mb-4">
-                    @if (Context.Session.GetInt32("UsuarioId") == null)
+                <div class="d-flex flex-wrap gap-3">
+                    @if (!logueado)
                     {
-                        <!-- PRUEBA DIRECTA -->
-                        <a href="/Account/RegistroPaso1" class="btn btn-hero-primary">
-                            <i class="bi bi-rocket-takeoff me-2"></i>¡Unirme ahora!
+                        <a href="/Account/RegistroPaso1" class="btn btn-primary rounded-pill px-4 py-3 fw-bold text-white shadow-lg border-0" 
+                           style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                            <i class="bi bi-rocket-takeoff me-2"></i>¡Unirme gratis ahora!
                         </a>
-
-                        <a href="/Account/Login" class="btn btn-hero-outline">
+                        <a href="/Account/Login" class="btn btn-outline-light rounded-pill px-4 py-3 fw-bold text-white">
                             Ya tengo cuenta
                         </a>
                     }
                     else
                     {
-                        <a href="/Home/Explorar?plan=solo" class="btn btn-hero-primary">
+                        <a href="/Home/Explorar" class="btn btn-primary rounded-pill px-4 py-3 fw-bold text-white shadow-lg border-0" 
+                           style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
                             <i class="bi bi-compass me-2"></i>Empezar a explorar
                         </a>
-
-                        <a href="/Home/Explorar" class="btn btn-hero-outline">
-                            Ver planes
+                        <a href="/Recompensas" class="btn btn-outline-light rounded-pill px-4 py-3 fw-bold text-white">
+                            <i class="bi bi-gift me-2"></i>Ver Premios
                         </a>
                     }
                 </div>
-
             </div>
         </div>
     </div>
-
 </section>
+
+<!-- ==========================================
+     2. CÓMO FUNCIONA (USMP Gamification Steps)
+     ========================================== -->
+<section class="py-5 bg-light border-bottom">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 mb-2 fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 1px;">
+                Gamificación Cívica
+            </span>
+            <h2 class="fw-black mb-3" style="font-size: 2.2rem; color: #1e293b;">¿Cómo funciona WebbyPoints?</h2>
+            <p class="text-muted mx-auto" style="max-width: 580px;">Conecta con la vida universitaria de Lima de forma activa y obtén beneficios por tu impacto positivo.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="bg-white p-4 rounded-4 shadow-sm border border-0 h-100 text-center transition-card">
+                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 64px; height: 64px;">
+                        <i class="bi bi-compass-fill fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">1. Explora Lugares y Eventos</h5>
+                    <p class="text-muted small mb-0">Encuentra cafés de estudio, bares para after-class, voluntariados ecológicos y eventos culturales organizados por y para estudiantes.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-white p-4 rounded-4 shadow-sm border border-0 h-100 text-center transition-card">
+                    <div class="rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 64px; height: 64px;">
+                        <i class="bi bi-award-fill fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">2. Suma Puntos</h5>
+                    <p class="text-muted small mb-0">Deja reseñas o regístrate en eventos cívicos. Las visitas normales otorgan 5 puntos, mientras que las actividades cívicas dan 25 puntos extra.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-white p-4 rounded-4 shadow-sm border border-0 h-100 text-center transition-card">
+                    <div class="rounded-circle bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 64px; height: 64px;">
+                        <i class="bi bi-gift-fill fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">3. Canjea Vouchers Reales</h5>
+                    <p class="text-muted small mb-0">Usa tus puntos en la tienda de recompensas. Canjea cafés gratis, descuentos en pizzas, termos oficiales de la USMP o pases al cine.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     3. LUGARES Y EVENTOS DESTACADOS
+     ========================================== -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3">
+            <div>
+                <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3 py-2 mb-2 fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 1px;">
+                    <i class="bi bi-fire me-1"></i>Tendencia
+                </span>
+                <h2 class="fw-black mb-0 text-dark" style="font-size: 2.2rem;">Lugares y Eventos Recomendados</h2>
+            </div>
+            <a href="/Home/Explorar" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
+                Ver todos <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var punto in destacados)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card poi-card bg-white border-0 shadow-sm h-100 rounded-4 overflow-hidden position-relative">
+                        <div class="position-relative">
+                            @if (!string.IsNullOrEmpty(punto.ImagenUrl))
+                            {
+                                <img src="@punto.ImagenUrl" class="card-img-top" alt="@punto.Nombre" style="height: 220px; object-fit: cover;" loading="lazy">
+                            }
+                            else
+                            {
+                                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                                    <i class="bi bi-image text-muted fs-1 opacity-25"></i>
+                                </div>
+                            }
+                            <div class="position-absolute top-0 end-0 m-3">
+                                <span class="badge bg-white text-dark shadow-sm py-2 px-3 rounded-pill border">
+                                    <i class="bi bi-star-fill text-warning me-1"></i>@punto.Calificacion.ToString("0.0")
+                                </span>
+                            </div>
+                            @if (punto.EsEventoEspecial)
+                            {
+                                <div class="position-absolute top-0 start-0 m-3">
+                                    <span class="badge bg-success text-white shadow-sm py-2 px-3 rounded-pill">
+                                        <i class="bi bi-award-fill me-1"></i>+@punto.PuntosRecompensa pts
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-body p-4">
+                            <span class="badge bg-light text-secondary border rounded-pill mb-2 px-3 py-1" style="font-size: 0.72rem;">@punto.Categoria</span>
+                            <h5 class="fw-bold mb-2 text-dark">@punto.Nombre</h5>
+                            <p class="text-muted small mb-3 line-clamp-2" style="font-size: 0.88rem;">@punto.Descripcion</p>
+                            
+                            <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-muted" style="font-size: 0.82rem;">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-geo-alt me-1"></i>@punto.Distancia km
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-currency-dollar me-1"></i>@punto.PrecioRango
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="small text-muted" style="font-size: 0.8rem;">
+                                    <i class="bi bi-clock me-1"></i>@punto.Horario
+                                </span>
+                                <a href="/Home/Detalle/@punto.Id" class="btn btn-sm btn-outline-dark px-3 rounded-pill">Ver Ficha</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     4. RECOMPENSAS DESTACADAS
+     ========================================== -->
+<section class="py-5 bg-light border-top">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3">
+            <div>
+                <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-2 mb-2 fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 1px; color: #b45309 !important;">
+                    <i class="bi bi-gift-fill me-1"></i>Tienda de Premios
+                </span>
+                <h2 class="fw-black mb-0 text-dark" style="font-size: 2.2rem;">Canjea tus Puntos</h2>
+            </div>
+            <a href="/Recompensas" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold">
+                Ver Tienda Completa <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var recompensa in recompensas)
+            {
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 bg-white">
+                        <div class="position-relative">
+                            @if (!string.IsNullOrEmpty(recompensa.ImagenUrl))
+                            {
+                                <img src="@recompensa.ImagenUrl" class="w-100" style="height: 180px; object-fit: cover;" alt="@recompensa.Nombre">
+                            }
+                            else
+                            {
+                                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                    <i class="bi bi-gift fs-1 text-muted opacity-20"></i>
+                                </div>
+                            }
+                            <span class="badge bg-warning text-dark border-0 rounded-pill px-3 py-2 position-absolute top-0 end-0 m-3 fw-bold" style="font-size: 0.8rem;">
+                                @recompensa.CostoPuntos pts
+                            </span>
+                        </div>
+                        <div class="card-body p-4">
+                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2.5 py-1 mb-2 fw-bold" style="font-size: 0.68rem;">@recompensa.Categoria</span>
+                            <h6 class="fw-bold mb-2">@recompensa.Nombre</h6>
+                            <p class="text-muted small mb-0 text-truncate">@recompensa.Descripcion</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     5. BANNER FINAL / CALL TO ACTION
+     ========================================== -->
+<section class="py-5" style="background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);">
+    <div class="container py-5 text-center text-white">
+        <h2 class="fw-black mb-3 display-5">¿Listo para cambiar la vida universitaria?</h2>
+        <p class="mx-auto text-white text-opacity-75 mb-4" style="max-width: 580px; font-size: 1.1rem;">Únete hoy a la comunidad de estudiantes de la USMP, descubre Lima según tus planes y acumula recompensas reales por tus contribuciones cívicas.</p>
+        @if (!logueado)
+        {
+            <a href="/Account/RegistroPaso1" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-primary shadow-lg border-0 transition-btn">
+                ¡Registrarme Gratis Ahora!
+            </a>
+        }
+        else
+        {
+            <a href="/Home/Explorar" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-primary shadow-lg border-0 transition-btn">
+                <i class="bi bi-compass me-2"></i>Ir a Explorar
+            </a>
+        }
+    </div>
+</section>
+
+<!-- ==========================================
+     ESTILOS CSS PREMIUM LOCALES
+     ========================================== -->
+<style>
+    .transition-card {
+        transition: all 0.3s ease;
+    }
+    .transition-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,0.08) !important;
+    }
+    .transition-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 1.25rem 3rem rgba(0,0,0,0.15) !important;
+    }
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>

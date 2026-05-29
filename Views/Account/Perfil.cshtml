@@ -1,0 +1,320 @@
+@model WebbyPoints.Models.Usuario
+@{
+    ViewData["Title"] = "Mi Perfil";
+    var totalReseñas = (int)ViewBag.TotalReseñas;
+    var totalCanjes = (int)ViewBag.TotalCanjes;
+    var puntosGastados = (int)ViewBag.PuntosGastados;
+    var progresoRango = (int)ViewBag.ProgresoRango;
+    var nombreSiguiente = ViewBag.NombreSiguienteRango?.ToString() ?? "";
+    var puntosSiguiente = (int)ViewBag.PuntosSiguienteRango;
+    var canjesActivos = ViewBag.CanjesActivos as List<WebbyPoints.Models.Canje> ?? new List<WebbyPoints.Models.Canje>();
+    var ultimasReseñas = ViewBag.UltimasReseñas as List<WebbyPoints.Models.Reseña> ?? new List<WebbyPoints.Models.Reseña>();
+
+    // Emoji y color de rango
+    var rangoConfig = Model.Rango switch {
+        "Leyenda" => new { Emoji = "👑", Color = "#f59e0b", Gradient = "linear-gradient(135deg, #f59e0b, #d97706)" },
+        "Administrador" => new { Emoji = "🛡️", Color = "#8b5cf6", Gradient = "linear-gradient(135deg, #8b5cf6, #6d28d9)" },
+        "Experto" => new { Emoji = "🎓", Color = "#3b82f6", Gradient = "linear-gradient(135deg, #3b82f6, #2563eb)" },
+        "Local" => new { Emoji = "🗺️", Color = "#10b981", Gradient = "linear-gradient(135deg, #10b981, #059669)" },
+        "Explorador" => new { Emoji = "🧭", Color = "#06b6d4", Gradient = "linear-gradient(135deg, #06b6d4, #0891b2)" },
+        _ => new { Emoji = "🐾", Color = "#94a3b8", Gradient = "linear-gradient(135deg, #94a3b8, #64748b)" }
+    };
+}
+
+<!-- ======================================================
+     HERO DEL PERFIL
+     ====================================================== -->
+<section class="perfil-hero">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center gap-4 mb-4">
+                    <!-- Avatar -->
+                    <div class="perfil-avatar">
+                        <span>@Model.Nombre.Substring(0, 1).ToUpper()</span>
+                    </div>
+                    <div>
+                        <h1 class="fw-black text-white mb-1 display-6">@Model.Nombre</h1>
+                        <p class="text-white text-opacity-75 mb-1">
+                            <i class="bi bi-envelope me-1"></i>@Model.Email
+                        </p>
+                        <p class="text-white text-opacity-50 mb-0 small">
+                            <i class="bi bi-building me-1"></i>@Model.Universidad — @Model.Carrera
+                        </p>
+                    </div>
+                </div>
+                <!-- Rango Badge -->
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <span class="perfil-rango-badge" style="background: @rangoConfig.Gradient;">
+                        <span class="me-1">@rangoConfig.Emoji</span> @Model.Rango
+                    </span>
+                    <span class="text-white text-opacity-50 small">
+                        <i class="bi bi-calendar3 me-1"></i>Miembro desde @Model.FechaRegistro.ToString("MMMM yyyy")
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                <div class="perfil-puntos-display">
+                    <div class="perfil-puntos-number">@Model.Puntos</div>
+                    <div class="perfil-puntos-label">puntos disponibles</div>
+                    <a href="/Recompensas" class="btn btn-light btn-sm rounded-pill px-3 mt-2 fw-bold">
+                        <i class="bi bi-gift me-1"></i>Ir a la Tienda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================
+     PROGRESO DE RANGO
+     ====================================================== -->
+<section class="py-4 bg-white border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <h6 class="fw-bold mb-1">
+                    <span class="me-1">@rangoConfig.Emoji</span> Rango: @Model.Rango
+                </h6>
+                <p class="text-muted small mb-0">
+                    @if (Model.Rango == "Leyenda" || Model.Rango == "Administrador")
+                    {
+                        <span>¡Has alcanzado el máximo nivel! 🎉</span>
+                    }
+                    else
+                    {
+                        <span>Siguiente: <strong>@nombreSiguiente</strong> (@puntosSiguiente pts)</span>
+                    }
+                </p>
+            </div>
+            <div class="col-md-8 mt-3 mt-md-0">
+                <div class="progress-rango">
+                    <div class="progress-rango-bar" style="width: @(progresoRango)%; background: @rangoConfig.Gradient;"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-1">
+                    <small class="text-muted">@Model.Puntos pts</small>
+                    @if (Model.Rango != "Leyenda" && Model.Rango != "Administrador")
+                    {
+                        <small class="text-muted">@puntosSiguiente pts</small>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================
+     ESTADÍSTICAS
+     ====================================================== -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                    <div class="stat-value">@Model.Puntos</div>
+                    <div class="stat-label">Puntos Actuales</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <div class="stat-value">@ViewBag.TotalCheckIns</div>
+                    <div class="stat-label">Check-Ins / Eventos</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+                        <i class="bi bi-chat-quote-fill"></i>
+                    </div>
+                    <div class="stat-value">@totalReseñas</div>
+                    <div class="stat-label">Reseñas</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <i class="bi bi-gift-fill"></i>
+                    </div>
+                    <div class="stat-value">@totalCanjes</div>
+                    <div class="stat-label">Canjes Realizados</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- COLUMNA: Vouchers Activos -->
+            <div class="col-lg-6">
+                <div class="perfil-section-card h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h5 class="fw-bold mb-0">
+                            <i class="bi bi-ticket-perforated-fill text-primary me-2"></i>Vouchers Activos
+                        </h5>
+                        <a href="/Recompensas/MisCanjes" class="text-primary small text-decoration-none fw-medium">
+                            Ver todos →
+                        </a>
+                    </div>
+                    @if (canjesActivos.Any())
+                    {
+                        @foreach (var c in canjesActivos.Take(3))
+                        {
+                            <div class="voucher-mini mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="voucher-mini-icon">
+                                        <i class="bi bi-qr-code"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="fw-bold mb-0 small">@c.Recompensa?.Nombre</h6>
+                                        <small class="text-muted">@c.FechaCanje.ToString("dd MMM yyyy")</small>
+                                    </div>
+                                    <div class="voucher-mini-code">
+                                        @c.CodigoVoucher
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="bi bi-ticket-perforated text-muted" style="font-size: 2.5rem;"></i>
+                            <p class="text-muted small mt-2 mb-0">Aún no tienes vouchers activos</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- COLUMNA: Últimas Reseñas -->
+            <div class="col-lg-6">
+                <div class="perfil-section-card h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h5 class="fw-bold mb-0">
+                            <i class="bi bi-chat-left-quote-fill text-success me-2"></i>Mis Últimas Reseñas
+                        </h5>
+                    </div>
+                    @if (ultimasReseñas.Any())
+                    {
+                        @foreach (var r in ultimasReseñas)
+                        {
+                            <div class="reseña-mini mb-3">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="reseña-mini-stars" style="flex-shrink: 0;">
+                                        @for (int i = 0; i < r.Calificacion; i++)
+                                        {
+                                            <i class="bi bi-star-fill text-warning" style="font-size: 0.75rem;"></i>
+                                        }
+                                        @for (int i = r.Calificacion; i < 5; i++)
+                                        {
+                                            <i class="bi bi-star text-muted" style="font-size: 0.75rem;"></i>
+                                        }
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="fw-bold mb-0 small">@r.PuntoInteres?.Nombre</h6>
+                                        <p class="text-muted small mb-0 text-truncate" style="max-width: 280px;">@r.Comentario</p>
+                                        <small class="text-muted opacity-50" style="font-size: 0.7rem;">@r.FechaPublicacion.ToString("dd MMM yyyy")</small>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="bi bi-chat-left text-muted" style="font-size: 2.5rem;"></i>
+                            <p class="text-muted small mt-2 mb-2">Aún no has escrito reseñas</p>
+                            <a href="/Home/Explorar" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                <i class="bi bi-compass me-1"></i>Explorar lugares
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- MIS ASISTENCIAS Y CHECK-INS -->
+        <div class="row g-4 mt-2">
+            <div class="col-12">
+                <div class="perfil-section-card">
+                    <h5 class="fw-bold mb-4">
+                        <i class="bi bi-calendar2-check-fill text-primary me-2"></i>Mis Asistencias y Eventos Cívicos
+                    </h5>
+                    @{
+                        var ultimosCheckIns = ViewBag.UltimosCheckIns as List<WebbyPoints.Models.CheckIn> ?? new List<WebbyPoints.Models.CheckIn>();
+                    }
+                    @if (ultimosCheckIns.Any())
+                    {
+                        <div class="row g-3">
+                            @foreach (var c in ultimosCheckIns)
+                            {
+                                var esEspecial = c.PuntoInteres?.EsEventoEspecial ?? false;
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded-4 border d-flex align-items-center justify-content-between" 
+                                         style="background: @(esEspecial ? "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)" : "#ffffff"); 
+                                                border-color: @(esEspecial ? "#bbf7d0 !important" : "#f1f5f9 !important");">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="rounded-3 d-flex align-items-center justify-content-center text-white" 
+                                                 style="width: 44px; height: 44px; background: @(esEspecial ? "#22c55e" : "#3b82f6"); font-size: 1.1rem; flex-shrink: 0;">
+                                                <i class="bi @(esEspecial ? "bi-award-fill" : "bi-geo-alt-fill")"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="fw-bold mb-0 small text-dark">@c.PuntoInteres?.Nombre</h6>
+                                                <div class="text-muted" style="font-size: 0.72rem; margin-top: 2px;">
+                                                    <i class="bi bi-clock me-1"></i>@c.FechaCheckIn.ToString("dd MMM yyyy - hh:mm tt")
+                                                </div>
+                                                @if (esEspecial)
+                                                {
+                                                    <span class="badge bg-success rounded-pill mt-1" style="font-size: 0.62rem; font-weight: 600;">Comunitario</span>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="text-end" style="flex-shrink: 0;">
+                                            <span class="fw-bold d-block text-@(esEspecial ? "success" : "primary")" style="font-size: 0.9rem;">
+                                                +@c.PuntosOtorgados pts
+                                            </span>
+                                            <span class="font-monospace text-muted" style="font-size: 0.65rem;">@c.CodigoAsistencia</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-calendar2-x text-muted" style="font-size: 2.5rem;"></i>
+                            <p class="text-muted small mt-2 mb-0">Aún no has registrado visitas ni asistencias</p>
+                            <a href="/Home/Explorar" class="btn btn-outline-primary btn-sm rounded-pill px-3 mt-3">
+                                <i class="bi bi-compass me-1"></i>Ver Eventos Especiales
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- PREFERENCIAS -->
+        @if (!string.IsNullOrEmpty(Model.Preferencias))
+        {
+            <div class="mt-4">
+                <div class="perfil-section-card">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-heart-fill text-danger me-2"></i>Mis Intereses
+                    </h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var pref in Model.Preferencias.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 fw-medium">
+                                @pref.Trim()
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

@@ -16,8 +16,24 @@ public class HomeController : Controller
         _context = context;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        // 1. Obtener 3 lugares destacados (mayor calificación)
+        var destacados = await _context.PuntosInteres
+            .OrderByDescending(p => p.Calificacion)
+            .Take(3)
+            .ToListAsync();
+
+        // 2. Obtener 3 recompensas populares para mostrar en la landing
+        var recompensas = await _context.Recompensas
+            .Where(r => r.Activa && r.Stock > 0)
+            .OrderByDescending(r => r.CostoPuntos)
+            .Take(3)
+            .ToListAsync();
+
+        ViewBag.Destacados = destacados;
+        ViewBag.Recompensas = recompensas;
+
         return View();
     }
 
@@ -139,6 +155,19 @@ public class HomeController : Controller
         // ==========================================================
         // Aseguramos que la sesión cargue de forma asíncrona para evitar deadlocks con Redis
         await HttpContext.Session.LoadAsync();
+        var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+        
+        bool yaHizoCheckInHoy = false;
+        if (usuarioId.HasValue)
+        {
+            var hoy = DateTime.Today;
+            yaHizoCheckInHoy = await _context.CheckIns
+                .AnyAsync(c => c.UsuarioId == usuarioId.Value && 
+                               c.PuntoInteresId == id && 
+                               c.FechaCheckIn >= hoy);
+        }
+        ViewBag.YaHizoCheckInHoy = yaHizoCheckInHoy;
+
         var vistosJson = HttpContext.Session.GetString("VistosRecientes");
         var vistosIds = new List<int>();
 
@@ -205,11 +234,12 @@ public class HomeController : Controller
             punto.Calificacion = punto.Reseñas.Average(r => r.Calificacion);
         }
 
-        // Dar puntos al usuario por la reseña (+10 pts)
+        // Dar puntos al usuario por la reseña (dinámico según tipo de evento)
         var usuario = await _context.Usuarios.FindAsync(usuarioId.Value);
-        if (usuario != null)
+        if (usuario != null && punto != null)
         {
-            usuario.Puntos += 10;
+            // Eventos especiales (cultura, ecología, cívico) dan más puntos
+            usuario.Puntos += punto.PuntosRecompensa;
             // Actualizar rango según puntos
             usuario.Rango = usuario.Puntos switch
             {
@@ -224,6 +254,80 @@ public class HomeController : Controller
         await _context.SaveChangesAsync();
 
         return RedirectToAction("Detalle", new { id = puntoId });
+    }
+
+    // =====================================================
+    // POST: CheckIn / Registrar Visita o Asistencia
+    // =====================================================
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> RegistrarCheckIn(int puntoId)
+    {
+        await HttpContext.Session.LoadAsync();
+        var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+        if (usuarioId == null)
+            return Json(new { success = false, message = "Inicia sesión para registrar tu visita." });
+
+        var punto = await _context.PuntosInteres.FindAsync(puntoId);
+        if (punto == null)
+            return Json(new { success = false, message = "El lugar o evento no existe." });
+
+        var usuario = await _context.Usuarios.FindAsync(usuarioId.Value);
+        if (usuario == null)
+            return Json(new { success = false, message = "Usuario no encontrado." });
+
+        // Validar si ya hizo check-in hoy en este mismo lugar para evitar spam
+        var hoy = DateTime.Today;
+        var yaHizoCheckInHoy = await _context.CheckIns
+            .AnyAsync(c => c.UsuarioId == usuarioId.Value && 
+                           c.PuntoInteresId == puntoId && 
+                           c.FechaCheckIn >= hoy);
+
+        if (yaHizoCheckInHoy)
+        {
+            return Json(new { success = false, message = "Ya registraste tu visita a este lugar hoy. ¡Vuelve mañana!" });
+        }
+
+        // Generar un código único de asistencia para control cívico de la USMP
+        var prefix = punto.EsEventoEspecial ? "USMP-CIV" : "USMP-VIS";
+        var randomPart = Guid.NewGuid().ToString("N").Substring(0, 6).ToUpper();
+        var codigo = $"{prefix}-{randomPart}";
+
+        var checkIn = new CheckIn
+        {
+            UsuarioId = usuarioId.Value,
+            PuntoInteresId = puntoId,
+            FechaCheckIn = DateTime.Now,
+            CodigoAsistencia = codigo,
+            PuntosOtorgados = punto.EsEventoEspecial ? punto.PuntosRecompensa : 5 // Si es normal, damos 5 pts
+        };
+
+        _context.CheckIns.Add(checkIn);
+
+        // Actualizar puntos del usuario
+        usuario.Puntos += checkIn.PuntosOtorgados;
+
+        // Recalcular rango
+        usuario.Rango = usuario.Puntos switch
+        {
+            >= 500 => "Leyenda",
+            >= 200 => "Experto",
+            >= 100 => "Local",
+            >= 30  => "Explorador",
+            _      => "Novato"
+        };
+
+        await _context.SaveChangesAsync();
+
+        return Json(new { 
+            success = true, 
+            message = punto.EsEventoEspecial 
+                ? $"¡Felicitaciones! Te inscribiste con éxito en \"{punto.Nombre}\". Ganaste {checkIn.PuntosOtorgados} puntos por apoyar a tu comunidad."
+                : $"¡Check-In exitoso en \"{punto.Nombre}\"! Sumaste {checkIn.PuntosOtorgados} puntos.",
+            puntosNuevos = usuario.Puntos,
+            rangoNuevo = usuario.Rango,
+            codigo = checkIn.CodigoAsistencia
+        });
     }
 
     public IActionResult Privacy()

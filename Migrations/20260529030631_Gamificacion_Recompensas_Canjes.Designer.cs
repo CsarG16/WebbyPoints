@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebbyPoints.Data;
 
@@ -10,9 +11,11 @@ using WebbyPoints.Data;
 namespace WebbyPoints.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260529030631_Gamificacion_Recompensas_Canjes")]
+    partial class Gamificacion_Recompensas_Canjes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.5");
@@ -54,38 +57,6 @@ namespace WebbyPoints.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Canjes");
-                });
-
-            modelBuilder.Entity("WebbyPoints.Models.CheckIn", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("CodigoAsistencia")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("FechaCheckIn")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("PuntoInteresId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PuntosOtorgados")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PuntoInteresId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("CheckIns");
                 });
 
             modelBuilder.Entity("WebbyPoints.Models.PuntoInteres", b =>
@@ -365,7 +336,7 @@ namespace WebbyPoints.Migrations
                             Categoria = "Descuento",
                             CostoPuntos = 50,
                             Descripcion = "Un café de cualquier tamaño en el Starbucks frente a la sede de Santa Anita. Válido por 7 días.",
-                            FechaCreacion = new DateTime(2026, 5, 28, 22, 45, 1, 49, DateTimeKind.Local).AddTicks(2870),
+                            FechaCreacion = new DateTime(2026, 5, 28, 22, 6, 29, 955, DateTimeKind.Local).AddTicks(172),
                             ImagenUrl = "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
                             Nombre = "Café Gratis en Starbucks USMP",
                             Stock = 100
@@ -377,7 +348,7 @@ namespace WebbyPoints.Migrations
                             Categoria = "Descuento",
                             CostoPuntos = 80,
                             Descripcion = "Descuento del 15% en tu cuenta total. Presentar voucher al mesero. Válido por 14 días.",
-                            FechaCreacion = new DateTime(2026, 5, 28, 22, 45, 1, 49, DateTimeKind.Local).AddTicks(4215),
+                            FechaCreacion = new DateTime(2026, 5, 28, 22, 6, 29, 955, DateTimeKind.Local).AddTicks(2718),
                             ImagenUrl = "https://images.unsplash.com/photo-1513104890138-7c749659a591",
                             Nombre = "15% de Descuento en Pizza & Chill",
                             Stock = 50
@@ -389,7 +360,7 @@ namespace WebbyPoints.Migrations
                             Categoria = "Ocio",
                             CostoPuntos = 150,
                             Descripcion = "Dos entradas para cualquier función de lunes a jueves. Válido por 30 días.",
-                            FechaCreacion = new DateTime(2026, 5, 28, 22, 45, 1, 49, DateTimeKind.Local).AddTicks(4218),
+                            FechaCreacion = new DateTime(2026, 5, 28, 22, 6, 29, 955, DateTimeKind.Local).AddTicks(2725),
                             ImagenUrl = "https://images.unsplash.com/photo-1485846234645-a62644f84728",
                             Nombre = "Entrada Doble al Cine Planetario",
                             Stock = 30
@@ -401,7 +372,7 @@ namespace WebbyPoints.Migrations
                             Categoria = "Merchandising",
                             CostoPuntos = 200,
                             Descripcion = "Termo de acero inoxidable de 500ml con el logo de la USMP. Edición limitada.",
-                            FechaCreacion = new DateTime(2026, 5, 28, 22, 45, 1, 49, DateTimeKind.Local).AddTicks(4220),
+                            FechaCreacion = new DateTime(2026, 5, 28, 22, 6, 29, 955, DateTimeKind.Local).AddTicks(2727),
                             ImagenUrl = "https://images.unsplash.com/photo-1602143407151-7111542de6e8",
                             Nombre = "Termo Coleccionable USMP",
                             Stock = 20
@@ -413,7 +384,7 @@ namespace WebbyPoints.Migrations
                             Categoria = "Experiencia",
                             CostoPuntos = 120,
                             Descripcion = "Entrada gratuita al Circuito Mágico del Agua para ti y un acompañante. Válido fines de semana.",
-                            FechaCreacion = new DateTime(2026, 5, 28, 22, 45, 1, 49, DateTimeKind.Local).AddTicks(4221),
+                            FechaCreacion = new DateTime(2026, 5, 28, 22, 6, 29, 955, DateTimeKind.Local).AddTicks(2729),
                             ImagenUrl = "https://images.unsplash.com/photo-1504214208698-ea1916a2195a",
                             Nombre = "Pase Libre - Parque de las Aguas",
                             Stock = 40
@@ -425,7 +396,7 @@ namespace WebbyPoints.Migrations
                             Categoria = "Merchandising",
                             CostoPuntos = 300,
                             Descripcion = "Polera de algodón premium con el diseño exclusivo de WebbyPoints. Tallas S, M, L, XL.",
-                            FechaCreacion = new DateTime(2026, 5, 28, 22, 45, 1, 49, DateTimeKind.Local).AddTicks(4222),
+                            FechaCreacion = new DateTime(2026, 5, 28, 22, 6, 29, 955, DateTimeKind.Local).AddTicks(2731),
                             ImagenUrl = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
                             Nombre = "Polera Oficial WebbyPoints",
                             Stock = 15
@@ -437,7 +408,7 @@ namespace WebbyPoints.Migrations
                             Categoria = "Experiencia",
                             CostoPuntos = 400,
                             Descripcion = "Recorrido guiado por 4 restaurantes emblemáticos de Barranco con degustación incluida.",
-                            FechaCreacion = new DateTime(2026, 5, 28, 22, 45, 1, 49, DateTimeKind.Local).AddTicks(4223),
+                            FechaCreacion = new DateTime(2026, 5, 28, 22, 6, 29, 955, DateTimeKind.Local).AddTicks(2733),
                             ImagenUrl = "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
                             Nombre = "Tour Gastronómico por Barranco",
                             Stock = 10
@@ -449,7 +420,7 @@ namespace WebbyPoints.Migrations
                             Categoria = "Cultura",
                             CostoPuntos = 180,
                             Descripcion = "Acceso VIP al Museo de Arte de Lima con guía personalizado para ti y 2 amigos.",
-                            FechaCreacion = new DateTime(2026, 5, 28, 22, 45, 1, 49, DateTimeKind.Local).AddTicks(4224),
+                            FechaCreacion = new DateTime(2026, 5, 28, 22, 6, 29, 955, DateTimeKind.Local).AddTicks(2735),
                             ImagenUrl = "https://images.unsplash.com/photo-1554907984-15263bfd63bd",
                             Nombre = "Entrada al Museo MALI + Guía",
                             Stock = 25
@@ -552,7 +523,7 @@ namespace WebbyPoints.Migrations
                             Edad = 21,
                             Email = "cesar_paredes7@usmp.pe",
                             EsAdmin = true,
-                            FechaRegistro = new DateTime(2026, 5, 28, 22, 45, 1, 46, DateTimeKind.Local).AddTicks(6606),
+                            FechaRegistro = new DateTime(2026, 5, 28, 22, 6, 29, 950, DateTimeKind.Local).AddTicks(642),
                             Nombre = "César Paredes",
                             Password = "Vinicola14//",
                             Preferencias = "Todo",
@@ -567,7 +538,7 @@ namespace WebbyPoints.Migrations
                             Edad = 21,
                             Email = "fausto_miranda@usmp.pe",
                             EsAdmin = true,
-                            FechaRegistro = new DateTime(2026, 5, 28, 22, 45, 1, 48, DateTimeKind.Local).AddTicks(4491),
+                            FechaRegistro = new DateTime(2026, 5, 28, 22, 6, 29, 953, DateTimeKind.Local).AddTicks(3191),
                             Nombre = "Fausto Miranda",
                             Password = "Mimamamemima123",
                             Preferencias = "Todo",
@@ -596,25 +567,6 @@ namespace WebbyPoints.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("WebbyPoints.Models.CheckIn", b =>
-                {
-                    b.HasOne("WebbyPoints.Models.PuntoInteres", "PuntoInteres")
-                        .WithMany("CheckIns")
-                        .HasForeignKey("PuntoInteresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebbyPoints.Models.Usuario", "Usuario")
-                        .WithMany("CheckIns")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PuntoInteres");
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("WebbyPoints.Models.Reseña", b =>
                 {
                     b.HasOne("WebbyPoints.Models.PuntoInteres", "PuntoInteres")
@@ -636,8 +588,6 @@ namespace WebbyPoints.Migrations
 
             modelBuilder.Entity("WebbyPoints.Models.PuntoInteres", b =>
                 {
-                    b.Navigation("CheckIns");
-
                     b.Navigation("Reseñas");
                 });
 
@@ -649,8 +599,6 @@ namespace WebbyPoints.Migrations
             modelBuilder.Entity("WebbyPoints.Models.Usuario", b =>
                 {
                     b.Navigation("Canjes");
-
-                    b.Navigation("CheckIns");
 
                     b.Navigation("Reseñas");
                 });

@@ -32,6 +32,7 @@ public class AccountController : Controller
     }
 
     // =====================================================
+    // =====================================================
     // AJAX: Login
     // =====================================================
     [HttpPost]
@@ -92,7 +93,7 @@ public class AccountController : Controller
         {
             Nombre       = model.Nombre,
             Email        = emailLower,
-            Password     = model.Password,
+            Password     = model.Password, // Guardamos la contraseña en texto plano
             Edad         = model.Edad,
             Universidad  = "USMP",
             Carrera      = model.Carrera,
@@ -112,6 +113,83 @@ public class AccountController : Controller
         HttpContext.Session.SetString("UsuarioNombre", nuevoUsuario.Nombre);
 
         return Json(new { success = true, redirect = "/" });
+    }
+
+    // =====================================================
+    // PERFIL DEL ESTUDIANTE: Vista premium con estadísticas
+    // =====================================================
+    public async Task<IActionResult> Perfil()
+    {
+        await HttpContext.Session.LoadAsync();
+        var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+
+        if (usuarioId == null)
+            return RedirectToAction("Login", "Account");
+
+        var usuario = await _context.Usuarios
+            .Include(u => u.Reseñas)
+                .ThenInclude(r => r.PuntoInteres)
+            .Include(u => u.Canjes)
+                .ThenInclude(c => c.Recompensa)
+            .Include(u => u.CheckIns)
+                .ThenInclude(c => c.PuntoInteres)
+            .FirstOrDefaultAsync(u => u.Id == usuarioId.Value);
+
+        if (usuario == null)
+            return RedirectToAction("Login", "Account");
+
+        // Calcular estadísticas del perfil
+        ViewBag.TotalReseñas = usuario.Reseñas.Count;
+        ViewBag.TotalCanjes = usuario.Canjes.Count;
+        ViewBag.TotalCheckIns = usuario.CheckIns.Count;
+        ViewBag.PuntosGastados = usuario.Canjes.Sum(c => c.PuntosGastados);
+
+        // Progreso al siguiente rango
+        var (rangoActual, puntosSiguiente, nombreSiguiente) = usuario.Puntos switch
+        {
+            >= 500 => ("Leyenda", 999, "¡Máximo nivel!"),
+            >= 200 => ("Experto", 500, "Leyenda"),
+            >= 100 => ("Local", 200, "Experto"),
+            >= 30  => ("Explorador", 100, "Local"),
+            _      => ("Novato", 30, "Explorador")
+        };
+
+        ViewBag.RangoActual = rangoActual;
+        ViewBag.PuntosSiguienteRango = puntosSiguiente;
+        ViewBag.NombreSiguienteRango = nombreSiguiente;
+
+        // Porcentaje de progreso al siguiente rango
+        var puntosBase = rangoActual switch
+        {
+            "Leyenda"    => 500,
+            "Experto"    => 200,
+            "Local"      => 100,
+            "Explorador" => 30,
+            _            => 0
+        };
+        var rango = puntosSiguiente - puntosBase;
+        var progreso = rango > 0 ? (int)((double)(usuario.Puntos - puntosBase) / rango * 100) : 100;
+        ViewBag.ProgresoRango = Math.Min(progreso, 100);
+
+        // Canjes activos (disponibles)
+        ViewBag.CanjesActivos = usuario.Canjes
+            .Where(c => c.Estado == "Disponible")
+            .OrderByDescending(c => c.FechaCanje)
+            .ToList();
+
+        // Últimas reseñas
+        ViewBag.UltimasReseñas = usuario.Reseñas
+            .OrderByDescending(r => r.FechaPublicacion)
+            .Take(5)
+            .ToList();
+
+        // Últimos Check-Ins
+        ViewBag.UltimosCheckIns = usuario.CheckIns
+            .OrderByDescending(c => c.FechaCheckIn)
+            .Take(5)
+            .ToList();
+
+        return View(usuario);
     }
 
     // =====================================================
