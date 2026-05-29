@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WebbyPoints - Acceso</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/auth.css">
 </head>
@@ -45,7 +44,7 @@
             <div class="glass">
                 <div class="d-flex align-items-center gap-3">
                     <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center">
-                        <i class="bi bi-lightning-charge-fill"></i>
+                        <i data-lucide="zap" class="text-white" style="width: 20px; height: 20px; fill: white;"></i>
                     </div>
                     <div>
                         <div class="fw-bold small">+500 estudiantes activos</div>
@@ -68,48 +67,56 @@
             <p class="text-uppercase text-muted small fw-bold mb-1" style="letter-spacing:2px;font-size:.72rem">Empieza gratis</p>
             <h1 class="fw-black mb-1" style="font-size:2.1rem">Crea tu cuenta<span style="color:#1A4BDE">.</span></h1>
             <p class="text-muted mb-4">¿Ya tienes cuenta? <a href="javascript:void(0)" onclick="switchTo('login')" class="text-decoration-none fw-semibold" style="color:#1A4BDE">Inicia sesión</a></p>
-            <div class="err-box" id="err1"><i class="bi bi-exclamation-triangle me-1"></i><span></span></div>
+            <div class="err-box" id="err1"><i data-lucide="alert-triangle" class="me-2" style="width: 16px; height: 16px;"></i><span></span></div>
             <form id="formReg1" onsubmit="return false">
                 @Html.AntiForgeryToken()
                 <div class="d-flex gap-3">
                     <div class="fg flex-grow-1">
                         <input name="Nombre" type="text" placeholder="x" id="r-nom" required/>
-                        <label for="r-nom">Nombre completo</label><i class="bi bi-person fi"></i>
+                        <label for="r-nom">Nombre completo</label><i data-lucide="user" class="fi"></i>
                     </div>
                     <div class="fg" style="width:130px">
                         <input name="Edad" type="number" placeholder="x" id="r-age" required min="15" max="99"/>
-                        <label for="r-age">Edad</label><i class="bi bi-calendar3 fi"></i>
+                        <label for="r-age">Edad</label><i data-lucide="calendar" class="fi"></i>
                     </div>
                 </div>
                 <div class="fg">
                     <input name="Email" type="email" placeholder="x" id="r-email" required/>
-                    <label for="r-email">Correo institucional</label><i class="bi bi-envelope fi"></i>
+                    <label for="r-email">Correo institucional</label><i data-lucide="mail" class="fi"></i>
                 </div>
                 <div class="d-flex gap-3">
                     <div class="fg flex-grow-1">
                         <input name="Universidad" type="text" value="USMP" id="r-uni" readonly style="background: #f1f5f9; cursor: not-allowed; color: #475569;" required/>
-                        <label for="r-uni">Universidad</label><i class="bi bi-building fi"></i>
+                        <label for="r-uni">Universidad</label><i data-lucide="building" class="fi"></i>
                     </div>
                     <div class="fg flex-grow-1">
-                        <input name="Carrera" type="text" placeholder="x" id="r-car" required/>
-                        <label for="r-car">Carrera</label><i class="bi bi-mortarboard fi"></i>
+                        <select name="Carrera" id="r-car" required style="width: 100%; padding: 1rem 3rem 1rem 1rem; border: 1.5px solid #e2e8f0; border-radius: 0.75rem; font-size: 0.95rem; background: #f8fafc; outline: none; color: #1e293b; appearance: none; -webkit-appearance: none; cursor: pointer; transition: all 0.25s ease; height: 50px;">
+                            <option value="" disabled selected hidden>Selecciona tu carrera</option>
+                            <option value="Ingenieria de Sistemas">Ingeniería de Sistemas</option>
+                            <option value="Derecho">Derecho</option>
+                            <option value="Medicina">Medicina</option>
+                            <option value="Administracion">Administración</option>
+                            <option value="Psicologia">Psicología</option>
+                        </select>
+                        <label for="r-car" style="top: -.1rem; left: .75rem; font-size: .72rem; color: #94a3b8; font-weight: 600; background: #fff; pointer-events: none;">Carrera</label>
+                        <i data-lucide="graduation-cap" class="fi" style="pointer-events: none;"></i>
                     </div>
                 </div>
                 <div class="d-flex gap-3">
                     <div class="fg flex-grow-1">
                         <input name="Password" type="password" placeholder="x" id="r-pw" required minlength="6"/>
                         <label for="r-pw">Contraseña</label>
-                        <i class="bi bi-eye fi tog" data-target="r-pw" style="cursor:pointer"></i>
+                        <i data-lucide="eye" class="fi tog" data-target="r-pw" style="pointer-events: auto;"></i>
                     </div>
                     <div class="fg flex-grow-1">
                         <input name="ConfirmarPassword" type="password" placeholder="x" id="r-cpw" required/>
                         <label for="r-cpw">Confirmar</label>
-                        <i class="bi bi-eye fi tog" data-target="r-cpw" style="cursor:pointer"></i>
+                        <i data-lucide="eye" class="fi tog" data-target="r-cpw" style="pointer-events: auto;"></i>
                     </div>
                 </div>
                 <div class="d-flex gap-3 mt-3">
-                    <a href="/" class="btn-alt text-center"><i class="bi bi-arrow-left me-1"></i>Inicio</a>
-                    <button type="button" class="btn-main flex-grow-1" onclick="goToStep2()">Siguiente <i class="bi bi-arrow-right ms-1"></i></button>
+                    <a href="/" class="btn-alt text-center d-inline-flex align-items-center justify-content-center gap-2"><i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>Inicio</a>
+                    <button type="button" class="btn-main flex-grow-1 d-inline-flex align-items-center justify-content-center gap-2" onclick="goToStep2()">Siguiente <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i></button>
                 </div>
             </form>
             <p class="text-muted mt-4 mb-0" style="font-size:.75rem">&copy; 2026 Webby Points · USMP</p>
@@ -128,37 +135,37 @@
             <p class="text-uppercase text-muted small fw-bold mb-1" style="letter-spacing:2px;font-size:.72rem">Casi listo</p>
             <h1 class="fw-black mb-1" style="font-size:2.1rem">Elige tus intereses<span style="color:#1A4BDE">.</span></h1>
             <p class="text-muted mb-4">Selecciona las categorías que más te gusten.</p>
-            <div class="err-box" id="err2"><i class="bi bi-exclamation-triangle me-1"></i><span></span></div>
+            <div class="err-box" id="err2"><i data-lucide="alert-triangle" class="me-2" style="width: 16px; height: 16px;"></i><span></span></div>
             <form id="formReg2" onsubmit="return false">
                 <div class="row g-3 mb-3">
                     @{
                         var cats = new[]{
-                            new{I="Gym",N="Gimnasio",Ic="bi-heart-pulse"},
-                            new{I="Cafe",N="Cafés",Ic="bi-cup-hot"},
-                            new{I="Study",N="Estudiar",Ic="bi-pencil-square"},
-                            new{I="Food",N="Comida",Ic="bi-egg-fried"},
-                            new{I="Parks",N="Parques",Ic="bi-tree"},
-                            new{I="Bares",N="Bares",Ic="bi-cup-straw"},
-                            new{I="Gaming",N="Gaming",Ic="bi-controller"},
-                            new{I="Cine",N="Cine",Ic="bi-film"},
-                            new{I="Rest",N="Restaurantes",Ic="bi-shop"}
+                            new{I="Gym",N="Gimnasio",Ic="dumbbell"},
+                            new{I="Cafe",N="Cafés",Ic="coffee"},
+                            new{I="Study",N="Estudiar",Ic="book-open"},
+                            new{I="Food",N="Comida",Ic="utensils"},
+                            new{I="Parks",N="Parques",Ic="trees"},
+                            new{I="Bares",N="Bares",Ic="glass-water"},
+                            new{I="Gaming",N="Gaming",Ic="gamepad-2"},
+                            new{I="Cine",N="Cine",Ic="film"},
+                            new{I="Rest",N="Restaurantes",Ic="store"}
                         };
                     }
                     @foreach(var c in cats){
                         <div class="col-6 col-sm-4 col-lg-3">
                             <input type="checkbox" name="CategoriasFavoritas" value="@c.N" id="@c.I" class="ci d-none"/>
                             <label for="@c.I" class="cc h-100 d-flex flex-column align-items-center justify-content-center">
-                                <i class="bi @c.Ic ico mb-2"></i>
+                                <i data-lucide="@c.Ic" class="ico mb-2" style="width: 24px; height: 24px; stroke: #94a3b8; stroke-width: 2px;"></i>
                                 <span class="fw-bold cn" style="font-size:.82rem;color:#475569">@c.N</span>
-                                <i class="bi bi-check-circle-fill cb"></i>
+                                <i data-lucide="check-circle" class="cb" style="width: 16px; height: 16px;"></i>
                             </label>
                         </div>
                     }
                 </div>
-                <p class="text-muted small mb-3"><i class="bi bi-info-circle me-1"></i>Mínimo 2 categorías. <span id="counter" class="fw-bold" style="color:#1A4BDE">0 seleccionadas</span></p>
+                <p class="text-muted small mb-3 d-inline-flex align-items-center gap-1"><i data-lucide="info" style="width: 14px; height: 14px;"></i>Mínimo 2 categorías. <span id="counter" class="fw-bold" style="color:#1A4BDE">0 seleccionadas</span></p>
                 <div class="d-flex gap-3">
-                    <button type="button" class="btn-alt" onclick="switchTo('register-1')"><i class="bi bi-arrow-left me-1"></i>Atrás</button>
-                    <button type="button" class="btn-main flex-grow-1" onclick="submitRegistro()" id="btnFinalizar"><i class="bi bi-check-lg me-2"></i>Finalizar registro</button>
+                    <button type="button" class="btn-alt d-inline-flex align-items-center gap-2" onclick="switchTo('register-1')"><i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>Atrás</button>
+                    <button type="button" class="btn-main flex-grow-1 d-inline-flex align-items-center justify-content-center gap-2" onclick="submitRegistro()" id="btnFinalizar"><i data-lucide="check" style="width: 16px; height: 16px;"></i>Finalizar registro</button>
                 </div>
             </form>
             <p class="text-muted mt-4 mb-0" style="font-size:.75rem">&copy; 2026 Webby Points · USMP</p>
@@ -176,25 +183,25 @@
             <p class="text-uppercase text-muted small fw-bold mb-1" style="letter-spacing:2px;font-size:.72rem">Bienvenido de vuelta</p>
             <h1 class="fw-black mb-1" style="font-size:2.1rem">Inicia sesión<span style="color:#1A4BDE">.</span></h1>
             <p class="text-muted mb-4">¿No tienes cuenta? <a href="javascript:void(0)" onclick="switchTo('register-1')" class="text-decoration-none fw-semibold" style="color:#1A4BDE">Regístrate gratis</a></p>
-            <div class="err-box" id="errLogin"><i class="bi bi-exclamation-triangle me-1"></i><span></span></div>
+            <div class="err-box" id="errLogin"><i data-lucide="alert-triangle" class="me-2" style="width: 16px; height: 16px;"></i><span></span></div>
             <form id="formLogin" onsubmit="return false">
                 @Html.AntiForgeryToken()
                 <div class="fg">
                     <input name="Email" type="email" placeholder="x" id="l-email" required/>
-                    <label for="l-email">Correo institucional</label><i class="bi bi-envelope fi"></i>
+                    <label for="l-email">Correo institucional</label><i data-lucide="mail" class="fi"></i>
                 </div>
                 <div class="fg">
                     <input name="Password" type="password" placeholder="x" id="l-pw" required/>
                     <label for="l-pw">Contraseña</label>
-                    <i class="bi bi-eye fi tog" data-target="l-pw" style="cursor:pointer"></i>
+                    <i data-lucide="eye" class="fi tog" data-target="l-pw" style="pointer-events: auto;"></i>
                 </div>
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="rem" style="border-radius:4px">
                     <label class="form-check-label small text-muted" for="rem">Recordarme</label>
                 </div>
-                <button type="button" class="btn-main w-100 mb-3" onclick="submitLogin()" id="btnLogin"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</button>
+                <button type="button" class="btn-main w-100 mb-3 d-inline-flex align-items-center justify-content-center gap-2" onclick="submitLogin()" id="btnLogin"><i data-lucide="log-in" style="width: 16px; height: 16px;"></i>Entrar</button>
                 <div class="sep small">o</div>
-                <button type="button" class="btn-alt w-100" onclick="switchTo('register-1')"><i class="bi bi-person-plus me-2"></i>Crear cuenta nueva</button>
+                <button type="button" class="btn-alt w-100 d-inline-flex align-items-center justify-content-center gap-2" onclick="switchTo('register-1')"><i data-lucide="user-plus" style="width: 16px; height: 16px;"></i>Crear cuenta nueva</button>
             </form>
             <p class="text-muted mt-4 mb-0" style="font-size:.75rem">&copy; 2026 Webby Points · USMP</p>
         </div>
@@ -202,9 +209,15 @@
 </div>
 
 <!-- Success toast -->
-<div class="toast-ok" id="toast"><i class="bi bi-check-circle me-2"></i><span></span></div>
+<div class="toast-ok d-inline-flex align-items-center gap-2" id="toast"><i data-lucide="check-circle" style="width: 20px; height: 20px;"></i><span></span></div>
 
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+    lucide.createIcons();
+});
+
 // ========== PANEL SWITCHING ==========
 function switchTo(state) {
     const box = document.getElementById('authBox');
@@ -272,12 +285,14 @@ async function submitRegistro() {
         } else {
             showErr(errBox, data.errors?.join(' · ') || 'Error al registrar.');
             btn.disabled = false;
-            btn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Finalizar registro';
+            btn.innerHTML = '<i data-lucide="check" style="width: 16px; height: 16px;"></i>Finalizar registro';
+            lucide.createIcons();
         }
     } catch {
         showErr(errBox, 'Error de conexión. Intenta de nuevo.');
         btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-check-lg me-2"></i>Finalizar registro';
+        btn.innerHTML = '<i data-lucide="check" style="width: 16px; height: 16px;"></i>Finalizar registro';
+        lucide.createIcons();
     }
 }
 
@@ -301,12 +316,14 @@ async function submitLogin() {
         } else {
             showErr(errBox, data.errors?.join(' · ') || 'Credenciales incorrectas.');
             btn.disabled = false;
-            btn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Entrar';
+            btn.innerHTML = '<i data-lucide="log-in" style="width: 16px; height: 16px;"></i>Entrar';
+            lucide.createIcons();
         }
     } catch {
         showErr(errBox, 'Error de conexión.');
         btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Entrar';
+        btn.innerHTML = '<i data-lucide="log-in" style="width: 16px; height: 16px;"></i>Entrar';
+        lucide.createIcons();
     }
 }
 
@@ -320,14 +337,19 @@ function showToast(msg) {
     setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// Toggle password visibility
-document.querySelectorAll('.tog').forEach(icon => {
-    icon.addEventListener('click', function() {
-        const inp = document.getElementById(this.dataset.target);
-        inp.type = inp.type === 'password' ? 'text' : 'password';
-        this.classList.toggle('bi-eye');
-        this.classList.toggle('bi-eye-slash');
-    });
+// Toggle password visibility (Lucide dynamic redraw - Event Delegation)
+document.addEventListener('click', function(e) {
+    const tog = e.target.closest('.tog');
+    if (!tog) return;
+    
+    e.preventDefault();
+    const inp = document.getElementById(tog.getAttribute('data-target'));
+    if (!inp) return;
+    
+    const isPassword = inp.type === 'password';
+    inp.type = isPassword ? 'text' : 'password';
+    tog.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+    lucide.createIcons();
 });
 
 // Category counter

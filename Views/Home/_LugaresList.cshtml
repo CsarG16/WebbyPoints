@@ -1,0 +1,125 @@
+@model List<WebbyPoints.Models.PuntoInteres>
+@{
+    var planActual = ViewData["Plan"]?.ToString()?.ToLower() ?? "todos";
+    var config = planActual switch {
+        "pareja" => new { Icon = "heart", Color = "danger", Label = "Pareja" },
+        "amigos" => new { Icon = "users", Color = "warning", Label = "Amigos" },
+        "solo"   => new { Icon = "user", Color = "primary", Label = "Solo" },
+        _        => new { Icon = "compass", Color = "dark", Label = "Todos los lugares" }
+    };
+
+    var currentPage = Convert.ToInt32(ViewData["CurrentPage"] ?? 1);
+    var totalPages = Convert.ToInt32(ViewData["TotalPages"] ?? 1);
+    var currentPlan = ViewData["Plan"]?.ToString() ?? "todos";
+    var currentSearchTerm = ViewData["SearchTerm"]?.ToString() ?? "";
+    var currentSortBy = ViewData["SortBy"]?.ToString() ?? "";
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    <div class="row g-4">
+        @foreach (var punto in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card poi-card bg-white border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+                    <div class="position-relative">
+                        @if (!string.IsNullOrEmpty(punto.ImagenUrl))
+                        {
+                            <img src="@ImageHelper.OptimizeUnsplashUrl(punto.ImagenUrl, 450, 75)" class="card-img-top" alt="@punto.Nombre" style="height: 200px; object-fit: cover;" loading="lazy">
+                        }
+                        else
+                        {
+                            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <i data-lucide="image" class="text-muted opacity-25" style="width: 48px; height: 48px;"></i>
+                            </div>
+                        }
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <span class="badge bg-white text-dark shadow-sm py-2 px-3 rounded-pill border d-inline-flex align-items-center gap-1">
+                                <i data-lucide="star" class="text-warning fill-warning" style="width: 14px; height: 14px; stroke: #f59e0b;"></i>@punto.Calificacion.ToString("0.0")
+                            </span>
+                        </div>
+                        <div class="position-absolute bottom-0 start-0 m-3">
+                            <span class="badge bg-@(config.Color == "dark" ? "secondary" : config.Color) text-white shadow-sm py-2 px-3 rounded-pill">
+                                @punto.Categoria
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-2">@punto.Nombre</h5>
+                        <p class="text-muted small mb-3 line-clamp-2">@punto.Descripcion</p>
+                        
+                        <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-muted" style="font-size: 0.82rem;">
+                            <div class="d-flex align-items-center gap-1">
+                                <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>@punto.Distancia km
+                            </div>
+                            <div class="d-flex align-items-center gap-1">
+                                <i data-lucide="dollar-sign" style="width: 14px; height: 14px;"></i>@punto.PrecioRango
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="small text-muted d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                <i data-lucide="clock" style="width: 14px; height: 14px;"></i>@(string.IsNullOrEmpty(punto.Horario) ? "9:00 AM - 10:00 PM" : punto.Horario)
+                            </div>
+                            <a href="/Home/Detalle/@punto.Id" class="btn btn-sm btn-outline-dark px-3 rounded-pill">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (totalPages > 1)
+    {
+        <div class="d-flex flex-column align-items-center justify-content-center mt-5 mb-3 gap-2">
+            <nav aria-label="Navegación de lugares">
+                <ul class="pagination-premium gap-2 align-items-center mb-0">
+                    
+                    @* Botón Anterior *@
+                    <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                        <a class="page-link page-link-prev" href="/Home/Explorar?plan=@currentPlan&searchTerm=@currentSearchTerm&sortBy=@currentSortBy&page=@(currentPage - 1)" aria-label="Anterior">
+                            <i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i>
+                            <span class="d-none d-sm-inline ms-1">Anterior</span>
+                        </a>
+                    </li>
+
+                    @* Páginas Intermedias *@
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        <li class="page-item @(currentPage == i ? "active" : "")">
+                            <a class="page-link page-link-num" href="/Home/Explorar?plan=@currentPlan&searchTerm=@currentSearchTerm&sortBy=@currentSortBy&page=@i">@i</a>
+                        </li>
+                    }
+
+                    @* Botón Siguiente *@
+                    <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                        <a class="page-link page-link-next" href="/Home/Explorar?plan=@currentPlan&searchTerm=@currentSearchTerm&sortBy=@currentSortBy&page=@(currentPage + 1)" aria-label="Siguiente">
+                            <span class="d-none d-sm-inline me-1">Siguiente</span>
+                            <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="text-muted small">
+                Mostrando página <strong>@currentPage</strong> de <strong>@totalPages</strong>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="text-center py-5 bg-white rounded-5 shadow-sm border mt-4">
+        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 120px; height: 120px;">
+            <i data-lucide="search" class="text-muted opacity-50" style="width: 48px; height: 48px;"></i>
+        </div>
+        <h3 class="fw-bold mb-2">No encontramos resultados</h3>
+        <p class="text-muted mb-4 mx-auto" style="max-width: 450px;">
+            Parece que aún no hay lugares registrados para el plan <strong>@config.Label</strong>. 
+            ¡Ayuda a la comunidad USMP siendo el primero en agregar uno!
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="/" class="btn btn-outline-secondary rounded-pill px-4">Volver al inicio</a>
+            <button class="btn btn-wp border border-secondary rounded-pill px-4 d-inline-flex align-items-center gap-2"><i data-lucide="plus"></i>Agregar Lugar</button>
+        </div>
+    </div>
+}

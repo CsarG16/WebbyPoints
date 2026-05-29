@@ -1,0 +1,92 @@
+{
+  "Scenario": "Regression",
+  "DataSource": {
+    "Type": "TabularFile",
+    "Version": 1,
+    "FilePath": "ML\\Recommender\\trainingdata\\checkin_training_data.csv",
+    "Delimiter": ",",
+    "DecimalDecimal": ".",
+    "HasHeader": true,
+    "Columns": [
+      {
+        "Name": "Carrera",
+        "Type": "Categorical",
+        "Use": true
+      },
+      {
+        "Name": "Preferencia",
+        "Type": "Categorical",
+        "Use": true
+      },
+      {
+        "Name": "PuntoInteresId",
+        "Type": "Numerical",
+        "Use": true
+      },
+      {
+        "Name": "PuntoCategoria",
+        "Type": "Categorical",
+        "Use": true
+      },
+      {
+        "Name": "Visito",
+        "Type": "Numerical",
+        "Use": true
+      }
+    ]
+  },
+  "Environment": {
+    "Type": "LocalCPU",
+    "Version": 1
+  },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "SdcaRegression",
+        "Score": 0.941,
+        "RuntimeInSeconds": 0.42
+      }
+    ],
+    "Pipeline": {
+      "parameter": {
+        "0": {
+          "OutputColumnNames": [
+            "Carrera",
+            "Preferencia",
+            "PuntoCategoria"
+          ],
+          "InputColumnNames": [
+            "Carrera",
+            "Preferencia",
+            "PuntoCategoria"
+          ]
+        },
+        "1": {
+          "InputColumnNames": [
+            "Carrera",
+            "Preferencia",
+            "PuntoCategoria",
+            "PuntoInteresId"
+          ],
+          "OutputColumnName": "Features"
+        },
+        "2": {
+          "L1Regularization": 1.0,
+          "L2Regularization": 0.1,
+          "LabelColumnName": "Visito",
+          "FeatureColumnName": "Features"
+        }
+      },
+      "builders": [
+        "OneHotEncoding",
+        "Concatenate",
+        "SdcaRegression"
+      ]
+    },
+    "MetricName": "RSquared"
+  }
+}

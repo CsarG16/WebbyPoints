@@ -10,7 +10,81 @@
         "solo"   => new { Icon = "user", Color = "primary", Label = "Solo", Desc = "Productividad y relax" },
         _        => new { Icon = "compass", Color = "dark", Label = "Todos los lugares", Desc = "Descubre de todo" }
     };
+
+    // Variables de paginación
+    var currentPage = Convert.ToInt32(ViewData["CurrentPage"] ?? 1);
+    var totalPages = Convert.ToInt32(ViewData["TotalPages"] ?? 1);
+    var currentPlan = ViewData["Plan"]?.ToString() ?? "todos";
+    var currentSearchTerm = ViewData["SearchTerm"]?.ToString() ?? "";
+    var currentSortBy = ViewData["SortBy"]?.ToString() ?? "";
 }
+
+<style>
+    /* Estilos Premium para la Paginación */
+    .pagination-premium {
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1.5px solid rgba(226, 232, 240, 0.8);
+        padding: 0.4rem;
+        border-radius: 2rem;
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        display: inline-flex;
+        list-style: none;
+    }
+    
+    .pagination-premium .page-item {
+        margin: 0;
+    }
+    
+    .pagination-premium .page-link {
+        border: none;
+        background: transparent;
+        color: #475569;
+        font-weight: 600;
+        padding: 0.6rem 1.1rem;
+        border-radius: 1.5rem !important;
+        font-size: 0.9rem;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+    }
+    
+    .pagination-premium .page-link:hover {
+        background: rgba(15, 23, 42, 0.06);
+        color: #0f172a;
+        transform: translateY(-1px);
+    }
+    
+    .pagination-premium .page-item.active .page-link {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #ffffff;
+        box-shadow: 0 4px 15px -3px rgba(37, 99, 235, 0.4);
+    }
+    
+    .pagination-premium .page-item.disabled .page-link {
+        color: #94a3b8;
+        background: transparent;
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .pagination-premium .page-link-prev,
+    .pagination-premium .page-link-next {
+        border: 1.5px solid rgba(226, 232, 240, 0.6);
+        background: #ffffff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    .pagination-premium .page-link-prev:hover,
+    .pagination-premium .page-link-next:hover {
+        background: #0f172a;
+        color: #ffffff !important;
+        border-color: #0f172a;
+    }
+</style>
 
 <section class="bg-wp-primary text-white py-5 mb-4">
     <div class="container">
@@ -151,126 +225,95 @@
             </div>
         }
 
-        <div class="d-flex align-items-center gap-2 mb-4">
-            <h3 class="fw-bold mb-0">Recomendaciones para ti</h3>
-            <span class="badge bg-@(config.Color)-subtle text-@(config.Color) rounded-pill py-2 px-3 d-inline-flex align-items-center gap-1">
-                <i data-lucide="@config.Icon" style="width: 16px; height: 16px;"></i>@config.Label
-            </span>
-        </div>
-
-        @if (Model != null && Model.Count > 0)
-        {
-            <div class="row g-4">
-                @foreach (var punto in Model)
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+            <div class="d-flex align-items-center gap-2">
+                <h3 class="fw-bold mb-0">Recomendaciones para ti</h3>
+                @if (ViewData["IA_Enabled"]?.ToString() == "True")
                 {
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card poi-card bg-white border-0 shadow-sm h-100 rounded-4 overflow-hidden">
-                            <div class="position-relative">
-                                @if (!string.IsNullOrEmpty(punto.ImagenUrl))
-                                {
-                                    <img src="@punto.ImagenUrl" class="card-img-top" alt="@punto.Nombre" style="height: 200px; object-fit: cover;" loading="lazy">
-                                }
-                                else
-                                {
-                                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                        <i data-lucide="image" class="text-muted opacity-25" style="width: 48px; height: 48px;"></i>
-                                    </div>
-                                }
-                                <div class="position-absolute top-0 end-0 m-3">
-                                    <span class="badge bg-white text-dark shadow-sm py-2 px-3 rounded-pill border d-inline-flex align-items-center gap-1">
-                                        <i data-lucide="star" class="text-warning fill-warning" style="width: 14px; height: 14px; stroke: #f59e0b;"></i>@punto.Calificacion.ToString("0.0")
-                                    </span>
-                                </div>
-                                <div class="position-absolute bottom-0 start-0 m-3">
-                                    <span class="badge bg-@(config.Color == "dark" ? "secondary" : config.Color) text-white shadow-sm py-2 px-3 rounded-pill">
-                                        @punto.Categoria
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="card-body p-4">
-                                <h5 class="fw-bold mb-2">@punto.Nombre</h5>
-                                <p class="text-muted small mb-3 line-clamp-2">@punto.Descripcion</p>
-                                
-                                <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-muted" style="font-size: 0.82rem;">
-                                    <div class="d-flex align-items-center gap-1">
-                                        <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>@punto.Distancia km
-                                    </div>
-                                    <div class="d-flex align-items-center gap-1">
-                                        <i data-lucide="dollar-sign" style="width: 14px; height: 14px;"></i>@punto.PrecioRango
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="small text-muted d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
-                                        <i data-lucide="clock" style="width: 14px; height: 14px;"></i>@(string.IsNullOrEmpty(punto.Horario) ? "9:00 AM - 10:00 PM" : punto.Horario)
-                                    </div>
-                                    <a href="/Home/Detalle/@punto.Id" class="btn btn-sm btn-outline-dark px-3 rounded-pill">Ver detalles</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill py-2 px-3 d-inline-flex align-items-center gap-1.5 shadow-sm" style="background: linear-gradient(135deg, #dbeafe, #eff6ff); animation: pulse 2s infinite;">
+                        <i data-lucide="sparkles" class="text-primary fill-primary-subtle" style="width: 16px; height: 16px;"></i>
+                        <strong>Curado por IA (ML.NET)</strong>
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-@(config.Color)-subtle text-@(config.Color) rounded-pill py-2 px-3 d-inline-flex align-items-center gap-1">
+                        <i data-lucide="@config.Icon" style="width: 16px; height: 16px;"></i>@config.Label
+                    </span>
                 }
             </div>
-        }
-        else
-        {
-            <div class="text-center py-5 bg-white rounded-5 shadow-sm border mt-4">
-                <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 120px; height: 120px;">
-                    <i data-lucide="search" class="text-muted opacity-50" style="width: 48px; height: 48px;"></i>
+            
+            @if (ViewData["IA_Enabled"]?.ToString() == "True")
+            {
+                <div class="text-muted small d-inline-flex align-items-center gap-2 bg-white border py-1.5 px-3 rounded-pill shadow-sm">
+                    <i data-lucide="graduation-cap" class="text-primary" style="width: 16px; height: 16px;"></i>
+                    <span>Optimizado para tu carrera: <strong>@ViewData["IA_Carrera"]</strong></span>
                 </div>
-                <h3 class="fw-bold mb-2">No encontramos resultados</h3>
-                <p class="text-muted mb-4 mx-auto" style="max-width: 450px;">
-                    Parece que aún no hay lugares registrados para el plan <strong>@config.Label</strong>. 
-                    ¡Ayuda a la comunidad USMP siendo el primero en agregar uno!
-                </p>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="/" class="btn btn-outline-secondary rounded-pill px-4">Volver al inicio</a>
-                    <button class="btn btn-wp border border-secondary rounded-pill px-4 d-inline-flex align-items-center gap-2"><i data-lucide="plus"></i>Agregar Lugar</button>
-                </div>
-            </div>
-        }
+            }
+        </div>
+
+        <div id="recommendations-anchor" style="scroll-margin-top: 100px;"></div>
+        <div id="places-container" class="position-relative" style="min-height: 300px;">
+            <partial name="_LugaresList" />
+        </div>
     </div>
 </section>
 
-<style>
-    .scale-up { transform: scale(1.05); }
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    .plan-card { transition: all 0.3s ease; }
-    .plan-card:hover { transform: translateY(-5px); cursor: pointer; }
-    .poi-card { transition: all 0.3s ease; }
-    .poi-card:hover { transform: translateY(-8px); box-shadow: 0 1rem 3rem rgba(0,0,0,0.12) !important; }
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Interceptar clicks de la paginación premium para cargarlos mediante AJAX
+        document.addEventListener("click", function (e) {
+            const link = e.target.closest(".pagination-premium a");
+            if (link) {
+                e.preventDefault();
+                const url = link.getAttribute("href");
+                if (url) {
+                    cargarPaginaAjax(url);
+                }
+            }
+        });
 
-    /* Vistos Recientemente (Sesiones + Redis Cloud) */
-    .vistos-recientes-section {
-        background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
-        border: 1px solid rgba(79, 70, 229, 0.1);
-    }
-    .vistos-icon-wrapper {
-        width: 44px;
-        height: 44px;
-        background: linear-gradient(135deg, #4f46e5, #7c3aed);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.2rem;
-        flex-shrink: 0;
-    }
-    .visto-card {
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-    .visto-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.1) !important;
-    }
-    .fill-warning {
-        fill: currentColor;
-    }
-</style>
+        function cargarPaginaAjax(url) {
+            const container = document.getElementById("places-container");
+            const anchor = document.getElementById("recommendations-anchor");
+            if (!container) return;
+
+            // Transición suave de carga
+            container.style.opacity = "0.45";
+            container.style.transition = "opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)";
+
+            fetch(url, {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Fallo en la respuesta de red");
+                return response.text();
+            })
+            .then(html => {
+                container.innerHTML = html;
+                container.style.opacity = "1";
+
+                // Re-inicializar los iconos Lucide en el contenido inyectado
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+
+                // Hacer un scroll suave al inicio de las recomendaciones para mejorar la navegación
+                if (anchor) {
+                    anchor.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+
+                // Actualizar la barra de direcciones del navegador en tiempo real
+                window.history.pushState({ path: url }, "", url);
+            })
+            .catch(err => {
+                console.error("[AJAX Error] No se pudo paginar:", err);
+                container.style.opacity = "1";
+            });
+        }
+    });
+</script>
+    </div>
+</section>

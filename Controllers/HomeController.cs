@@ -40,7 +40,7 @@ public class HomeController : Controller
 // =====================================================
     // EXPLORAR: Filtra, busca y ordena puntos de interés
     // =====================================================
-    public async Task<IActionResult> Explorar(string plan, string searchTerm, string sortBy)
+    public async Task<IActionResult> Explorar(string plan, string searchTerm, string sortBy, int page = 1)
     {
         ViewData["Plan"] = plan ?? "todos";
         ViewData["SearchTerm"] = searchTerm; // Guardamos lo que buscó para dejarlo escrito
@@ -62,6 +62,8 @@ public class HomeController : Controller
                                      p.Categoria.ToLower().Contains(termino));
         }
 
+        List<PuntoInteres> puntos;
+
         // 3. Ordenamiento (Select de la vista)
         switch (sortBy)
         {
@@ -75,14 +77,71 @@ public class HomeController : Controller
                 query = query.OrderBy(p => p.PrecioRango); // Ordena $, $$, $$$
                 break;
             default:
-                // Si no eligió filtro, usamos tu Lógica de Match con la sesión
+                // Si no eligió filtro, usamos Lógica de Inteligencia Artificial (ML.NET) si el usuario está logueado
                 var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
                 if (usuarioId.HasValue)
                 {
                     var usuario = await _context.Usuarios.FindAsync(usuarioId.Value);
-                    if (usuario != null && !string.IsNullOrEmpty(usuario.Preferencias))
+                    if (usuario != null)
                     {
-                        var preferencias = usuario.Preferencias
+                        try
+                        {
+                            var puntosLista = await query.ToListAsync();
+                            
+                            // Para cada punto de interés, calculamos la predicción de afinidad de la IA
+                            var puntosConScore = puntosLista.Select(p => {
+                                string primeraPrefe = !string.IsNullOrEmpty(usuario.Preferencias) 
+                                    ? usuario.Preferencias.Split(',').First().Trim() 
+                                    : "Estudio";
+
+                                var prediction = WebbyPoints.ML.Recommender.RecommenderModel.Predict(
+                                    new WebbyPoints.ML.Recommender.RecommenderModel.ModelInput
+                                    {
+                                        Carrera = usuario.Carrera ?? "Ingenieria de Sistemas",
+                                        Preferencia = primeraPrefe,
+                                        PuntoInteresId = p.Id,
+                                        PuntoCategoria = p.Categoria
+                                    }
+                                );
+                                
+                                return new { Punto = p, Score = prediction.Score };
+                            })
+                            .OrderByDescending(x => x.Score) // Ordenar por afinidad de IA (mayor primero)
+                            .Select(x => x.Punto)
+                            .ToList();
+
+                            // Paginación con IA
+                            int totalItems = puntosConScore.Count;
+                            int totalPages = (int)Math.Ceiling((double)totalItems / 25);
+                            if (page < 1) page = 1;
+                            if (totalPages > 0 && page > totalPages) page = totalPages;
+
+                            var puntosPaginated = puntosConScore.Skip((page - 1) * 25).Take(25).ToList();
+
+                            // Habilitamos flag e info de la IA para la vista Explorar
+                            ViewData["IA_Enabled"] = true;
+                            ViewData["IA_Carrera"] = usuario.Carrera;
+                            ViewData["CurrentPage"] = page;
+                            ViewData["TotalPages"] = totalPages;
+                            
+                            puntos = puntosPaginated;
+                            goto SkipQuery; // Saltamos la consulta normal de BD ya que tenemos el orden de la IA
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[IA Error] Falló la predicción de la IA: {ex.Message}");
+                        }
+                    }
+                }
+
+                // Fallback clásico si la IA no está disponible o el usuario no está logueado
+                var normalUsuarioId = HttpContext.Session.GetInt32("UsuarioId");
+                if (normalUsuarioId.HasValue)
+                {
+                    var normalUsuario = await _context.Usuarios.FindAsync(normalUsuarioId.Value);
+                    if (normalUsuario != null && !string.IsNullOrEmpty(normalUsuario.Preferencias))
+                    {
+                        var preferencias = normalUsuario.Preferencias
                             .Split(',', StringSplitOptions.RemoveEmptyEntries)
                             .Select(p => p.Trim().ToLower())
                             .ToList();
@@ -99,7 +158,24 @@ public class HomeController : Controller
                 break;
         }
 
-        var puntos = await query.Take(20).ToListAsync();
+        // Paginación estándar
+        int totalItemsCount = await query.CountAsync();
+        int totalPagesCount = (int)Math.Ceiling((double)totalItemsCount / 25);
+        if (page < 1) page = 1;
+        if (totalPagesCount > 0 && page > totalPagesCount) page = totalPagesCount;
+
+        ViewData["CurrentPage"] = page;
+        ViewData["TotalPages"] = totalPagesCount;
+
+        puntos = await query.Skip((page - 1) * 25).Take(25).ToListAsync();
+
+    SkipQuery:
+
+        // Detectar si la petición es por AJAX (XMLHttpRequest)
+        if (HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            return PartialView("_LugaresList", puntos);
+        }
 
         // ==========================================================
         // SESIONES + REDIS: Leer los IDs de "Vistos Recientemente"

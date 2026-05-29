@@ -1,0 +1,181 @@
+Carrera,Preferencia,PuntoInteresId,PuntoCategoria,Visito
+Ingenieria de Sistemas,Estudio,1,Estudio,1.0
+Ingenieria de Sistemas,Estudio,4,Estudio,1.0
+Ingenieria de Sistemas,Estudio,2,Ocio,0.1
+Ingenieria de Sistemas,Estudio,6,Ocio,0.0
+Ingenieria de Sistemas,Estudio,8,Cultura,0.3
+Ingenieria de Sistemas,Estudio,5,Comida,0.2
+Ingenieria de Sistemas,Estudio,3,Romantico,0.1
+Ingenieria de Sistemas,Estudio,7,Medio Ambiente,0.2
+Ingenieria de Sistemas,Estudio,9,Civico,0.1
+Ingenieria de Sistemas,Estudio,10,Medio Ambiente,0.1
+Ingenieria de Sistemas,Ocio,2,Ocio,1.0
+Ingenieria de Sistemas,Ocio,6,Ocio,0.9
+Ingenieria de Sistemas,Ocio,5,Comida,0.8
+Ingenieria de Sistemas,Ocio,1,Estudio,0.2
+Ingenieria de Sistemas,Ocio,4,Estudio,0.1
+Ingenieria de Sistemas,Ocio,8,Cultura,0.3
+Ingenieria de Sistemas,Ocio,9,Civico,0.1
+Ingenieria de Sistemas,Ocio,10,Medio Ambiente,0.1
+Ingenieria de Sistemas,Ocio,7,Medio Ambiente,0.2
+Ingenieria de Sistemas,Ocio,3,Romantico,0.4
+Derecho,Ocio,2,Ocio,1.0
+Derecho,Ocio,6,Ocio,1.0
+Derecho,Ocio,5,Comida,0.9
+Derecho,Ocio,1,Estudio,0.1
+Derecho,Ocio,4,Estudio,0.0
+Derecho,Ocio,8,Cultura,0.4
+Derecho,Ocio,3,Romantico,0.5
+Derecho,Ocio,7,Medio Ambiente,0.1
+Derecho,Ocio,9,Civico,0.2
+Derecho,Ocio,10,Medio Ambiente,0.1
+Derecho,Cultura,8,Cultura,1.0
+Derecho,Cultura,3,Romantico,0.8
+Derecho,Cultura,4,Estudio,0.6
+Derecho,Cultura,1,Estudio,0.4
+Derecho,Cultura,2,Ocio,0.3
+Derecho,Cultura,6,Ocio,0.3
+Derecho,Cultura,5,Comida,0.4
+Derecho,Cultura,7,Medio Ambiente,0.5
+Derecho,Cultura,9,Civico,0.6
+Derecho,Cultura,10,Medio Ambiente,0.5
+Medicina,Medio Ambiente,7,Medio Ambiente,1.0
+Medicina,Medio Ambiente,10,Medio Ambiente,1.0
+Medicina,Medio Ambiente,9,Civico,0.9
+Medicina,Medio Ambiente,1,Estudio,0.3
+Medicina,Medio Ambiente,4,Estudio,0.4
+Medicina,Medio Ambiente,2,Ocio,0.1
+Medicina,Medio Ambiente,6,Ocio,0.1
+Medicina,Medio Ambiente,5,Comida,0.2
+Medicina,Medio Ambiente,3,Romantico,0.3
+Medicina,Medio Ambiente,8,Cultura,0.5
+Medicina,Estudio,4,Estudio,1.0
+Medicina,Estudio,1,Estudio,0.9
+Medicina,Estudio,2,Ocio,0.1
+Medicina,Estudio,6,Ocio,0.1
+Medicina,Estudio,5,Comida,0.4
+Medicina,Estudio,8,Cultura,0.5
+Medicina,Estudio,7,Medio Ambiente,0.3
+Medicina,Estudio,9,Civico,0.4
+Medicina,Estudio,10,Medio Ambiente,0.2
+Medicina,Estudio,3,Romantico,0.2
+Administracion,Comida,5,Comida,1.0
+Administracion,Comida,2,Ocio,0.9
+Administracion,Comida,1,Estudio,0.3
+Administracion,Comida,4,Estudio,0.2
+Administracion,Comida,6,Ocio,0.8
+Administracion,Comida,8,Cultura,0.4
+Administracion,Comida,7,Medio Ambiente,0.2
+Administracion,Comida,9,Civico,0.2
+Administracion,Comida,10,Medio Ambiente,0.1
+Administracion,Comida,3,Romantico,0.4
+Administracion,Ocio,6,Ocio,1.0
+Administracion,Ocio,2,Ocio,0.9
+Administracion,Ocio,5,Comida,0.8
+Administracion,Ocio,3,Romantico,0.7
+Administracion,Ocio,1,Estudio,0.2
+Administracion,Ocio,4,Estudio,0.1
+Administracion,Ocio,8,Cultura,0.4
+Administracion,Ocio,7,Medio Ambiente,0.2
+Administracion,Ocio,9,Civico,0.1
+Administracion,Ocio,10,Medio Ambiente,0.1
+Psicologia,Cultura,8,Cultura,1.0
+Psicologia,Cultura,3,Romantico,0.9
+Psicologia,Cultura,7,Medio Ambiente,0.7
+Psicologia,Cultura,4,Estudio,0.5
+Psicologia,Cultura,1,Estudio,0.4
+Psicologia,Cultura,2,Ocio,0.3
+Psicologia,Cultura,6,Ocio,0.4
+Psicologia,Cultura,5,Comida,0.4
+Psicologia,Cultura,9,Civico,0.8
+Psicologia,Cultura,10,Medio Ambiente,0.6
+Psicologia,Romantico,3,Romantico,1.0
+Psicologia,Romantico,6,Ocio,0.9
+Psicologia,Romantico,2,Ocio,0.7
+Psicologia,Romantico,8,Cultura,0.8
+Psicologia,Romantico,5,Comida,0.6
+Psicologia,Romantico,1,Estudio,0.2
+Psicologia,Romantico,4,Estudio,0.2
+Psicologia,Romantico,7,Medio Ambiente,0.4
+Psicologia,Romantico,9,Civico,0.4
+Psicologia,Romantico,10,Medio Ambiente,0.3
+Ingenieria de Sistemas,Civico,9,Civico,1.0
+Ingenieria de Sistemas,Civico,10,Medio Ambiente,0.8
+Ingenieria de Sistemas,Civico,7,Medio Ambiente,0.8
+Ingenieria de Sistemas,Civico,1,Estudio,0.3
+Ingenieria de Sistemas,Civico,4,Estudio,0.4
+Ingenieria de Sistemas,Civico,2,Ocio,0.2
+Ingenieria de Sistemas,Civico,6,Ocio,0.2
+Ingenieria de Sistemas,Civico,5,Comida,0.3
+Ingenieria de Sistemas,Civico,3,Romantico,0.2
+Ingenieria de Sistemas,Civico,8,Cultura,0.5
+Derecho,Civico,9,Civico,1.0
+Derecho,Civico,7,Medio Ambiente,0.8
+Derecho,Civico,10,Medio Ambiente,0.7
+Derecho,Civico,8,Cultura,0.7
+Derecho,Civico,3,Romantico,0.5
+Derecho,Civico,1,Estudio,0.3
+Derecho,Civico,4,Estudio,0.3
+Derecho,Civico,2,Ocio,0.2
+Derecho,Civico,6,Ocio,0.2
+Derecho,Civico,5,Comida,0.3
+Medicina,Civico,9,Civico,1.0
+Medicina,Civico,10,Medio Ambiente,0.9
+Medicina,Civico,7,Medio Ambiente,0.9
+Medicina,Civico,4,Estudio,0.5
+Medicina,Civico,1,Estudio,0.4
+Medicina,Civico,8,Cultura,0.6
+Medicina,Civico,5,Comida,0.3
+Medicina,Civico,2,Ocio,0.1
+Medicina,Civico,6,Ocio,0.1
+Medicina,Civico,3,Romantico,0.2
+Psicologia,Civico,9,Civico,1.0
+Psicologia,Civico,8,Cultura,0.8
+Psicologia,Civico,7,Medio Ambiente,0.7
+Psicologia,Civico,10,Medio Ambiente,0.7
+Psicologia,Civico,3,Romantico,0.6
+Psicologia,Civico,4,Estudio,0.4
+Psicologia,Civico,1,Estudio,0.3
+Psicologia,Civico,2,Ocio,0.2
+Psicologia,Civico,6,Ocio,0.3
+Psicologia,Civico,5,Comida,0.3
+Ingenieria de Sistemas,Medio Ambiente,7,Medio Ambiente,1.0
+Ingenieria de Sistemas,Medio Ambiente,10,Medio Ambiente,1.0
+Ingenieria de Sistemas,Medio Ambiente,9,Civico,0.8
+Ingenieria de Sistemas,Medio Ambiente,1,Estudio,0.3
+Ingenieria de Sistemas,Medio Ambiente,4,Estudio,0.3
+Ingenieria de Sistemas,Medio Ambiente,2,Ocio,0.2
+Ingenieria de Sistemas,Medio Ambiente,6,Ocio,0.2
+Ingenieria de Sistemas,Medio Ambiente,5,Comida,0.3
+Ingenieria de Sistemas,Medio Ambiente,3,Romantico,0.2
+Ingenieria de Sistemas,Medio Ambiente,8,Cultura,0.5
+Derecho,Medio Ambiente,7,Medio Ambiente,0.9
+Derecho,Medio Ambiente,10,Medio Ambiente,0.9
+Derecho,Medio Ambiente,9,Civico,0.8
+Derecho,Medio Ambiente,8,Cultura,0.6
+Derecho,Medio Ambiente,3,Romantico,0.5
+Derecho,Medio Ambiente,1,Estudio,0.2
+Derecho,Medio Ambiente,4,Estudio,0.2
+Derecho,Medio Ambiente,2,Ocio,0.1
+Derecho,Medio Ambiente,6,Ocio,0.1
+Derecho,Medio Ambiente,5,Comida,0.2
+Administracion,Medio Ambiente,10,Medio Ambiente,1.0
+Administracion,Medio Ambiente,7,Medio Ambiente,0.9
+Administracion,Medio Ambiente,9,Civico,0.7
+Administracion,Medio Ambiente,5,Comida,0.5
+Administracion,Medio Ambiente,2,Ocio,0.4
+Administracion,Medio Ambiente,6,Ocio,0.3
+Administracion,Medio Ambiente,8,Cultura,0.4
+Administracion,Medio Ambiente,1,Estudio,0.2
+Administracion,Medio Ambiente,4,Estudio,0.1
+Administracion,Medio Ambiente,3,Romantico,0.3
+Psicologia,Medio Ambiente,7,Medio Ambiente,1.0
+Psicologia,Medio Ambiente,10,Medio Ambiente,1.0
+Psicologia,Medio Ambiente,9,Civico,0.8
+Psicologia,Medio Ambiente,8,Cultura,0.7
+Psicologia,Medio Ambiente,3,Romantico,0.6
+Psicologia,Medio Ambiente,4,Estudio,0.4
+Psicologia,Medio Ambiente,1,Estudio,0.3
+Psicologia,Medio Ambiente,2,Ocio,0.2
+Psicologia,Medio Ambiente,6,Ocio,0.2
+Psicologia,Medio Ambiente,5,Comida,0.3

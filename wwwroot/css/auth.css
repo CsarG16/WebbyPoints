@@ -4,6 +4,16 @@
    =========================================================== */
 
 /* ========== RESET & BASE ========== */
+:root {
+    --wp-primary: #0EA5E9;
+    --wp-primary-hover: #0284C7;
+    --wp-primary-light: #F0F9FF;
+    --wp-primary-rgb: 14, 165, 233;
+    --wp-accent: #10B981;
+    --wp-accent-light: #ECFDF5;
+    --wp-accent-dark: #059669;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0 }
 
 body.auth-body {
@@ -45,7 +55,7 @@ body.auth-body {
 .auth-image .overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(26, 75, 222, .2), rgba(0, 0, 0, .15));
+    background: linear-gradient(135deg, rgba(var(--wp-primary-rgb), .2), rgba(0, 0, 0, .15));
     z-index: 1;
 }
 
@@ -177,7 +187,7 @@ body.auth-body {
     font-weight: 900;
     font-size: 1.15rem;
     text-decoration: none;
-    color: #1A4BDE;
+    color: var(--wp-primary);
 }
 
 .auth-nav .brand span {
@@ -193,7 +203,7 @@ body.auth-body {
 }
 
 .auth-nav a.nl:hover {
-    color: #1A4BDE;
+    color: var(--wp-primary);
 }
 
 
@@ -216,9 +226,9 @@ body.auth-body {
 }
 
 .fg input:focus {
-    border-color: #1A4BDE;
+    border-color: var(--wp-primary);
     background: #fff;
-    box-shadow: 0 0 0 3px rgba(26, 75, 222, .08);
+    box-shadow: 0 0 0 3px rgba(var(--wp-primary-rgb), .08);
 }
 
 .fg input::placeholder {
@@ -243,7 +253,7 @@ body.auth-body {
     top: -.1rem;
     left: .75rem;
     font-size: .72rem;
-    color: #1A4BDE;
+    color: var(--wp-primary);
     font-weight: 600;
     background: #fff;
 }
@@ -254,13 +264,34 @@ body.auth-body {
     top: 50%;
     transform: translateY(-50%);
     color: #cbd5e1;
-    font-size: 1.1rem;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.fg .tog {
+    pointer-events: auto;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.fg .tog:hover {
+    color: var(--wp-primary);
+}
+
+.cc svg {
+    transition: transform 0.3s;
+}
+
+.ci:checked + .cc svg {
+    stroke: var(--wp-primary) !important;
+    transform: scale(1.1);
 }
 
 
 /* ========== BUTTONS ========== */
 .btn-main {
-    background: linear-gradient(135deg, #1A4BDE, #3b6ef7);
+    background: linear-gradient(135deg, var(--wp-primary), var(--wp-accent));
     border: none;
     color: #fff;
     padding: .9rem 2.5rem;
@@ -274,7 +305,7 @@ body.auth-body {
 .btn-main:hover {
     transform: translateY(-2px);
     color: #fff;
-    box-shadow: 0 8px 25px rgba(26, 75, 222, .3);
+    box-shadow: 0 8px 25px rgba(var(--wp-primary-rgb), .3);
 }
 
 .btn-alt {
@@ -291,8 +322,8 @@ body.auth-body {
 }
 
 .btn-alt:hover {
-    border-color: #1A4BDE;
-    color: #1A4BDE;
+    border-color: var(--wp-primary);
+    color: var(--wp-primary);
 }
 
 
@@ -312,7 +343,7 @@ body.auth-body {
 }
 
 .dot.on {
-    background: #1A4BDE;
+    background: var(--wp-primary);
 }
 
 
@@ -357,25 +388,25 @@ body.auth-body {
 }
 
 .ci:checked + .cc {
-    border-color: #1A4BDE;
-    background: linear-gradient(135deg, #f0f4ff, #e8edff);
-    box-shadow: 0 4px 15px rgba(26, 75, 222, .12);
+    border-color: var(--wp-primary);
+    background: linear-gradient(135deg, var(--wp-primary-light), var(--wp-accent-light));
+    box-shadow: 0 4px 15px rgba(var(--wp-primary-rgb), .12);
 }
 
 .ci:checked + .cc .ico {
-    color: #1A4BDE !important;
+    color: var(--wp-primary) !important;
     transform: scale(1.1);
 }
 
 .ci:checked + .cc .cn {
-    color: #1A4BDE !important;
+    color: var(--wp-primary) !important;
 }
 
 .cb {
     position: absolute;
     top: 8px;
     right: 8px;
-    color: #1A4BDE;
+    color: var(--wp-primary);
     opacity: 0;
     transition: opacity .2s;
     font-size: .85rem;
