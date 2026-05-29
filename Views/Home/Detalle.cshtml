@@ -11,27 +11,27 @@
         ? Model.Etiquetas.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(e => e.Trim()).ToList()
         : new List<string>();
 
-    // Mapeo de etiquetas a iconos de Bootstrap Icons
+    // Mapeo de etiquetas a iconos de Lucide Icons
     var iconMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
     {
-        { "WiFi", "bi-wifi" },
-        { "Enchufes", "bi-plug" },
-        { "Pet Friendly", "bi-heart" },
-        { "Estacionamiento", "bi-car-front" },
-        { "Terraza", "bi-sun" },
-        { "Aire Acondicionado", "bi-snow" },
-        { "Música en vivo", "bi-music-note-beamed" },
-        { "Accesible", "bi-universal-access" },
-        { "Silencioso", "bi-volume-mute" },
-        { "Delivery", "bi-truck" },
-        { "Reservaciones", "bi-calendar-check" },
-        { "Happy Hour", "bi-cup-straw" },
-        { "Comida vegana", "bi-flower1" },
-        { "Barra libre", "bi-cup-hot" },
-        { "Juegos de mesa", "bi-dice-5" },
-        { "Karaoke", "bi-mic" },
-        { "Pantallas", "bi-display" },
-        { "Zona de estudio", "bi-book" },
+        { "WiFi", "wifi" },
+        { "Enchufes", "plug" },
+        { "Pet Friendly", "heart" },
+        { "Estacionamiento", "car" },
+        { "Terraza", "sun" },
+        { "Aire Acondicionado", "snowflake" },
+        { "Música en vivo", "music" },
+        { "Accesible", "accessibility" },
+        { "Silencioso", "volume-x" },
+        { "Delivery", "truck" },
+        { "Reservaciones", "calendar-check" },
+        { "Happy Hour", "glass-water" },
+        { "Comida vegana", "leaf" },
+        { "Barra libre", "coffee" },
+        { "Juegos de mesa", "dices" },
+        { "Karaoke", "mic" },
+        { "Pantallas", "monitor" },
+        { "Zona de estudio", "book-open" },
     };
 }
 
@@ -55,19 +55,19 @@
         <!-- Meta line: calificación · ubicación · categoría -->
         <div class="d-flex flex-wrap align-items-center gap-3 text-muted small mb-3">
             <span class="d-flex align-items-center gap-1">
-                <i class="bi bi-star-fill text-warning"></i>
+                <i data-lucide="star" class="text-warning fill-warning" style="width: 14px; height: 14px; stroke: #f59e0b;"></i>
                 <strong class="text-dark">@Model.Calificacion.ToString("0.0")</strong>
                 <span>· @totalReseñas reseña@(totalReseñas != 1 ? "s" : "")</span>
             </span>
             <span class="d-flex align-items-center gap-1">
-                <i class="bi bi-geo-alt text-primary"></i>
+                <i data-lucide="map-pin" class="text-primary" style="width: 14px; height: 14px;"></i>
                 @Model.Ubicacion
             </span>
             <span class="badge bg-light text-dark border py-1 px-2">
                 @Model.Categoria
             </span>
-            <span class="badge bg-primary-subtle text-primary border-0 py-1 px-2">
-                <i class="bi bi-people me-1"></i>Plan @Model.PlanTipo
+            <span class="badge bg-primary-subtle text-primary border-0 py-1 px-2 d-inline-flex align-items-center gap-1">
+                <i data-lucide="users" style="width: 12px; height: 12px;"></i>Plan @Model.PlanTipo
             </span>
         </div>
     </div>
@@ -88,7 +88,7 @@
             {
                 <div class="bg-light d-flex align-items-center justify-content-center" style="height: 420px;">
                     <div class="text-center text-muted">
-                        <i class="bi bi-image fs-1 opacity-25 d-block mb-2"></i>
+                        <i data-lucide="image" class="opacity-25 d-block mb-2 mx-auto" style="width: 48px; height: 48px;"></i>
                         <span class="small">Sin imagen disponible</span>
                     </div>
                 </div>
@@ -120,8 +120,8 @@
                     <div class="row g-3">
                         <div class="col-sm-4">
                             <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
-                                <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px;">
-                                    <i class="bi bi-clock text-primary"></i>
+                                <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; flex-shrink: 0;">
+                                    <i data-lucide="clock" class="text-primary" style="width: 20px; height: 20px;"></i>
                                 </div>
                                 <div>
                                     <div class="small text-muted">Horario</div>
@@ -131,8 +131,8 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
-                                <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px;">
-                                    <i class="bi bi-geo-alt text-primary"></i>
+                                <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; flex-shrink: 0;">
+                                    <i data-lucide="map-pin" class="text-primary" style="width: 20px; height: 20px;"></i>
                                 </div>
                                 <div>
                                     <div class="small text-muted">Distancia</div>
@@ -142,8 +142,8 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
-                                <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px;">
-                                    <i class="bi bi-currency-dollar text-primary"></i>
+                                <div class="bg-white rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; flex-shrink: 0;">
+                                    <i data-lucide="dollar-sign" class="text-primary" style="width: 20px; height: 20px;"></i>
                                 </div>
                                 <div>
                                     <div class="small text-muted">Precio</div>
@@ -162,10 +162,10 @@
                         <div class="row g-3">
                             @foreach (var tag in etiquetas)
                             {
-                                var icon = iconMap.ContainsKey(tag) ? iconMap[tag] : "bi-check-circle";
+                                var icon = iconMap.ContainsKey(tag) ? iconMap[tag] : "check-circle";
                                 <div class="col-sm-6">
                                     <div class="d-flex align-items-center gap-3 py-2">
-                                        <i class="bi @icon fs-5 text-primary" style="width: 24px;"></i>
+                                        <i data-lucide="@icon" class="text-primary" style="width: 20px; height: 20px; flex-shrink: 0;"></i>
                                         <span style="font-size: 0.95rem;">@tag</span>
                                     </div>
                                 </div>
@@ -177,8 +177,8 @@
                 <!-- Sección de Reseñas -->
                 <div class="mb-4">
                     <div class="d-flex align-items-center gap-2 mb-4">
-                        <h5 class="fw-bold mb-0">
-                            <i class="bi bi-star-fill text-warning me-1"></i>
+                        <h5 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                            <i data-lucide="star" class="text-warning fill-warning" style="width: 20px; height: 20px; stroke: #f59e0b;"></i>
                             @Model.Calificacion.ToString("0.0") · @totalReseñas reseña@(totalReseñas != 1 ? "s" : "")
                         </h5>
                     </div>
@@ -203,10 +203,10 @@
                                             </div>
                                         </div>
                                         <!-- Estrellas -->
-                                        <div class="mb-2">
+                                        <div class="mb-2 d-inline-flex gap-0.5">
                                             @for (int i = 1; i <= 5; i++)
                                             {
-                                                <i class="bi @(i <= reseña.Calificacion ? "bi-star-fill text-warning" : "bi-star text-muted")" style="font-size: 0.8rem;"></i>
+                                                <i data-lucide="star" class="@(i <= reseña.Calificacion ? "text-warning fill-warning" : "text-muted")" style="width: 12px; height: 12px; stroke: @(i <= reseña.Calificacion ? "#f59e0b" : "#94a3b8");"></i>
                                             }
                                         </div>
                                         <!-- Comentario -->
@@ -219,7 +219,7 @@
                     else
                     {
                         <div class="text-center py-4 bg-light rounded-3">
-                            <i class="bi bi-chat-dots fs-2 text-muted opacity-50 d-block mb-2"></i>
+                            <i data-lucide="message-square" class="text-muted opacity-40 mb-2 mx-auto" style="width: 36px; height: 36px;"></i>
                             <p class="text-muted small mb-0">Aún no hay reseñas. ¡Sé el primero en opinar!</p>
                         </div>
                     }
@@ -237,7 +237,7 @@
                             <span class="text-muted small"> / visita</span>
                         </div>
                         <div class="d-flex align-items-center gap-1 small">
-                            <i class="bi bi-star-fill text-warning"></i>
+                            <i data-lucide="star" class="text-warning fill-warning" style="width: 14px; height: 14px; stroke: #f59e0b;"></i>
                             <strong>@Model.Calificacion.ToString("0.0")</strong>
                             <span class="text-muted">(@totalReseñas)</span>
                         </div>
@@ -246,15 +246,15 @@
                     <!-- Info compacta -->
                     <div class="mb-3">
                         <div class="d-flex align-items-center gap-2 py-2 small">
-                            <i class="bi bi-clock text-muted"></i>
+                            <i data-lucide="clock" class="text-muted" style="width: 16px; height: 16px;"></i>
                             <span>@(string.IsNullOrEmpty(Model.Horario) ? "Horario no disponible" : Model.Horario)</span>
                         </div>
                         <div class="d-flex align-items-center gap-2 py-2 small">
-                            <i class="bi bi-geo-alt text-muted"></i>
+                            <i data-lucide="map-pin" class="text-muted" style="width: 16px; height: 16px;"></i>
                             <span>@Model.Ubicacion</span>
                         </div>
                         <div class="d-flex align-items-center gap-2 py-2 small">
-                            <i class="bi bi-tag text-muted"></i>
+                            <i data-lucide="tag" class="text-muted" style="width: 16px; height: 16px;"></i>
                             <span>@Model.Categoria · Plan @Model.PlanTipo</span>
                         </div>
                     </div>
@@ -265,37 +265,37 @@
                         var yaHizoCheckIn = (bool)(ViewBag.YaHizoCheckInHoy ?? false);
                         if (yaHizoCheckIn)
                         {
-                            <button class="btn btn-secondary w-100 rounded-3 py-2 mb-2 fw-semibold" id="btnCheckIn" disabled>
-                                <i class="bi bi-patch-check-fill me-2"></i>Asistencia Registrada Hoy
+                            <button class="btn btn-secondary w-100 rounded-3 py-2 mb-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-2" id="btnCheckIn" disabled>
+                                <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>Asistencia Registrada Hoy
                             </button>
                         }
                         else if (Model.EsEventoEspecial)
                         {
-                            <button class="btn btn-success w-100 rounded-3 py-2 mb-2 fw-bold text-white shadow-sm border-0 position-relative overflow-hidden" 
+                            <button class="btn btn-success w-100 rounded-3 py-2 mb-2 fw-bold text-white shadow-sm border-0 position-relative overflow-hidden d-inline-flex align-items-center justify-content-center gap-2" 
                                     id="btnCheckIn" onclick="realizarCheckIn(@Model.Id)" style="background: linear-gradient(135deg, #10b981, #059669); transition: all 0.3s;">
-                                <i class="bi bi-calendar-check-fill me-2"></i>¡Inscribirme y Asistir!
-                                <span class="badge bg-white text-success rounded-pill ms-2" style="font-size: 0.75rem;">+@Model.PuntosRecompensa pts</span>
+                                <i data-lucide="calendar-check" style="width: 16px; height: 16px;"></i>¡Inscribirme y Asistir!
+                                <span class="badge bg-white text-success rounded-pill" style="font-size: 0.75rem;">+@Model.PuntosRecompensa pts</span>
                             </button>
                         }
                         else
                         {
-                            <button class="btn btn-primary w-100 rounded-3 py-2 mb-2 fw-bold shadow-sm border-0 position-relative overflow-hidden" 
+                            <button class="btn btn-primary w-100 rounded-3 py-2 mb-2 fw-bold shadow-sm border-0 position-relative overflow-hidden d-inline-flex align-items-center justify-content-center gap-2" 
                                     id="btnCheckIn" onclick="realizarCheckIn(@Model.Id)" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); transition: all 0.3s;">
-                                <i class="bi bi-geo-alt-fill me-2"></i>Registrar Check-In
-                                <span class="badge bg-white text-primary rounded-pill ms-2" style="font-size: 0.75rem;">+5 pts</span>
+                                <i data-lucide="map-pin" style="width: 16px; height: 16px;"></i>Registrar Check-In
+                                <span class="badge bg-white text-primary rounded-pill" style="font-size: 0.75rem;">+5 pts</span>
                             </button>
                         }
                     }
                     else
                     {
-                        <a href="/Account/Login" class="btn btn-secondary w-100 rounded-3 py-2 mb-2 fw-semibold">
-                            <i class="bi bi-lock-fill me-2"></i>Inicia sesión para Check-In
+                        <a href="/Account/Login" class="btn btn-secondary w-100 rounded-3 py-2 mb-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-2">
+                            <i data-lucide="lock" style="width: 16px; height: 16px;"></i>Inicia sesión para Check-In
                         </a>
                     }
 
                     <!-- Botón guardar en favoritos -->
-                    <button class="btn btn-outline-dark w-100 rounded-3 py-2 mb-4 fw-semibold" id="btnFavorito" onclick="toggleFavorito(this)">
-                        <i class="bi bi-heart me-2"></i>Guardar en Favoritos
+                    <button class="btn btn-outline-dark w-100 rounded-3 py-2 mb-4 fw-semibold d-inline-flex align-items-center justify-content-center gap-2" id="btnFavorito" onclick="toggleFavorito(this)">
+                        <i data-lucide="heart" style="width: 16px; height: 16px;"></i>Guardar en Favoritos
                     </button>
 
                     <hr class="my-0 mb-3">
@@ -312,10 +312,10 @@
                             <!-- Selector de estrellas -->
                             <div class="mb-3">
                                 <label class="form-label small text-muted">Tu calificación</label>
-                                <div class="d-flex gap-1" id="starRating">
+                                <div class="d-flex gap-1.5" id="starRating">
                                     @for (int i = 1; i <= 5; i++)
                                     {
-                                        <i class="bi bi-star fs-4 text-muted star-btn" data-value="@i" style="cursor: pointer; transition: all 0.15s;"></i>
+                                        <i data-lucide="star" class="star-btn text-muted" data-value="@i" style="cursor: pointer; width: 24px; height: 24px; transition: all 0.15s; stroke: #94a3b8;"></i>
                                     }
                                 </div>
                                 <input type="hidden" name="calificacion" id="calificacionInput" value="5" />
@@ -329,18 +329,18 @@
                                           style="resize: none; font-size: 0.9rem;"></textarea>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold">
-                                <i class="bi bi-send me-2"></i>Publicar reseña
+                            <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-2">
+                                <i data-lucide="send" style="width: 16px; height: 16px;"></i>Publicar reseña
                             </button>
                         </form>
                     }
                     else
                     {
                         <div class="text-center py-3 bg-light rounded-3">
-                            <i class="bi bi-lock fs-4 text-muted d-block mb-2"></i>
+                            <i data-lucide="lock" class="text-muted opacity-40 mb-2 mx-auto" style="width: 24px; height: 24px;"></i>
                             <p class="small text-muted mb-2">Inicia sesión para dejar tu reseña</p>
                             <a href="/Account/Login" class="btn btn-primary btn-sm rounded-pill px-4">
-                                <i class="bi bi-box-arrow-in-right me-1"></i>Entrar
+                                <i data-lucide="log-in" class="me-1" style="width: 14px; height: 14px;"></i>Entrar
                             </a>
                         </div>
                     }
@@ -356,7 +356,7 @@
      ============================================ -->
 <div class="modal fade" id="modalCheckInExito" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 overflow-hidden shadow-lg rounded-5 text-white position-relative" 
+        <div class="modal-content border-0 overflow-hidden shadow-lg text-white position-relative" 
              style="background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%); border-radius: 2rem !important;">
             
             <!-- Confetti Canvas -->
@@ -365,7 +365,7 @@
             <div class="modal-body text-center p-5 position-relative z-2">
                 <!-- Icon badge -->
                 <div class="success-icon-badge mx-auto mb-4 d-flex align-items-center justify-content-center bg-success bg-opacity-20 rounded-circle" style="width: 72px; height: 72px;">
-                    <i class="bi bi-patch-check-fill text-success fs-1"></i>
+                    <i data-lucide="check-circle-2" class="text-success" style="width: 40px; height: 40px; stroke-width: 2.5px;"></i>
                 </div>
                 
                 <h3 class="fw-bold mb-2" id="modalTitulo">¡Asistencia Confirmada!</h3>
@@ -380,7 +380,9 @@
 
                 <div class="d-flex justify-content-center gap-2">
                     <button type="button" class="btn btn-light rounded-pill px-4 py-2" data-bs-dismiss="modal">Entendido</button>
-                    <a href="/Account/Perfil" class="btn btn-outline-light rounded-pill px-4 py-2"><i class="bi bi-person me-1"></i>Ver Perfil</a>
+                    <a href="/Account/Perfil" class="btn btn-outline-light rounded-pill px-4 py-2 d-inline-flex align-items-center gap-1">
+                        <i data-lucide="user" style="width: 14px; height: 14px;"></i>Ver Perfil
+                    </a>
                 </div>
             </div>
         </div>
@@ -399,11 +401,13 @@
             calInput.value = val;
             stars.forEach((s, idx) => {
                 if (idx < val) {
-                    s.classList.remove('bi-star', 'text-muted');
-                    s.classList.add('bi-star-fill', 'text-warning');
+                    s.classList.remove('text-muted');
+                    s.classList.add('text-warning', 'fill-warning');
+                    s.style.stroke = '#f59e0b';
                 } else {
-                    s.classList.remove('bi-star-fill', 'text-warning');
-                    s.classList.add('bi-star', 'text-muted');
+                    s.classList.remove('text-warning', 'fill-warning');
+                    s.classList.add('text-muted');
+                    s.style.stroke = '#94a3b8';
                 }
             });
         });
@@ -429,16 +433,14 @@
 
     // ===== Toggle Favorito =====
     function toggleFavorito(btn) {
-        const icon = btn.querySelector('i');
-        if (icon.classList.contains('bi-heart')) {
-            icon.classList.remove('bi-heart');
-            icon.classList.add('bi-heart-fill', 'text-danger');
-            btn.innerHTML = '<i class="bi bi-heart-fill text-danger me-2"></i>Guardado';
+        if (btn.classList.contains('active')) {
+            btn.classList.remove('active');
+            btn.innerHTML = '<i data-lucide="heart" style="width: 16px; height: 16px;"></i>Guardar en Favoritos';
         } else {
-            icon.classList.remove('bi-heart-fill', 'text-danger');
-            icon.classList.add('bi-heart');
-            btn.innerHTML = '<i class="bi bi-heart me-2"></i>Guardar en Favoritos';
+            btn.classList.add('active');
+            btn.innerHTML = '<i data-lucide="heart" class="text-danger fill-danger" style="width: 16px; height: 16px; stroke: #dc2626;"></i>Guardado';
         }
+        lucide.createIcons(); // Vuelve a inicializar el nuevo icono insertado dinámicamente
     }
 
     // ===== Confetti Animation (Custom Canvas Particle System) =====
@@ -523,7 +525,8 @@
                 // Actualizar puntos en el navbar si está visible
                 const navbarPuntosBadge = document.querySelector('.tienda-badge');
                 if (navbarPuntosBadge) {
-                    navbarPuntosBadge.innerHTML = '<i class="bi bi-wallet2 me-1"></i>' + data.puntosNuevos + ' pts';
+                    navbarPuntosBadge.innerHTML = '<i data-lucide="wallet2" class="me-1" style="width: 14px; height: 14px;"></i>' + data.puntosNuevos + ' pts';
+                    lucide.createIcons();
                 }
 
                 // Configurar modal
@@ -539,20 +542,32 @@
                 setTimeout(runConfetti, 350);
 
                 // Deshabilitar botón permanentemente hoy
-                btn.className = "btn btn-secondary w-100 rounded-3 py-2 mb-2 fw-semibold";
-                btn.innerHTML = '<i class="bi bi-patch-check-fill me-2"></i>Asistencia Registrada Hoy';
+                btn.className = "btn btn-secondary w-100 rounded-3 py-2 mb-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-2";
+                btn.innerHTML = '<i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>Asistencia Registrada Hoy';
                 btn.disabled = true;
+                lucide.createIcons();
             } else {
                 alert(data.message || 'Error al realizar el check-in.');
                 btn.disabled = false;
                 btn.innerHTML = originalContent;
+                lucide.createIcons();
             }
         } catch (e) {
             console.error(e);
             alert('Error de conexión. Inténtalo de nuevo.');
             btn.disabled = false;
             btn.innerHTML = originalContent;
+            lucide.createIcons();
         }
     }
 </script>
 }
+
+<style>
+    .fill-warning {
+        fill: currentColor;
+    }
+    .fill-danger {
+        fill: currentColor;
+    }
+</style>

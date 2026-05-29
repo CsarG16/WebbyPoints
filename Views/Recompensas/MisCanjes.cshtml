@@ -9,8 +9,8 @@
     <div class="container py-5">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <a href="/Recompensas" class="text-white text-decoration-none opacity-75 d-inline-block mb-3">
-                    <i class="bi bi-arrow-left me-1"></i> Volver a la tienda
+                <a href="/Recompensas" class="text-white text-decoration-none opacity-75 d-inline-flex align-items-center mb-3 transition-all hover-opacity-100">
+                    <i data-lucide="arrow-left" class="me-2" style="width: 18px; height: 18px; vertical-align: middle;"></i> Volver a la tienda
                 </a>
                 <h1 class="display-5 fw-black text-white mb-2">Mis Canjes</h1>
                 <p class="text-white text-opacity-75 fs-6">
@@ -32,11 +32,11 @@
         @if (!Model.Any())
         {
             <div class="text-center py-5">
-                <i class="bi bi-ticket-perforated text-muted" style="font-size: 4rem;"></i>
+                <i data-lucide="ticket" class="text-muted mb-3" style="width: 64px; height: 64px; stroke-width: 1.5;"></i>
                 <h4 class="fw-bold mt-3">Aún no tienes canjes</h4>
                 <p class="text-muted mb-4">Visita la tienda y canjea tus puntos por premios increíbles.</p>
-                <a href="/Recompensas" class="btn btn-primary rounded-pill px-4">
-                    <i class="bi bi-gift me-2"></i>Ir a la Tienda
+                <a href="/Recompensas" class="btn btn-primary rounded-pill px-4 d-inline-flex align-items-center justify-content-center gap-2">
+                    <i data-lucide="gift" style="width: 18px; height: 18px;"></i>Ir a la Tienda
                 </a>
             </div>
         }
@@ -51,7 +51,7 @@
                             <div class="voucher-card-header">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="voucher-icon-box">
-                                        <i class="bi bi-ticket-perforated-fill"></i>
+                                        <i data-lucide="ticket" style="width: 20px; height: 20px;"></i>
                                     </div>
                                     <div>
                                         <h6 class="fw-bold mb-0">@c.Recompensa?.Nombre</h6>
@@ -64,11 +64,11 @@
                                     <span class="fw-black">@c.CodigoVoucher</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <span class="small text-muted">
-                                        <i class="bi bi-star-fill text-warning me-1"></i>@c.PuntosGastados pts
+                                    <span class="small text-muted d-inline-flex align-items-center">
+                                        <i data-lucide="star" class="text-warning fill-warning me-1" style="width: 14px; height: 14px;"></i>@c.PuntosGastados pts
                                     </span>
-                                    <span class="badge @(esDisponible ? "bg-success" : "bg-secondary") bg-opacity-10 @(esDisponible ? "text-success" : "text-secondary") rounded-pill px-3">
-                                        <i class="bi @(esDisponible ? "bi-check-circle" : "bi-x-circle") me-1"></i>
+                                    <span class="badge @(esDisponible ? "bg-success" : "bg-secondary") bg-opacity-10 @(esDisponible ? "text-success" : "text-secondary") rounded-pill px-3 d-inline-flex align-items-center gap-1">
+                                        <i data-lucide="@(esDisponible ? "check-circle" : "x-circle")" style="width: 14px; height: 14px;"></i>
                                         @c.Estado
                                     </span>
                                 </div>

@@ -3,6 +3,7 @@
     ViewData["Title"] = "Mi Perfil";
     var totalReseñas = (int)ViewBag.TotalReseñas;
     var totalCanjes = (int)ViewBag.TotalCanjes;
+    var totalCheckIns = (int)ViewBag.TotalCheckIns;
     var puntosGastados = (int)ViewBag.PuntosGastados;
     var progresoRango = (int)ViewBag.ProgresoRango;
     var nombreSiguiente = ViewBag.NombreSiguienteRango?.ToString() ?? "";
@@ -10,14 +11,14 @@
     var canjesActivos = ViewBag.CanjesActivos as List<WebbyPoints.Models.Canje> ?? new List<WebbyPoints.Models.Canje>();
     var ultimasReseñas = ViewBag.UltimasReseñas as List<WebbyPoints.Models.Reseña> ?? new List<WebbyPoints.Models.Reseña>();
 
-    // Emoji y color de rango
+    // Icono y color de rango (Lucide vector icons en lugar de emojis)
     var rangoConfig = Model.Rango switch {
-        "Leyenda" => new { Emoji = "👑", Color = "#f59e0b", Gradient = "linear-gradient(135deg, #f59e0b, #d97706)" },
-        "Administrador" => new { Emoji = "🛡️", Color = "#8b5cf6", Gradient = "linear-gradient(135deg, #8b5cf6, #6d28d9)" },
-        "Experto" => new { Emoji = "🎓", Color = "#3b82f6", Gradient = "linear-gradient(135deg, #3b82f6, #2563eb)" },
-        "Local" => new { Emoji = "🗺️", Color = "#10b981", Gradient = "linear-gradient(135deg, #10b981, #059669)" },
-        "Explorador" => new { Emoji = "🧭", Color = "#06b6d4", Gradient = "linear-gradient(135deg, #06b6d4, #0891b2)" },
-        _ => new { Emoji = "🐾", Color = "#94a3b8", Gradient = "linear-gradient(135deg, #94a3b8, #64748b)" }
+        "Leyenda" => new { Icon = "crown", Color = "#f59e0b", Gradient = "linear-gradient(135deg, #f59e0b, #d97706)" },
+        "Administrador" => new { Icon = "shield-check", Color = "#8b5cf6", Gradient = "linear-gradient(135deg, #8b5cf6, #6d28d9)" },
+        "Experto" => new { Icon = "graduation-cap", Color = "#3b82f6", Gradient = "linear-gradient(135deg, #3b82f6, #2563eb)" },
+        "Local" => new { Icon = "map", Color = "#10b981", Gradient = "linear-gradient(135deg, #10b981, #059669)" },
+        "Explorador" => new { Icon = "compass", Color = "#06b6d4", Gradient = "linear-gradient(135deg, #06b6d4, #0891b2)" },
+        _ => new { Icon = "sparkles", Color = "#94a3b8", Gradient = "linear-gradient(135deg, #94a3b8, #64748b)" }
     };
 }
 
@@ -35,21 +36,21 @@
                     </div>
                     <div>
                         <h1 class="fw-black text-white mb-1 display-6">@Model.Nombre</h1>
-                        <p class="text-white text-opacity-75 mb-1">
-                            <i class="bi bi-envelope me-1"></i>@Model.Email
+                        <p class="text-white text-opacity-75 mb-1 d-flex align-items-center gap-2">
+                            <i data-lucide="mail" style="width: 16px; height: 16px;"></i>@Model.Email
                         </p>
-                        <p class="text-white text-opacity-50 mb-0 small">
-                            <i class="bi bi-building me-1"></i>@Model.Universidad — @Model.Carrera
+                        <p class="text-white text-opacity-50 mb-0 small d-flex align-items-center gap-2">
+                            <i data-lucide="building" style="width: 16px; height: 16px;"></i>@Model.Universidad — @Model.Carrera
                         </p>
                     </div>
                 </div>
                 <!-- Rango Badge -->
                 <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <span class="perfil-rango-badge" style="background: @rangoConfig.Gradient;">
-                        <span class="me-1">@rangoConfig.Emoji</span> @Model.Rango
+                    <span class="perfil-rango-badge d-inline-flex align-items-center gap-1.5" style="background: @rangoConfig.Gradient;">
+                        <i data-lucide="@rangoConfig.Icon" style="width: 16px; height: 16px;"></i> @Model.Rango
                     </span>
-                    <span class="text-white text-opacity-50 small">
-                        <i class="bi bi-calendar3 me-1"></i>Miembro desde @Model.FechaRegistro.ToString("MMMM yyyy")
+                    <span class="text-white text-opacity-50 small d-inline-flex align-items-center gap-1">
+                        <i data-lucide="calendar" style="width: 14px; height: 14px;"></i>Miembro desde @Model.FechaRegistro.ToString("MMMM yyyy")
                     </span>
                 </div>
             </div>
@@ -57,8 +58,8 @@
                 <div class="perfil-puntos-display">
                     <div class="perfil-puntos-number">@Model.Puntos</div>
                     <div class="perfil-puntos-label">puntos disponibles</div>
-                    <a href="/Recompensas" class="btn btn-light btn-sm rounded-pill px-3 mt-2 fw-bold">
-                        <i class="bi bi-gift me-1"></i>Ir a la Tienda
+                    <a href="/Recompensas" class="btn btn-light btn-sm rounded-pill px-3 mt-2 fw-bold d-inline-flex align-items-center gap-1">
+                        <i data-lucide="gift"></i>Ir a la Tienda
                     </a>
                 </div>
             </div>
@@ -73,13 +74,13 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-4">
-                <h6 class="fw-bold mb-1">
-                    <span class="me-1">@rangoConfig.Emoji</span> Rango: @Model.Rango
+                <h6 class="fw-bold mb-1 d-flex align-items-center gap-1.5">
+                    <i data-lucide="@rangoConfig.Icon" style="color: @rangoConfig.Color;"></i> Rango: @Model.Rango
                 </h6>
                 <p class="text-muted small mb-0">
                     @if (Model.Rango == "Leyenda" || Model.Rango == "Administrador")
                     {
-                        <span>¡Has alcanzado el máximo nivel! 🎉</span>
+                        <span>¡Has alcanzado el máximo nivel!</span>
                     }
                     else
                     {
@@ -112,7 +113,7 @@
             <div class="col-6 col-lg-3">
                 <div class="stat-card">
                     <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
-                        <i class="bi bi-star-fill"></i>
+                        <i data-lucide="star" class="text-white fill-white" style="width: 20px; height: 20px;"></i>
                     </div>
                     <div class="stat-value">@Model.Puntos</div>
                     <div class="stat-label">Puntos Actuales</div>
@@ -121,7 +122,7 @@
             <div class="col-6 col-lg-3">
                 <div class="stat-card">
                     <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                        <i class="bi bi-geo-alt-fill"></i>
+                        <i data-lucide="map-pin" class="text-white" style="width: 20px; height: 20px;"></i>
                     </div>
                     <div class="stat-value">@ViewBag.TotalCheckIns</div>
                     <div class="stat-label">Check-Ins / Eventos</div>
@@ -130,7 +131,7 @@
             <div class="col-6 col-lg-3">
                 <div class="stat-card">
                     <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
-                        <i class="bi bi-chat-quote-fill"></i>
+                        <i data-lucide="message-square" class="text-white" style="width: 20px; height: 20px;"></i>
                     </div>
                     <div class="stat-value">@totalReseñas</div>
                     <div class="stat-label">Reseñas</div>
@@ -139,7 +140,7 @@
             <div class="col-6 col-lg-3">
                 <div class="stat-card">
                     <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                        <i class="bi bi-gift-fill"></i>
+                        <i data-lucide="gift" class="text-white" style="width: 20px; height: 20px;"></i>
                     </div>
                     <div class="stat-value">@totalCanjes</div>
                     <div class="stat-label">Canjes Realizados</div>
@@ -152,8 +153,8 @@
             <div class="col-lg-6">
                 <div class="perfil-section-card h-100">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h5 class="fw-bold mb-0">
-                            <i class="bi bi-ticket-perforated-fill text-primary me-2"></i>Vouchers Activos
+                        <h5 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                            <i data-lucide="ticket" class="text-primary"></i>Vouchers Activos
                         </h5>
                         <a href="/Recompensas/MisCanjes" class="text-primary small text-decoration-none fw-medium">
                             Ver todos →
@@ -166,7 +167,7 @@
                             <div class="voucher-mini mb-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="voucher-mini-icon">
-                                        <i class="bi bi-qr-code"></i>
+                                        <i data-lucide="qr-code" style="width: 20px; height: 20px;"></i>
                                     </div>
                                     <div class="flex-grow-1">
                                         <h6 class="fw-bold mb-0 small">@c.Recompensa?.Nombre</h6>
@@ -182,7 +183,7 @@
                     else
                     {
                         <div class="text-center py-4">
-                            <i class="bi bi-ticket-perforated text-muted" style="font-size: 2.5rem;"></i>
+                            <i data-lucide="ticket" class="text-muted opacity-40 mb-2" style="width: 48px; height: 48px;"></i>
                             <p class="text-muted small mt-2 mb-0">Aún no tienes vouchers activos</p>
                         </div>
                     }
@@ -193,8 +194,8 @@
             <div class="col-lg-6">
                 <div class="perfil-section-card h-100">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h5 class="fw-bold mb-0">
-                            <i class="bi bi-chat-left-quote-fill text-success me-2"></i>Mis Últimas Reseñas
+                        <h5 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                            <i data-lucide="message-square" class="text-success"></i>Mis Últimas Reseñas
                         </h5>
                     </div>
                     @if (ultimasReseñas.Any())
@@ -203,14 +204,14 @@
                         {
                             <div class="reseña-mini mb-3">
                                 <div class="d-flex align-items-start gap-3">
-                                    <div class="reseña-mini-stars" style="flex-shrink: 0;">
+                                    <div class="reseña-mini-stars d-inline-flex gap-0.5" style="flex-shrink: 0;">
                                         @for (int i = 0; i < r.Calificacion; i++)
                                         {
-                                            <i class="bi bi-star-fill text-warning" style="font-size: 0.75rem;"></i>
+                                            <i data-lucide="star" class="text-warning fill-warning" style="width: 12px; height: 12px; stroke: #f59e0b;"></i>
                                         }
                                         @for (int i = r.Calificacion; i < 5; i++)
                                         {
-                                            <i class="bi bi-star text-muted" style="font-size: 0.75rem;"></i>
+                                            <i data-lucide="star" class="text-muted" style="width: 12px; height: 12px;"></i>
                                         }
                                     </div>
                                     <div class="flex-grow-1">
@@ -225,10 +226,10 @@
                     else
                     {
                         <div class="text-center py-4">
-                            <i class="bi bi-chat-left text-muted" style="font-size: 2.5rem;"></i>
+                            <i data-lucide="message-square" class="text-muted opacity-40 mb-2" style="width: 48px; height: 48px;"></i>
                             <p class="text-muted small mt-2 mb-2">Aún no has escrito reseñas</p>
-                            <a href="/Home/Explorar" class="btn btn-outline-primary btn-sm rounded-pill px-3">
-                                <i class="bi bi-compass me-1"></i>Explorar lugares
+                            <a href="/Home/Explorar" class="btn btn-outline-primary btn-sm rounded-pill px-3 d-inline-flex align-items-center gap-1">
+                                <i data-lucide="compass" style="width: 14px; height: 14px;"></i>Explorar lugares
                             </a>
                         </div>
                     }
@@ -240,8 +241,8 @@
         <div class="row g-4 mt-2">
             <div class="col-12">
                 <div class="perfil-section-card">
-                    <h5 class="fw-bold mb-4">
-                        <i class="bi bi-calendar2-check-fill text-primary me-2"></i>Mis Asistencias y Eventos Cívicos
+                    <h5 class="fw-bold mb-4 d-flex align-items-center gap-2">
+                        <i data-lucide="calendar-check" class="text-primary"></i>Mis Asistencias y Eventos Cívicos
                     </h5>
                     @{
                         var ultimosCheckIns = ViewBag.UltimosCheckIns as List<WebbyPoints.Models.CheckIn> ?? new List<WebbyPoints.Models.CheckIn>();
@@ -259,12 +260,12 @@
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="rounded-3 d-flex align-items-center justify-content-center text-white" 
                                                  style="width: 44px; height: 44px; background: @(esEspecial ? "#22c55e" : "#3b82f6"); font-size: 1.1rem; flex-shrink: 0;">
-                                                <i class="bi @(esEspecial ? "bi-award-fill" : "bi-geo-alt-fill")"></i>
+                                                <i data-lucide="@(esEspecial ? "award" : "map-pin")" style="width: 20px; height: 20px;"></i>
                                             </div>
                                             <div>
                                                 <h6 class="fw-bold mb-0 small text-dark">@c.PuntoInteres?.Nombre</h6>
-                                                <div class="text-muted" style="font-size: 0.72rem; margin-top: 2px;">
-                                                    <i class="bi bi-clock me-1"></i>@c.FechaCheckIn.ToString("dd MMM yyyy - hh:mm tt")
+                                                <div class="text-muted d-flex align-items-center gap-1" style="font-size: 0.72rem; margin-top: 2px;">
+                                                    <i data-lucide="clock" style="width: 12px; height: 12px;"></i>@c.FechaCheckIn.ToString("dd MMM yyyy - hh:mm tt")
                                                 </div>
                                                 @if (esEspecial)
                                                 {
@@ -286,10 +287,10 @@
                     else
                     {
                         <div class="text-center py-5">
-                            <i class="bi bi-calendar2-x text-muted" style="font-size: 2.5rem;"></i>
+                            <i data-lucide="calendar" class="text-muted opacity-40 mb-2" style="width: 48px; height: 48px;"></i>
                             <p class="text-muted small mt-2 mb-0">Aún no has registrado visitas ni asistencias</p>
-                            <a href="/Home/Explorar" class="btn btn-outline-primary btn-sm rounded-pill px-3 mt-3">
-                                <i class="bi bi-compass me-1"></i>Ver Eventos Especiales
+                            <a href="/Home/Explorar" class="btn btn-outline-primary btn-sm rounded-pill px-3 mt-3 d-inline-flex align-items-center gap-1">
+                                <i data-lucide="compass" style="width: 14px; height: 14px;"></i>Ver Eventos Especiales
                             </a>
                         </div>
                     }
@@ -302,8 +303,8 @@
         {
             <div class="mt-4">
                 <div class="perfil-section-card">
-                    <h5 class="fw-bold mb-3">
-                        <i class="bi bi-heart-fill text-danger me-2"></i>Mis Intereses
+                    <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i data-lucide="heart" class="text-danger fill-danger"></i>Mis Intereses
                     </h5>
                     <div class="d-flex flex-wrap gap-2">
                         @foreach (var pref in Model.Preferencias.Split(',', StringSplitOptions.RemoveEmptyEntries))
@@ -318,3 +319,15 @@
         }
     </div>
 </section>
+
+<style>
+    .fill-white {
+        fill: currentColor;
+    }
+    .fill-warning {
+        fill: currentColor;
+    }
+    .fill-danger {
+        fill: currentColor;
+    }
+</style>

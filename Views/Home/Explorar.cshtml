@@ -5,10 +5,10 @@
 
     // Configuración visual por tipo de plan
     var config = planActual switch {
-        "pareja" => new { Icon = "bi-heart-fill", Color = "danger", Label = "Pareja", Desc = "Momentos especiales" },
-        "amigos" => new { Icon = "bi-people-fill", Color = "warning", Label = "Amigos", Desc = "Diversión garantizada" },
-        "solo"   => new { Icon = "bi-person-fill", Color = "primary", Label = "Solo", Desc = "Productividad y relax" },
-        _        => new { Icon = "bi-compass-fill", Color = "dark", Label = "Todos los lugares", Desc = "Descubre de todo" }
+        "pareja" => new { Icon = "heart", Color = "danger", Label = "Pareja", Desc = "Momentos especiales" },
+        "amigos" => new { Icon = "users", Color = "warning", Label = "Amigos", Desc = "Diversión garantizada" },
+        "solo"   => new { Icon = "user", Color = "primary", Label = "Solo", Desc = "Productividad y relax" },
+        _        => new { Icon = "compass", Color = "dark", Label = "Todos los lugares", Desc = "Descubre de todo" }
     };
 }
 
@@ -27,9 +27,9 @@
         <div class="row g-4 justify-content-center">
             @{
                 var planes = new[] {
-                    new { Id = "solo", Label = "Plan solo", Sub = "Productividad", Icon = "bi-person-fill", ActiveColor = "#0d6efd" },
-                    new { Id = "pareja", Label = "Plan pareja", Sub = "Citas & Relax", Icon = "bi-heart-fill", ActiveColor = "#dc3545" },
-                    new { Id = "amigos", Label = "Plan amigos", Sub = "Diversión", Icon = "bi-people-fill", ActiveColor = "#ffc107" }
+                    new { Id = "solo", Label = "Plan solo", Sub = "Productividad", Icon = "user", ActiveColor = "#0d6efd" },
+                    new { Id = "pareja", Label = "Plan pareja", Sub = "Citas & Relax", Icon = "heart", ActiveColor = "#dc3545" },
+                    new { Id = "amigos", Label = "Plan amigos", Sub = "Diversión", Icon = "users", ActiveColor = "#ffc107" }
                 };
             }
 
@@ -45,7 +45,7 @@
                                 <div class="rounded-3 d-flex align-items-center justify-content-center" 
                                      style="width: 54px; height: 54px; flex-shrink: 0; 
                                             background-color: @(isActive ? p.ActiveColor : "rgba(255,255,255,0.2)");">
-                                    <i class="bi @p.Icon fs-4 text-white"></i>
+                                    <i data-lucide="@p.Icon" class="text-white" style="width: 24px; height: 24px;"></i>
                                 </div>
                                 
                                 <!-- Texto -->
@@ -56,7 +56,7 @@
 
                                 <!-- Checkmark si está activo -->
                                 @if(isActive) { 
-                                    <i class="bi bi-check-circle-fill fs-5" style="color: @p.ActiveColor;"></i> 
+                                    <i data-lucide="check-circle-2" style="color: @p.ActiveColor; width: 22px; height: 22px; stroke-width: 2.5px;"></i> 
                                 }
                             </div>
                         </div>
@@ -77,12 +77,12 @@
                     <input type="hidden" name="plan" value="@planActual" />
 
                     <div class="flex-grow-1 position-relative">
-                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                        <i data-lucide="search" class="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" style="width: 18px; height: 18px;"></i>
                         <input type="text" name="searchTerm" value="@ViewData["SearchTerm"]" class="form-control border-0 bg-light rounded-pill ps-5 py-2" placeholder="Buscar por nombre (Ej: Starbucks) o categoría...">
                     </div>
                     
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-wp rounded-pill px-4 text-white" style="background-color: #0d6efd;">Buscar</button>
+                        <button type="submit" class="btn btn-wp rounded-pill px-4 text-white d-inline-flex align-items-center gap-2" style="background-color: #0d6efd;"><i data-lucide="search" style="width: 16px; height: 16px;"></i>Buscar</button>
                         
                         <select name="sortBy" class="form-select border border-secondary bg-light rounded-pill px-4" style="width: auto;" onchange="this.form.submit()">
                             <option value="">✨ Recomendados</option>
@@ -110,7 +110,7 @@
             <div class="vistos-recientes-section rounded-4 p-4 mb-5">
                 <div class="d-flex align-items-center gap-3 mb-3">
                     <div class="vistos-icon-wrapper">
-                        <i class="bi bi-clock-history"></i>
+                        <i data-lucide="history" style="width: 20px; height: 20px;"></i>
                     </div>
                     <div>
                         <h5 class="fw-bold mb-0">Vistos recientemente</h5>
@@ -129,15 +129,15 @@
                                         <div class="col-12 d-flex align-items-center">
                                             <div class="card-body py-3 px-3">
                                                 <h6 class="fw-bold mb-1 text-dark">@punto.Nombre</h6>
-                                                <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill small mb-2">
+                                                <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill small mb-2" style="font-size: 0.7rem;">
                                                     @punto.Categoria
                                                 </span>
-                                                <div class="d-flex align-items-center gap-3 text-muted small">
+                                                <div class="d-flex align-items-center gap-3 text-muted small" style="font-size: 0.8rem;">
                                                     <span class="d-flex align-items-center gap-1">
-                                                        <i class="bi bi-star-fill text-warning"></i> @punto.Calificacion.ToString("0.0")
+                                                        <i data-lucide="star" class="text-warning fill-warning" style="width: 14px; height: 14px; stroke: #f59e0b;"></i> @punto.Calificacion.ToString("0.0")
                                                     </span>
                                                     <span class="d-flex align-items-center gap-1">
-                                                        <i class="bi bi-currency-dollar text-primary"></i> @punto.PrecioRango
+                                                        <i data-lucide="dollar-sign" class="text-primary" style="width: 14px; height: 14px;"></i> @punto.PrecioRango
                                                     </span>
                                                 </div>
                                             </div>
@@ -153,8 +153,8 @@
 
         <div class="d-flex align-items-center gap-2 mb-4">
             <h3 class="fw-bold mb-0">Recomendaciones para ti</h3>
-            <span class="badge bg-@(config.Color)-subtle text-@(config.Color) rounded-pill py-2 px-3">
-                <i class="bi @config.Icon me-1"></i>@config.Label
+            <span class="badge bg-@(config.Color)-subtle text-@(config.Color) rounded-pill py-2 px-3 d-inline-flex align-items-center gap-1">
+                <i data-lucide="@config.Icon" style="width: 16px; height: 16px;"></i>@config.Label
             </span>
         </div>
 
@@ -173,12 +173,12 @@
                                 else
                                 {
                                     <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                        <i class="bi bi-image text-muted fs-1 opacity-25"></i>
+                                        <i data-lucide="image" class="text-muted opacity-25" style="width: 48px; height: 48px;"></i>
                                     </div>
                                 }
                                 <div class="position-absolute top-0 end-0 m-3">
-                                    <span class="badge bg-white text-dark shadow-sm py-2 px-3 rounded-pill border">
-                                        <i class="bi bi-star-fill text-warning me-1"></i>@punto.Calificacion.ToString("0.0")
+                                    <span class="badge bg-white text-dark shadow-sm py-2 px-3 rounded-pill border d-inline-flex align-items-center gap-1">
+                                        <i data-lucide="star" class="text-warning fill-warning" style="width: 14px; height: 14px; stroke: #f59e0b;"></i>@punto.Calificacion.ToString("0.0")
                                     </span>
                                 </div>
                                 <div class="position-absolute bottom-0 start-0 m-3">
@@ -191,20 +191,20 @@
                                 <h5 class="fw-bold mb-2">@punto.Nombre</h5>
                                 <p class="text-muted small mb-3 line-clamp-2">@punto.Descripcion</p>
                                 
-                                <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
-                                    <div class="small d-flex align-items-center text-muted">
-                                        <i class="bi bi-geo-alt me-1"></i>@punto.Distancia km
+                                <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-muted" style="font-size: 0.82rem;">
+                                    <div class="d-flex align-items-center gap-1">
+                                        <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>@punto.Distancia km
                                     </div>
-                                    <div class="small d-flex align-items-center text-muted">
-                                        <i class="bi bi-currency-dollar me-1"></i>@punto.PrecioRango
+                                    <div class="d-flex align-items-center gap-1">
+                                        <i data-lucide="dollar-sign" style="width: 14px; height: 14px;"></i>@punto.PrecioRango
                                     </div>
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="small text-muted">
-                                        <i class="bi bi-clock me-1"></i>@(string.IsNullOrEmpty(punto.Horario) ? "9:00 AM - 10:00 PM" : punto.Horario)
+                                    <div class="small text-muted d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                        <i data-lucide="clock" style="width: 14px; height: 14px;"></i>@(string.IsNullOrEmpty(punto.Horario) ? "9:00 AM - 10:00 PM" : punto.Horario)
                                     </div>
-                                    <a href="/Home/Detalle/@punto.Id" class="btn btn-wp btn-sm px-3 rounded-pill border border-secondary">Ver detalles</a>
+                                    <a href="/Home/Detalle/@punto.Id" class="btn btn-sm btn-outline-dark px-3 rounded-pill">Ver detalles</a>
                                 </div>
                             </div>
                         </div>
@@ -216,7 +216,7 @@
         {
             <div class="text-center py-5 bg-white rounded-5 shadow-sm border mt-4">
                 <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 120px; height: 120px;">
-                    <i class="bi bi-search fs-1 text-muted opacity-50"></i>
+                    <i data-lucide="search" class="text-muted opacity-50" style="width: 48px; height: 48px;"></i>
                 </div>
                 <h3 class="fw-bold mb-2">No encontramos resultados</h3>
                 <p class="text-muted mb-4 mx-auto" style="max-width: 450px;">
@@ -225,7 +225,7 @@
                 </p>
                 <div class="d-flex justify-content-center gap-3">
                     <a href="/" class="btn btn-outline-secondary rounded-pill px-4">Volver al inicio</a>
-                    <button class="btn btn-wp border border-secondary rounded-pill px-4"><i class="bi bi-plus-lg me-2"></i>Agregar Lugar</button>
+                    <button class="btn btn-wp border border-secondary rounded-pill px-4 d-inline-flex align-items-center gap-2"><i data-lucide="plus"></i>Agregar Lugar</button>
                 </div>
             </div>
         }
@@ -269,5 +269,8 @@
     .visto-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.1) !important;
+    }
+    .fill-warning {
+        fill: currentColor;
     }
 </style>

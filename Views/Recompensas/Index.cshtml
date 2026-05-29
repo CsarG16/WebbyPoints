@@ -44,8 +44,8 @@
             if (data.success) {
                 resultado.innerHTML = `
                     <div class="text-center py-3">
-                        <div class="canje-success-icon mb-3">
-                            <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                        <div class="canje-success-icon mb-3 d-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle mx-auto" style="width: 72px; height: 72px;">
+                            <i data-lucide="check-circle-2" class="text-success" style="width: 44px; height: 44px; stroke-width: 2.5px;"></i>
                         </div>
                         <h4 class="fw-bold text-success mb-2">¡Canje Exitoso!</h4>
                         <p class="text-muted mb-3">Presenta este código en el establecimiento:</p>
@@ -56,15 +56,18 @@
                     </div>`;
                 // Actualizar puntos en la página
                 document.getElementById('puntosHeader').textContent = data.puntosRestantes;
+                // Renderizar iconos de Lucide dinámicos
+                lucide.createIcons();
                 // Recargar después de cerrar
                 document.getElementById('canjeModal').addEventListener('hidden.bs.modal', () => location.reload(), { once: true });
             } else {
                 resultado.innerHTML = `
                     <div class="text-center py-3">
-                        <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 3rem;"></i>
+                        <i data-lucide="alert-triangle" class="text-warning mx-auto" style="width: 48px; height: 48px;"></i>
                         <h5 class="fw-bold mt-3">No se pudo canjear</h5>
                         <p class="text-muted">${data.error}</p>
                     </div>`;
+                lucide.createIcons();
             }
         } catch (e) {
             btn.disabled = false;
@@ -87,14 +90,14 @@
     <div class="container">
         <div class="row align-items-center py-5">
             <div class="col-lg-7">
-                <span class="badge-glow mb-3 d-inline-block">
-                    <i class="bi bi-gift me-1"></i> TIENDA DE RECOMPENSAS
+                <span class="badge-glow mb-3 d-inline-flex align-items-center gap-1.5">
+                    <i data-lucide="gift"></i> TIENDA DE RECOMPENSAS
                 </span>
                 <h1 class="display-4 fw-black text-white mb-3">
                     Canjea tus puntos<br>por premios reales
                 </h1>
                 <p class="text-white text-opacity-75 fs-5 mb-0">
-                    Cada acción cuenta. Participá en eventos, dejá reseñas y canjeá
+                    Cada acción cuenta. Participa en eventos, deja reseñas y canjea
                     tus puntos por experiencias, descuentos y merchandising exclusivo.
                 </p>
             </div>
@@ -105,8 +108,8 @@
                         <div class="puntos-card-label">Tus puntos disponibles</div>
                         <div class="puntos-card-valor" id="puntosHeader">@puntos</div>
                         <div class="puntos-card-label mt-2">
-                            <a href="/Account/Perfil" class="text-white text-decoration-none opacity-75">
-                                <i class="bi bi-person-circle me-1"></i>Ver mi perfil →
+                            <a href="/Account/Perfil" class="text-white text-decoration-none opacity-75 d-inline-flex align-items-center gap-1">
+                                <i data-lucide="user" style="width: 14px; height: 14px;"></i>Ver mi perfil →
                             </a>
                         </div>
                     </div>
@@ -115,8 +118,8 @@
                 {
                     <div class="puntos-card-hero">
                         <div class="puntos-card-label mb-2">¿Quieres canjear premios?</div>
-                        <a href="/Account/Login" class="btn btn-light btn-lg rounded-pill fw-bold px-4">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Inicia sesión
+                        <a href="/Account/Login" class="btn btn-light btn-lg rounded-pill fw-bold px-4 d-inline-flex align-items-center gap-2 mx-auto justify-content-center">
+                            <i data-lucide="log-in" style="width: 20px; height: 20px;"></i>Inicia sesión
                         </a>
                     </div>
                 }
@@ -131,7 +134,7 @@
 <section class="py-4 bg-white border-bottom sticky-top" style="z-index: 1020;">
     <div class="container">
         <div class="d-flex flex-wrap gap-2 align-items-center">
-            <span class="text-muted fw-medium me-2"><i class="bi bi-funnel me-1"></i>Filtrar:</span>
+            <span class="text-muted fw-medium me-2 d-inline-flex align-items-center gap-1"><i data-lucide="filter" style="width: 16px; height: 16px;"></i>Filtrar:</span>
             <a href="/Recompensas"
                class="btn btn-filter @(categoriaActual == "Todas" ? "active" : "")">
                 Todas
@@ -139,16 +142,16 @@
             @foreach (var cat in categorias)
             {
                 var icono = cat switch {
-                    "Descuento" => "bi-tag",
-                    "Merchandising" => "bi-bag",
-                    "Ocio" => "bi-controller",
-                    "Experiencia" => "bi-stars",
-                    "Cultura" => "bi-palette",
-                    _ => "bi-gift"
+                    "Descuento" => "tag",
+                    "Merchandising" => "shopping-bag",
+                    "Ocio" => "gamepad-2",
+                    "Experiencia" => "sparkles",
+                    "Cultura" => "palette",
+                    _ => "gift"
                 };
                 <a href="/Recompensas?categoria=@cat"
-                   class="btn btn-filter @(categoriaActual == cat ? "active" : "")">
-                    <i class="bi @icono me-1"></i>@cat
+                   class="btn btn-filter @(categoriaActual == cat ? "active" : "") d-inline-flex align-items-center gap-1.5">
+                    <i data-lucide="@icono" style="width: 14px; height: 14px;"></i>@cat
                 </a>
             }
         </div>
@@ -163,7 +166,7 @@
         @if (!Model.Any())
         {
             <div class="text-center py-5">
-                <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+                <i data-lucide="inbox" class="text-muted opacity-40 mx-auto" style="width: 64px; height: 64px;"></i>
                 <h4 class="fw-bold mt-3">No hay recompensas en esta categoría</h4>
                 <p class="text-muted">Intenta con otra categoría o vuelve más tarde.</p>
             </div>
@@ -197,15 +200,15 @@
 
                                 <div class="d-flex align-items-center justify-content-between mt-auto">
                                     <div class="reward-cost">
-                                        <i class="bi bi-star-fill text-warning me-1"></i>
+                                        <i data-lucide="star" class="text-warning fill-warning me-1" style="width: 14px; height: 14px; stroke: #f59e0b;"></i>
                                         <span class="fw-black">@r.CostoPuntos</span>
                                         <span class="text-muted small">pts</span>
                                     </div>
 
                                     @if (r.Stock > 0 && r.Stock <= 10)
                                     {
-                                        <span class="badge bg-warning bg-opacity-10 text-warning small">
-                                            <i class="bi bi-fire me-1"></i>Quedan @r.Stock
+                                        <span class="badge bg-warning bg-opacity-10 text-warning small d-inline-flex align-items-center gap-1" style="color: #b45309 !important;">
+                                            <i data-lucide="flame" style="width: 12px; height: 12px;"></i>Quedan @r.Stock
                                         </span>
                                     }
                                 </div>
@@ -214,27 +217,27 @@
                             <div class="reward-card-footer">
                                 @if (!logueado)
                                 {
-                                    <a href="/Account/Login" class="btn btn-outline-primary w-100 rounded-pill btn-sm">
-                                        <i class="bi bi-box-arrow-in-right me-1"></i>Inicia sesión
+                                    <a href="/Account/Login" class="btn btn-outline-primary w-100 rounded-pill btn-sm d-inline-flex align-items-center justify-content-center gap-1">
+                                        <i data-lucide="log-in" style="width: 14px; height: 14px;"></i>Inicia sesión
                                     </a>
                                 }
                                 else if (agotado)
                                 {
-                                    <button class="btn btn-secondary w-100 rounded-pill btn-sm" disabled>
+                                    <button class="btn btn-secondary w-100 rounded-pill btn-sm text-center" disabled>
                                         Agotado
                                     </button>
                                 }
                                 else if (puedeCanjar)
                                 {
-                                    <button class="btn btn-canjear w-100 rounded-pill btn-sm"
+                                    <button class="btn btn-canjear w-100 rounded-pill btn-sm d-inline-flex align-items-center justify-content-center gap-1"
                                             onclick="canjearRecompensa(@r.Id, '@r.Nombre.Replace("'", "\\'")', @r.CostoPuntos)">
-                                        <i class="bi bi-gift me-1"></i>Canjear
+                                        <i data-lucide="gift" style="width: 14px; height: 14px;"></i>Canjear
                                     </button>
                                 }
                                 else
                                 {
-                                    <button class="btn btn-outline-secondary w-100 rounded-pill btn-sm" disabled>
-                                        <i class="bi bi-lock me-1"></i>Necesitas @(r.CostoPuntos - puntos) pts más
+                                    <button class="btn btn-outline-secondary w-100 rounded-pill btn-sm d-inline-flex align-items-center justify-content-center gap-1" disabled>
+                                        <i data-lucide="lock" style="width: 14px; height: 14px;"></i>Faltan @(r.CostoPuntos - puntos) pts
                                     </button>
                                 }
                             </div>
@@ -254,8 +257,8 @@
         <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
             <div class="modal-header border-0 bg-gradient-primary text-white py-4">
                 <div>
-                    <h5 class="modal-title fw-bold mb-1">
-                        <i class="bi bi-gift me-2"></i>Confirmar Canje
+                    <h5 class="modal-title fw-bold mb-1 d-flex align-items-center gap-2">
+                        <i data-lucide="gift"></i>Confirmar Canje
                     </h5>
                     <small class="opacity-75">Esta acción descontará puntos de tu cuenta</small>
                 </div>
@@ -268,7 +271,7 @@
                 <div id="modalConfirmacion">
                     <div class="text-center mb-3">
                         <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 64px; height: 64px;">
-                            <i class="bi bi-star-fill text-primary fs-3"></i>
+                            <i data-lucide="star" class="text-primary fill-primary" style="width: 32px; height: 32px; stroke: #1A4BDE;"></i>
                         </div>
                     </div>
                     <p class="text-center mb-1">Estás a punto de canjear:</p>
@@ -278,8 +281,8 @@
                         <span class="fw-black text-primary fs-4 ms-2" id="modalCosto"></span>
                         <span class="text-muted">puntos</span>
                     </div>
-                    <p class="text-muted text-center small">
-                        <i class="bi bi-info-circle me-1"></i>
+                    <p class="text-muted text-center small d-flex align-items-center justify-content-center gap-1" style="font-size: 0.8rem;">
+                        <i data-lucide="info" style="width: 14px; height: 14px;"></i>
                         Recibirás un código voucher único que podrás presentar en el establecimiento.
                     </p>
                 </div>
@@ -289,10 +292,19 @@
             </div>
             <div class="modal-footer border-0 px-4 pb-4">
                 <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold" id="btnConfirmar" onclick="confirmarCanje()">
-                    <i class="bi bi-check2-circle me-1"></i>Confirmar Canje
+                <button type="button" class="btn btn-primary rounded-pill px-4 fw-bold d-inline-flex align-items-center gap-1.5" id="btnConfirmar" onclick="confirmarCanje()">
+                    <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>Confirmar Canje
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .fill-warning {
+        fill: currentColor;
+    }
+    .fill-primary {
+        fill: currentColor;
+    }
+</style>

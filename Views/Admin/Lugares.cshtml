@@ -9,7 +9,7 @@
     <div class="container">
         <div class="d-flex align-items-center gap-3 mb-2">
             <div class="admin-icon-badge">
-                <i class="bi bi-geo-alt-fill"></i>
+                <i data-lucide="map-pin" style="width: 28px; height: 28px; stroke-width: 2;"></i>
             </div>
             <div>
                 <h1 class="fw-black mb-0 display-6">Gestión de Lugares</h1>
@@ -23,34 +23,35 @@
     <div class="container">
         <!-- Nav Admin -->
         <div class="d-flex flex-wrap gap-2 mb-4">
-            <a href="/Admin" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            <a href="/Admin" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="gauge" style="width: 18px; height: 18px;"></i>Dashboard
             </a>
-            <a href="/Admin/Lugares" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-geo-alt me-1"></i>Lugares
+            <a href="/Admin/Lugares" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>Lugares
             </a>
-            <a href="/Admin/Usuarios" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-people me-1"></i>Usuarios
+            <a href="/Admin/Usuarios" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="users" style="width: 18px; height: 18px;"></i>Usuarios
             </a>
-            <a href="/Admin/Reseñas" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-chat-square-text me-1"></i>Reseñas
+            <a href="/Admin/Reseñas" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>Reseñas
             </a>
         </div>
 
         <!-- Alerta de éxito -->
         @if (TempData["Success"] != null)
         {
-            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm d-inline-flex align-items-center w-100" role="alert">
+                <i data-lucide="check-circle" class="me-2 text-success" style="width: 20px; height: 20px;"></i>
+                <div class="flex-grow-1">@TempData["Success"]</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" style="top: 50%; transform: translateY(-50%);"></button>
             </div>
         }
 
         <!-- Botón Agregar -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="fw-bold mb-0">@Model.Count lugares registrados</h5>
-            <a href="/Admin/CrearLugar" class="btn btn-primary rounded-pill px-4">
-                <i class="bi bi-plus-lg me-1"></i>Agregar Lugar
+            <a href="/Admin/CrearLugar" class="btn btn-primary rounded-pill px-4 d-inline-flex align-items-center gap-2">
+                <i data-lucide="plus" style="width: 18px; height: 18px;"></i>Agregar Lugar
             </a>
         </div>
 
@@ -92,21 +93,23 @@
                                     <span class="badge bg-@planBadge bg-opacity-10 text-@planBadge rounded-pill">@lugar.PlanTipo</span>
                                 </td>
                                 <td class="text-center">
-                                    <i class="bi bi-star-fill text-warning me-1 small"></i>@lugar.Calificacion.ToString("0.0")
+                                    <span class="d-inline-flex align-items-center justify-content-center w-100 gap-1">
+                                        <i data-lucide="star" class="text-warning fill-warning" style="width: 14px; height: 14px;"></i>@lugar.Calificacion.ToString("0.0")
+                                    </span>
                                 </td>
                                 <td class="text-center">
                                     <span class="badge bg-light text-dark">@lugar.Reseñas.Count</span>
                                 </td>
                                 <td class="pe-4 text-end">
-                                    <a href="/Admin/EditarLugar/@lugar.Id" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1">
-                                        <i class="bi bi-pencil me-1"></i>Editar
+                                    <a href="/Admin/EditarLugar/@lugar.Id" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1 d-inline-flex align-items-center gap-1">
+                                        <i data-lucide="edit-2" style="width: 14px; height: 14px;"></i>Editar
                                     </a>
                                     <form method="post" action="/Admin/EliminarLugar/@lugar.Id" class="d-inline"
                                           onsubmit="return confirm('¿Estás seguro de que quieres eliminar este lugar? Se borrarán también sus reseñas.');">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="id" value="@lugar.Id" />
-                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-                                            <i class="bi bi-trash me-1"></i>Eliminar
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 d-inline-flex align-items-center gap-1">
+                                            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>Eliminar
                                         </button>
                                     </form>
                                 </td>

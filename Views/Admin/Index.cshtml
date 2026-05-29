@@ -10,7 +10,7 @@
     <div class="container">
         <div class="d-flex align-items-center gap-3 mb-2">
             <div class="admin-icon-badge">
-                <i class="bi bi-shield-lock-fill"></i>
+                <i data-lucide="shield-alert" style="width: 28px; height: 28px; stroke-width: 2;"></i>
             </div>
             <div>
                 <h1 class="fw-black mb-0 display-6">Panel de Administración</h1>
@@ -26,26 +26,27 @@
 <section class="pb-4">
     <div class="container">
         <div class="d-flex flex-wrap gap-2 mb-4">
-            <a href="/Admin" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            <a href="/Admin" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="gauge" style="width: 18px; height: 18px;"></i>Dashboard
             </a>
-            <a href="/Admin/Lugares" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-geo-alt me-1"></i>Lugares
+            <a href="/Admin/Lugares" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>Lugares
             </a>
-            <a href="/Admin/Usuarios" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-people me-1"></i>Usuarios
+            <a href="/Admin/Usuarios" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="users" style="width: 18px; height: 18px;"></i>Usuarios
             </a>
-            <a href="/Admin/Reseñas" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-chat-square-text me-1"></i>Reseñas
+            <a href="/Admin/Reseñas" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>Reseñas
             </a>
         </div>
 
         <!-- Alerta de éxito -->
         @if (TempData["Success"] != null)
         {
-            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm d-inline-flex align-items-center w-100" role="alert">
+                <i data-lucide="check-circle" class="me-2 text-success" style="width: 20px; height: 20px;"></i>
+                <div class="flex-grow-1">@TempData["Success"]</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" style="top: 50%; transform: translateY(-50%);"></button>
             </div>
         }
 
@@ -57,7 +58,7 @@
                 <div class="admin-stat-card rounded-4 p-4 h-100">
                     <div class="d-flex align-items-center gap-3">
                         <div class="stat-icon bg-primary bg-opacity-10 text-primary">
-                            <i class="bi bi-geo-alt-fill"></i>
+                            <i data-lucide="map-pin" style="width: 24px; height: 24px;"></i>
                         </div>
                         <div>
                             <div class="fs-3 fw-black">@ViewBag.TotalLugares</div>
@@ -70,7 +71,7 @@
                 <div class="admin-stat-card rounded-4 p-4 h-100">
                     <div class="d-flex align-items-center gap-3">
                         <div class="stat-icon bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-people-fill"></i>
+                            <i data-lucide="users" style="width: 24px; height: 24px;"></i>
                         </div>
                         <div>
                             <div class="fs-3 fw-black">@ViewBag.TotalUsuarios</div>
@@ -83,7 +84,7 @@
                 <div class="admin-stat-card rounded-4 p-4 h-100">
                     <div class="d-flex align-items-center gap-3">
                         <div class="stat-icon bg-warning bg-opacity-10 text-warning">
-                            <i class="bi bi-chat-quote-fill"></i>
+                            <i data-lucide="message-square" style="width: 24px; height: 24px;"></i>
                         </div>
                         <div>
                             <div class="fs-3 fw-black">@ViewBag.TotalReseñas</div>
@@ -96,7 +97,7 @@
                 <div class="admin-stat-card rounded-4 p-4 h-100">
                     <div class="d-flex align-items-center gap-3">
                         <div class="stat-icon bg-danger bg-opacity-10 text-danger">
-                            <i class="bi bi-star-fill"></i>
+                            <i data-lucide="star" class="text-danger fill-danger" style="width: 24px; height: 24px;"></i>
                         </div>
                         <div>
                             <div class="fs-3 fw-black">@(((double)ViewBag.PromedioCalificacion).ToString("0.0"))</div>
@@ -115,7 +116,7 @@
                 <a href="/Admin/CrearLugar" class="text-decoration-none">
                     <div class="admin-action-card rounded-4 p-4 h-100 text-center">
                         <div class="action-icon-wrapper bg-primary bg-opacity-10 mb-3 mx-auto">
-                            <i class="bi bi-plus-lg text-primary fs-3"></i>
+                            <i data-lucide="plus" class="text-primary" style="width: 28px; height: 28px;"></i>
                         </div>
                         <h5 class="fw-bold text-dark">Agregar Lugar</h5>
                         <p class="text-muted small mb-0">Registra un nuevo punto de interés para los estudiantes</p>
@@ -126,7 +127,7 @@
                 <a href="/Admin/Usuarios" class="text-decoration-none">
                     <div class="admin-action-card rounded-4 p-4 h-100 text-center">
                         <div class="action-icon-wrapper bg-success bg-opacity-10 mb-3 mx-auto">
-                            <i class="bi bi-people text-success fs-3"></i>
+                            <i data-lucide="users" class="text-success" style="width: 28px; height: 28px;"></i>
                         </div>
                         <h5 class="fw-bold text-dark">Ver Usuarios</h5>
                         <p class="text-muted small mb-0">Gestiona la comunidad de usuarios registrados</p>
@@ -137,7 +138,7 @@
                 <a href="/Admin/Reseñas" class="text-decoration-none">
                     <div class="admin-action-card rounded-4 p-4 h-100 text-center">
                         <div class="action-icon-wrapper bg-warning bg-opacity-10 mb-3 mx-auto">
-                            <i class="bi bi-chat-square-text text-warning fs-3"></i>
+                            <i data-lucide="message-square" class="text-warning" style="width: 28px; height: 28px;"></i>
                         </div>
                         <h5 class="fw-bold text-dark">Moderar Reseñas</h5>
                         <p class="text-muted small mb-0">Revisa y modera las opiniones de la comunidad</p>
@@ -153,7 +154,7 @@
             <!-- Últimos Usuarios -->
             <div class="col-lg-6">
                 <div class="bg-white rounded-4 shadow-sm border p-4 h-100">
-                    <h5 class="fw-bold mb-3"><i class="bi bi-person-plus me-2 text-success"></i>Últimos Usuarios</h5>
+                    <h5 class="fw-bold mb-3 d-flex align-items-center gap-2"><i data-lucide="user-plus" class="text-success" style="width: 20px; height: 20px;"></i>Últimos Usuarios</h5>
                     @{
                         var ultimosUsuarios = ViewBag.UltimosUsuarios as List<WebbyPoints.Models.Usuario>;
                     }
@@ -186,7 +187,7 @@
             <!-- Últimas Reseñas -->
             <div class="col-lg-6">
                 <div class="bg-white rounded-4 shadow-sm border p-4 h-100">
-                    <h5 class="fw-bold mb-3"><i class="bi bi-chat-left-text me-2 text-warning"></i>Últimas Reseñas</h5>
+                    <h5 class="fw-bold mb-3 d-flex align-items-center gap-2"><i data-lucide="message-square" class="text-warning" style="width: 20px; height: 20px;"></i>Últimas Reseñas</h5>
                     @{
                         var ultimasReseñas = ViewBag.UltimasReseñas as List<WebbyPoints.Models.Reseña>;
                     }
@@ -201,7 +202,7 @@
                                         <div class="d-flex gap-1">
                                             @for (int i = 1; i <= 5; i++)
                                             {
-                                                <i class="bi bi-star-fill small @(i <= r.Calificacion ? "text-warning" : "text-muted opacity-25")"></i>
+                                                <i data-lucide="star" style="width: 14px; height: 14px;" class="@(i <= r.Calificacion ? "text-warning fill-warning" : "text-muted opacity-25")"></i>
                                             }
                                         </div>
                                     </div>

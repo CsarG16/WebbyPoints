@@ -9,7 +9,7 @@
     <div class="container">
         <div class="d-flex align-items-center gap-3 mb-2">
             <div class="admin-icon-badge">
-                <i class="bi bi-chat-square-text-fill"></i>
+                <i data-lucide="message-square" style="width: 28px; height: 28px; stroke-width: 2;"></i>
             </div>
             <div>
                 <h1 class="fw-black mb-0 display-6">Moderación de Reseñas</h1>
@@ -23,26 +23,27 @@
     <div class="container">
         <!-- Nav Admin -->
         <div class="d-flex flex-wrap gap-2 mb-4">
-            <a href="/Admin" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            <a href="/Admin" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="gauge" style="width: 18px; height: 18px;"></i>Dashboard
             </a>
-            <a href="/Admin/Lugares" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-geo-alt me-1"></i>Lugares
+            <a href="/Admin/Lugares" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>Lugares
             </a>
-            <a href="/Admin/Usuarios" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-people me-1"></i>Usuarios
+            <a href="/Admin/Usuarios" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="users" style="width: 18px; height: 18px;"></i>Usuarios
             </a>
-            <a href="/Admin/Reseñas" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold">
-                <i class="bi bi-chat-square-text me-1"></i>Reseñas
+            <a href="/Admin/Reseñas" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>Reseñas
             </a>
         </div>
 
         <!-- Alerta de éxito -->
         @if (TempData["Success"] != null)
         {
-            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm d-inline-flex align-items-center w-100" role="alert">
+                <i data-lucide="check-circle" class="me-2 text-success" style="width: 20px; height: 20px;"></i>
+                <div class="flex-grow-1">@TempData["Success"]</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" style="top: 50%; transform: translateY(-50%);"></button>
             </div>
         }
 
@@ -75,10 +76,10 @@
                                             </a>
                                         </div>
                                         <!-- Estrellas -->
-                                        <div class="mb-2">
+                                        <div class="mb-2 d-flex gap-1">
                                             @for (int i = 1; i <= 5; i++)
                                             {
-                                                <i class="bi bi-star-fill @(i <= r.Calificacion ? "text-warning" : "text-muted opacity-25")"></i>
+                                                <i data-lucide="star" style="width: 16px; height: 16px;" class="@(i <= r.Calificacion ? "text-warning fill-warning" : "text-muted opacity-25")"></i>
                                             }
                                         </div>
                                         <p class="mb-0 text-dark">@r.Comentario</p>
@@ -90,8 +91,8 @@
                                       onsubmit="return confirm('¿Eliminar esta reseña de @r.Usuario?.Nombre?');">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@r.Id" />
-                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-                                        <i class="bi bi-trash me-1"></i>Eliminar
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 d-inline-flex align-items-center gap-1">
+                                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>Eliminar
                                     </button>
                                 </form>
                             </div>
@@ -103,7 +104,7 @@
         else
         {
             <div class="text-center py-5 bg-white rounded-4 shadow-sm border">
-                <i class="bi bi-chat-square-text display-3 text-muted opacity-25 mb-3 d-block"></i>
+                <i data-lucide="message-square" class="text-muted opacity-25 mb-3 d-block mx-auto" style="width: 64px; height: 64px;"></i>
                 <h4 class="fw-bold">No hay reseñas aún</h4>
                 <p class="text-muted">Las reseñas de la comunidad aparecerán aquí.</p>
             </div>
