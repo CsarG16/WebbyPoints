@@ -45,9 +45,9 @@
                 <div class="d-flex flex-wrap gap-3">
                     @if (!logueado)
                     {
-                        <a href="/Account/RegistroPaso1" class="btn btn-primary rounded-pill px-4 py-3 fw-bold text-white shadow-lg border-0" 
+                        <a href="/Account/RegistroPaso1" class="btn btn-primary rounded-pill px-4 py-3 fw-bold text-white shadow-lg border-0 d-inline-flex align-items-center gap-2" 
                            style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                            <i class="bi bi-rocket-takeoff me-2"></i>¡Unirme gratis ahora!
+                            <i data-lucide="rocket"></i>¡Unirme gratis ahora!
                         </a>
                         <a href="/Account/Login" class="btn btn-outline-light rounded-pill px-4 py-3 fw-bold text-white">
                             Ya tengo cuenta
@@ -55,12 +55,12 @@
                     }
                     else
                     {
-                        <a href="/Home/Explorar" class="btn btn-primary rounded-pill px-4 py-3 fw-bold text-white shadow-lg border-0" 
+                        <a href="/Home/Explorar" class="btn btn-primary rounded-pill px-4 py-3 fw-bold text-white shadow-lg border-0 d-inline-flex align-items-center gap-2" 
                            style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                            <i class="bi bi-compass me-2"></i>Empezar a explorar
+                            <i data-lucide="compass"></i>Empezar a explorar
                         </a>
-                        <a href="/Recompensas" class="btn btn-outline-light rounded-pill px-4 py-3 fw-bold text-white">
-                            <i class="bi bi-gift me-2"></i>Ver Premios
+                        <a href="/Recompensas" class="btn btn-outline-light rounded-pill px-4 py-3 fw-bold text-white d-inline-flex align-items-center gap-2">
+                            <i data-lucide="gift"></i>Ver Premios
                         </a>
                     }
                 </div>
@@ -86,16 +86,16 @@
             <div class="col-md-4">
                 <div class="bg-white p-4 rounded-4 shadow-sm border border-0 h-100 text-center transition-card">
                     <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 64px; height: 64px;">
-                        <i class="bi bi-compass-fill fs-3"></i>
+                        <i data-lucide="compass" style="width: 26px; height: 26px;"></i>
                     </div>
                     <h5 class="fw-bold mb-2">1. Explora Lugares y Eventos</h5>
-                    <p class="text-muted small mb-0">Encuentra cafés de estudio, bares para after-class, voluntariados ecológicos y eventos culturales organizados por y para estudiantes.</p>
+                    <p class="text-muted small mb-0">Encuentra cafés de estudio, voluntariados ecológicos y eventos culturales organizados por y para estudiantes.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="bg-white p-4 rounded-4 shadow-sm border border-0 h-100 text-center transition-card">
                     <div class="rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 64px; height: 64px;">
-                        <i class="bi bi-award-fill fs-3"></i>
+                        <i data-lucide="award" style="width: 26px; height: 26px;"></i>
                     </div>
                     <h5 class="fw-bold mb-2">2. Suma Puntos</h5>
                     <p class="text-muted small mb-0">Deja reseñas o regístrate en eventos cívicos. Las visitas normales otorgan 5 puntos, mientras que las actividades cívicas dan 25 puntos extra.</p>
@@ -104,7 +104,7 @@
             <div class="col-md-4">
                 <div class="bg-white p-4 rounded-4 shadow-sm border border-0 h-100 text-center transition-card">
                     <div class="rounded-circle bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 64px; height: 64px;">
-                        <i class="bi bi-gift-fill fs-3"></i>
+                        <i data-lucide="gift" style="width: 26px; height: 26px;"></i>
                     </div>
                     <h5 class="fw-bold mb-2">3. Canjea Vouchers Reales</h5>
                     <p class="text-muted small mb-0">Usa tus puntos en la tienda de recompensas. Canjea cafés gratis, descuentos en pizzas, termos oficiales de la USMP o pases al cine.</p>
@@ -121,13 +121,13 @@
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3">
             <div>
-                <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3 py-2 mb-2 fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 1px;">
-                    <i class="bi bi-fire me-1"></i>Tendencia
+                <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3 py-2 mb-2 fw-bold text-uppercase d-inline-flex align-items-center gap-1" style="font-size: 0.72rem; letter-spacing: 1px;">
+                    <i data-lucide="flame" style="width: 14px; height: 14px;"></i>Tendencia
                 </span>
                 <h2 class="fw-black mb-0 text-dark" style="font-size: 2.2rem;">Lugares y Eventos Recomendados</h2>
             </div>
-            <a href="/Home/Explorar" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold">
-                Ver todos <i class="bi bi-arrow-right ms-1"></i>
+            <a href="/Home/Explorar" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-1">
+                Ver todos <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
             </a>
         </div>
 
@@ -144,19 +144,19 @@
                             else
                             {
                                 <div class="bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
-                                    <i class="bi bi-image text-muted fs-1 opacity-25"></i>
+                                    <i data-lucide="image" class="text-muted opacity-25" style="width: 36px; height: 36px;"></i>
                                 </div>
                             }
                             <div class="position-absolute top-0 end-0 m-3">
-                                <span class="badge bg-white text-dark shadow-sm py-2 px-3 rounded-pill border">
-                                    <i class="bi bi-star-fill text-warning me-1"></i>@punto.Calificacion.ToString("0.0")
+                                <span class="badge bg-white text-dark shadow-sm py-2 px-3 rounded-pill border d-inline-flex align-items-center gap-1">
+                                    <i data-lucide="star" class="text-warning fill-warning" style="width: 14px; height: 14px; stroke: #f59e0b;"></i>@punto.Calificacion.ToString("0.0")
                                 </span>
                             </div>
                             @if (punto.EsEventoEspecial)
                             {
                                 <div class="position-absolute top-0 start-0 m-3">
-                                    <span class="badge bg-success text-white shadow-sm py-2 px-3 rounded-pill">
-                                        <i class="bi bi-award-fill me-1"></i>+@punto.PuntosRecompensa pts
+                                    <span class="badge bg-success text-white shadow-sm py-2 px-3 rounded-pill d-inline-flex align-items-center gap-1">
+                                        <i data-lucide="award" style="width: 14px; height: 14px;"></i>+@punto.PuntosRecompensa pts
                                     </span>
                                 </div>
                             }
@@ -167,17 +167,17 @@
                             <p class="text-muted small mb-3 line-clamp-2" style="font-size: 0.88rem;">@punto.Descripcion</p>
                             
                             <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom text-muted" style="font-size: 0.82rem;">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-geo-alt me-1"></i>@punto.Distancia km
+                                <div class="d-flex align-items-center gap-1">
+                                    <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>@punto.Distancia km
                                 </div>
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-currency-dollar me-1"></i>@punto.PrecioRango
+                                <div class="d-flex align-items-center gap-1">
+                                    <i data-lucide="dollar-sign" style="width: 14px; height: 14px;"></i>@punto.PrecioRango
                                 </div>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center">
-                                <span class="small text-muted" style="font-size: 0.8rem;">
-                                    <i class="bi bi-clock me-1"></i>@punto.Horario
+                                <span class="small text-muted d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                    <i data-lucide="clock" style="width: 14px; height: 14px;"></i>@punto.Horario
                                 </span>
                                 <a href="/Home/Detalle/@punto.Id" class="btn btn-sm btn-outline-dark px-3 rounded-pill">Ver Ficha</a>
                             </div>
@@ -196,13 +196,13 @@
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3">
             <div>
-                <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-2 mb-2 fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 1px; color: #b45309 !important;">
-                    <i class="bi bi-gift-fill me-1"></i>Tienda de Premios
+                <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-2 mb-2 fw-bold text-uppercase d-inline-flex align-items-center gap-1" style="font-size: 0.72rem; letter-spacing: 1px; color: #b45309 !important;">
+                    <i data-lucide="gift" style="width: 14px; height: 14px;"></i>Tienda de Premios
                 </span>
                 <h2 class="fw-black mb-0 text-dark" style="font-size: 2.2rem;">Canjea tus Puntos</h2>
             </div>
-            <a href="/Recompensas" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold">
-                Ver Tienda Completa <i class="bi bi-arrow-right ms-1"></i>
+            <a href="/Recompensas" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-1">
+                Ver Tienda Completa <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
             </a>
         </div>
 
@@ -219,7 +219,7 @@
                             else
                             {
                                 <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
-                                    <i class="bi bi-gift fs-1 text-muted opacity-20"></i>
+                                    <i data-lucide="gift" class="text-muted opacity-20" style="width: 48px; height: 48px;"></i>
                                 </div>
                             }
                             <span class="badge bg-warning text-dark border-0 rounded-pill px-3 py-2 position-absolute top-0 end-0 m-3 fw-bold" style="font-size: 0.8rem;">
@@ -247,14 +247,14 @@
         <p class="mx-auto text-white text-opacity-75 mb-4" style="max-width: 580px; font-size: 1.1rem;">Únete hoy a la comunidad de estudiantes de la USMP, descubre Lima según tus planes y acumula recompensas reales por tus contribuciones cívicas.</p>
         @if (!logueado)
         {
-            <a href="/Account/RegistroPaso1" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-primary shadow-lg border-0 transition-btn">
+            <a href="/Account/RegistroPaso1" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-primary shadow-lg border-0 transition-btn d-inline-flex align-items-center gap-2">
                 ¡Registrarme Gratis Ahora!
             </a>
         }
         else
         {
-            <a href="/Home/Explorar" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-primary shadow-lg border-0 transition-btn">
-                <i class="bi bi-compass me-2"></i>Ir a Explorar
+            <a href="/Home/Explorar" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-primary shadow-lg border-0 transition-btn d-inline-flex align-items-center gap-2">
+                <i data-lucide="compass"></i>Ir a Explorar
             </a>
         }
     </div>
@@ -280,5 +280,8 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+    .fill-warning {
+        fill: currentColor;
     }
 </style>
