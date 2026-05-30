@@ -4,35 +4,55 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebbyPoints.Data;
 using WebbyPoints.Models;
+using Microsoft.Extensions.Caching.Distributed;
+using WebbyPoints.Helpers;
 
 namespace WebbyPoints.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IDistributedCache _cache;
 
-    public HomeController(ApplicationDbContext context)
+    public HomeController(ApplicationDbContext context, IDistributedCache cache)
     {
         _context = context;
+        _cache = cache;
     }
 
     public async Task<IActionResult> Index()
     {
-        // 1. Obtener 3 lugares destacados (mayor calificación)
-        var destacados = await _context.PuntosInteres
-            .OrderByDescending(p => p.Calificacion)
-            .Take(3)
-            .ToListAsync();
+        // ==========================================================
+        // REDIS CACHE: Lugares destacados cacheados por 5 minutos
+        // Evita consultas repetitivas a la BD para la landing page
+        // ==========================================================
+        var destacados = await RedisCacheHelper.GetOrSetAsync(
+            _cache,
+            "home:destacados",
+            async () => await _context.PuntosInteres
+                .OrderByDescending(p => p.Calificacion)
+                .Take(3)
+                .ToListAsync(),
+            absoluteExpiration: TimeSpan.FromMinutes(5)
+        );
 
-        // 2. Obtener 3 recompensas populares para mostrar en la landing
-        var recompensas = await _context.Recompensas
-            .Where(r => r.Activa && r.Stock > 0)
-            .OrderByDescending(r => r.CostoPuntos)
-            .Take(3)
-            .ToListAsync();
+        // ==========================================================
+        // REDIS CACHE: Recompensas populares cacheadas por 10 minutos
+        // Se actualizan menos frecuentemente que los lugares
+        // ==========================================================
+        var recompensas = await RedisCacheHelper.GetOrSetAsync(
+            _cache,
+            "home:recompensas_populares",
+            async () => await _context.Recompensas
+                .Where(r => r.Activa && r.Stock > 0)
+                .OrderByDescending(r => r.CostoPuntos)
+                .Take(3)
+                .ToListAsync(),
+            absoluteExpiration: TimeSpan.FromMinutes(10)
+        );
 
-        ViewBag.Destacados = destacados;
-        ViewBag.Recompensas = recompensas;
+        ViewBag.Destacados = destacados ?? new List<PuntoInteres>();
+        ViewBag.Recompensas = recompensas ?? new List<Recompensa>();
 
         return View();
     }
@@ -328,6 +348,12 @@ public class HomeController : Controller
         }
 
         await _context.SaveChangesAsync();
+
+        // ==========================================================
+        // REDIS CACHE: Invalidar destacados porque cambió la calificación
+        // ==========================================================
+        await RedisCacheHelper.InvalidateMultipleAsync(_cache,
+            "home:destacados", "admin:dashboard_stats");
 
         return RedirectToAction("Detalle", new { id = puntoId });
     }

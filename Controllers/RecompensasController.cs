@@ -2,16 +2,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebbyPoints.Data;
 using WebbyPoints.Models;
+using Microsoft.Extensions.Caching.Distributed;
+using WebbyPoints.Helpers;
 
 namespace WebbyPoints.Controllers;
 
 public class RecompensasController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IDistributedCache _cache;
 
-    public RecompensasController(ApplicationDbContext context)
+    public RecompensasController(ApplicationDbContext context, IDistributedCache cache)
     {
         _context = context;
+        _cache = cache;
     }
 
     // =====================================================
@@ -35,32 +39,50 @@ public class RecompensasController : Controller
         ViewBag.UsuarioLogueado = usuarioId.HasValue;
         ViewBag.CategoriaActual = categoria ?? "Todas";
 
-        // Consultar recompensas activas
-        var query = _context.Recompensas
-            .Where(r => r.Activa)
-            .AsQueryable();
+        // ==========================================================
+        // REDIS CACHE: Catálogo de recompensas cacheado por categoría
+        // Cada categoría tiene su propia clave en Redis
+        // ==========================================================
+        var cacheKey = $"recompensas:catalogo:{categoria ?? "todas"}";
+        var recompensas = await RedisCacheHelper.GetOrSetAsync(
+            _cache,
+            cacheKey,
+            async () =>
+            {
+                var query = _context.Recompensas
+                    .Where(r => r.Activa)
+                    .AsQueryable();
 
-        // Filtrar por categoría si se seleccionó una
-        if (!string.IsNullOrEmpty(categoria) && categoria != "Todas")
-        {
-            query = query.Where(r => r.Categoria == categoria);
-        }
+                if (!string.IsNullOrEmpty(categoria) && categoria != "Todas")
+                {
+                    query = query.Where(r => r.Categoria == categoria);
+                }
 
-        var recompensas = await query
-            .OrderBy(r => r.CostoPuntos)
-            .ToListAsync();
+                return await query
+                    .OrderBy(r => r.CostoPuntos)
+                    .ToListAsync();
+            },
+            absoluteExpiration: TimeSpan.FromMinutes(5)
+        );
 
-        // Obtener categorías únicas para los filtros
-        var categorias = await _context.Recompensas
-            .Where(r => r.Activa)
-            .Select(r => r.Categoria)
-            .Distinct()
-            .OrderBy(c => c)
-            .ToListAsync();
+        // ==========================================================
+        // REDIS CACHE: Categorías disponibles cacheadas por 10 min
+        // ==========================================================
+        var categorias = await RedisCacheHelper.GetOrSetAsync(
+            _cache,
+            "recompensas:categorias",
+            async () => await _context.Recompensas
+                .Where(r => r.Activa)
+                .Select(r => r.Categoria)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToListAsync(),
+            absoluteExpiration: TimeSpan.FromMinutes(10)
+        );
 
-        ViewBag.Categorias = categorias;
+        ViewBag.Categorias = categorias ?? new List<string>();
 
-        return View(recompensas);
+        return View(recompensas ?? new List<Recompensa>());
     }
 
     // =====================================================
@@ -126,6 +148,15 @@ public class RecompensasController : Controller
 
         _context.Canjes.Add(canje);
         await _context.SaveChangesAsync();
+
+        // ==========================================================
+        // REDIS CACHE: Invalidar catálogo porque cambió el stock
+        // ==========================================================
+        await RedisCacheHelper.InvalidateMultipleAsync(_cache,
+            $"recompensas:catalogo:{recompensa.Categoria}",
+            "recompensas:catalogo:todas",
+            "home:recompensas_populares"
+        );
 
         // Actualizar puntos en la sesión
         HttpContext.Session.SetInt32("UsuarioPuntos", usuario.Puntos);

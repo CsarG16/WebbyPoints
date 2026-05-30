@@ -2,16 +2,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebbyPoints.Data;
 using WebbyPoints.Models;
+using Microsoft.Extensions.Caching.Distributed;
+using WebbyPoints.Helpers;
 
 namespace WebbyPoints.Controllers;
 
 public class AdminController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IDistributedCache _cache;
 
-    public AdminController(ApplicationDbContext context)
+    public AdminController(ApplicationDbContext context, IDistributedCache cache)
     {
         _context = context;
+        _cache = cache;
     }
 
     // =====================================================
@@ -35,18 +39,32 @@ public class AdminController : Controller
         if (!await EsAdmin())
             return RedirectToAction("Login", "Account");
 
-        var totalLugares = await _context.PuntosInteres.CountAsync();
-        var totalUsuarios = await _context.Usuarios.CountAsync();
-        var totalReseñas = await _context.Reseñas.CountAsync();
-        var promedioCalificacion = totalLugares > 0
-            ? await _context.PuntosInteres.AverageAsync(p => p.Calificacion)
-            : 0;
+        // ==========================================================
+        // REDIS CACHE: Estadísticas del dashboard cacheadas por 2 min
+        // Son 4 consultas COUNT/AVG que se ejecutan cada vez que un
+        // admin entra al panel. Con Redis, solo se ejecutan cada 2 min.
+        // ==========================================================
+        var stats = await RedisCacheHelper.GetOrSetAsync(
+            _cache,
+            "admin:dashboard_stats",
+            async () => new DashboardStats
+            {
+                TotalLugares = await _context.PuntosInteres.CountAsync(),
+                TotalUsuarios = await _context.Usuarios.CountAsync(),
+                TotalReseñas = await _context.Reseñas.CountAsync(),
+                PromedioCalificacion = await _context.PuntosInteres.CountAsync() > 0
+                    ? await _context.PuntosInteres.AverageAsync(p => p.Calificacion)
+                    : 0
+            },
+            absoluteExpiration: TimeSpan.FromMinutes(2)
+        );
 
-        ViewBag.TotalLugares = totalLugares;
-        ViewBag.TotalUsuarios = totalUsuarios;
-        ViewBag.TotalReseñas = totalReseñas;
-        ViewBag.PromedioCalificacion = promedioCalificacion;
+        ViewBag.TotalLugares = stats?.TotalLugares ?? 0;
+        ViewBag.TotalUsuarios = stats?.TotalUsuarios ?? 0;
+        ViewBag.TotalReseñas = stats?.TotalReseñas ?? 0;
+        ViewBag.PromedioCalificacion = stats?.PromedioCalificacion ?? 0;
 
+        // Últimos usuarios y reseñas (no cacheados, son datos en tiempo real para admin)
         var ultimosUsuarios = await _context.Usuarios
             .OrderByDescending(u => u.FechaRegistro)
             .Take(5)
@@ -110,6 +128,10 @@ public class AdminController : Controller
         _context.PuntosInteres.Add(lugar);
         await _context.SaveChangesAsync();
 
+        // Invalidar cachés de Redis relacionados con lugares
+        await RedisCacheHelper.InvalidateMultipleAsync(_cache,
+            "home:destacados", "admin:dashboard_stats");
+
         TempData["Success"] = $"Lugar \"{lugar.Nombre}\" creado exitosamente.";
         return RedirectToAction("Lugares");
     }
@@ -147,6 +169,10 @@ public class AdminController : Controller
         _context.PuntosInteres.Update(lugar);
         await _context.SaveChangesAsync();
 
+        // Invalidar cachés de Redis relacionados con lugares
+        await RedisCacheHelper.InvalidateMultipleAsync(_cache,
+            "home:destacados", "admin:dashboard_stats");
+
         TempData["Success"] = $"Lugar \"{lugar.Nombre}\" actualizado exitosamente.";
         return RedirectToAction("Lugares");
     }
@@ -171,6 +197,10 @@ public class AdminController : Controller
         _context.Reseñas.RemoveRange(lugar.Reseñas);
         _context.PuntosInteres.Remove(lugar);
         await _context.SaveChangesAsync();
+
+        // Invalidar cachés de Redis relacionados con lugares y reseñas
+        await RedisCacheHelper.InvalidateMultipleAsync(_cache,
+            "home:destacados", "admin:dashboard_stats");
 
         TempData["Success"] = $"Lugar \"{lugar.Nombre}\" eliminado.";
         return RedirectToAction("Lugares");
@@ -238,7 +268,19 @@ public class AdminController : Controller
 
         await _context.SaveChangesAsync();
 
+        // Invalidar estadísticas del dashboard en Redis
+        await RedisCacheHelper.InvalidateAsync(_cache, "admin:dashboard_stats");
+
         TempData["Success"] = "Reseña eliminada exitosamente.";
         return RedirectToAction("Reseñas");
     }
+}
+
+// DTO para cachear las estadísticas del dashboard admin en Redis
+public class DashboardStats
+{
+    public int TotalLugares { get; set; }
+    public int TotalUsuarios { get; set; }
+    public int TotalReseñas { get; set; }
+    public double PromedioCalificacion { get; set; }
 }
