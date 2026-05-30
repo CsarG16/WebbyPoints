@@ -108,23 +108,34 @@ public class HomeController : Controller
                         {
                             var puntosLista = await query.ToListAsync();
                             
-                            // Para cada punto de interés, calculamos la predicción de afinidad de la IA
-                            var puntosConScore = puntosLista.Select(p => {
-                                string primeraPrefe = !string.IsNullOrEmpty(usuario.Preferencias) 
-                                    ? usuario.Preferencias.Split(',').First().Trim() 
-                                    : "Estudio";
+                            // Obtener TODAS las preferencias del usuario (no solo la primera)
+                            var preferenciasUsuario = !string.IsNullOrEmpty(usuario.Preferencias)
+                                ? usuario.Preferencias.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(p => p.Trim())
+                                    .Where(p => !string.IsNullOrEmpty(p))
+                                    .ToList()
+                                : new List<string> { "Estudio" };
 
-                                var prediction = WebbyPoints.ML.Recommender.RecommenderModel.Predict(
-                                    new WebbyPoints.ML.Recommender.RecommenderModel.ModelInput
-                                    {
-                                        Carrera = usuario.Carrera ?? "Ingenieria de Sistemas",
-                                        Preferencia = primeraPrefe,
-                                        PuntoInteresId = p.Id,
-                                        PuntoCategoria = p.Categoria
-                                    }
-                                );
+                            // Para cada punto de interés, calculamos la predicción de afinidad de la IA
+                            // usando TODAS las preferencias y promediando los scores
+                            var puntosConScore = puntosLista.Select(p => {
+                                // Predecir con cada preferencia del usuario y quedarnos con el MEJOR score
+                                // Así si eligió "Comida, Restaurantes, Café", los lugares de comida
+                                // tendrán score alto porque al menos una preferencia los favorece
+                                var mejorScore = preferenciasUsuario.Max(pref => {
+                                    var prediction = WebbyPoints.ML.Recommender.RecommenderModel.Predict(
+                                        new WebbyPoints.ML.Recommender.RecommenderModel.ModelInput
+                                        {
+                                            Carrera = usuario.Carrera ?? "Ingenieria de Sistemas",
+                                            Preferencia = pref,
+                                            PuntoInteresId = p.Id,
+                                            PuntoCategoria = p.Categoria
+                                        }
+                                    );
+                                    return prediction.Score;
+                                });
                                 
-                                return new { Punto = p, Score = prediction.Score };
+                                return new { Punto = p, Score = mejorScore };
                             })
                             .OrderByDescending(x => x.Score) // Ordenar por afinidad de IA (mayor primero)
                             .Select(x => x.Punto)
