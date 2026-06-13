@@ -15,7 +15,7 @@
     var rangoConfig = Model.Rango switch {
         "Leyenda" => new { Icon = "crown", Color = "#f59e0b", Gradient = "linear-gradient(135deg, #f59e0b, #d97706)" },
         "Administrador" => new { Icon = "shield-check", Color = "#8b5cf6", Gradient = "linear-gradient(135deg, #8b5cf6, #6d28d9)" },
-        "Experto" => new { Icon = "graduation-cap", Color = "#3b82f6", Gradient = "linear-gradient(135deg, #3b82f6, #2563eb)" },
+        "Experto" => new { Icon = "graduation-cap", Color = "#00A6EB", Gradient = "linear-gradient(135deg, #00A6EB, #008bc5)" },
         "Local" => new { Icon = "map", Color = "#10b981", Gradient = "linear-gradient(135deg, #10b981, #059669)" },
         "Explorador" => new { Icon = "compass", Color = "#06b6d4", Gradient = "linear-gradient(135deg, #06b6d4, #0891b2)" },
         _ => new { Icon = "sparkles", Color = "#94a3b8", Gradient = "linear-gradient(135deg, #94a3b8, #64748b)" }
@@ -112,7 +112,7 @@
         <div class="row g-4 mb-5">
             <div class="col-6 col-lg-3">
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #00A6EB, #008bc5);">
                         <i data-lucide="star" class="text-white fill-white" style="width: 20px; height: 20px;"></i>
                     </div>
                     <div class="stat-value">@Model.Puntos</div>
@@ -259,7 +259,7 @@
                                                 border-color: @(esEspecial ? "#bbf7d0 !important" : "#f1f5f9 !important");">
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="rounded-3 d-flex align-items-center justify-content-center text-white" 
-                                                 style="width: 44px; height: 44px; background: @(esEspecial ? "#22c55e" : "#3b82f6"); font-size: 1.1rem; flex-shrink: 0;">
+                                                 style="width: 44px; height: 44px; background: @(esEspecial ? "#22c55e" : "#00A6EB"); font-size: 1.1rem; flex-shrink: 0;">
                                                 <i data-lucide="@(esEspecial ? "award" : "map-pin")" style="width: 20px; height: 20px;"></i>
                                             </div>
                                             <div>
