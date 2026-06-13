@@ -26,6 +26,35 @@ body {
     color: #1e293b;
 }
 
+/* --- ANULACIÓN DE AZUL GENÉRICO DE BOOTSTRAP --- */
+a, .link-primary, .btn-link {
+    color: var(--wp-primary);
+    text-decoration: none;
+    transition: var(--wp-transition);
+}
+a:hover, .link-primary:hover, .btn-link:hover {
+    color: var(--wp-primary-dark);
+}
+.border-primary {
+    border-color: var(--wp-primary) !important;
+}
+.form-check-input:checked {
+    background-color: var(--wp-primary) !important;
+    border-color: var(--wp-primary) !important;
+}
+.form-check-input:focus {
+    border-color: var(--wp-primary) !important;
+    box-shadow: 0 0 0 0.25rem rgba(0, 166, 235, 0.15) !important;
+}
+.nav-pills .nav-link.active,
+.dropdown-item.active,
+.list-group-item.active,
+.page-item.active .page-link {
+    background-color: var(--wp-primary) !important;
+    border-color: var(--wp-primary) !important;
+    color: #ffffff !important;
+}
+
 /* --- 2. UTILIDADES --- */
 .fw-black { font-weight: 900; }
 .bg-wp-primary, .bg-primary { background-color: var(--wp-primary) !important; }
@@ -45,7 +74,7 @@ body {
 .btn-primary:active {
     background-color: var(--wp-primary-dark) !important;
     border-color: var(--wp-primary-dark) !important;
-    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.25) !important;
+    box-shadow: 0 8px 20px rgba(0, 166, 235, 0.25) !important;
     color: #ffffff !important;
 }
 .btn-outline-primary {
@@ -59,12 +88,12 @@ body {
     background-color: var(--wp-primary) !important;
     border-color: var(--wp-primary) !important;
     color: #ffffff !important;
-    box-shadow: 0 8px 20px rgba(14, 165, 233, 0.2) !important;
+    box-shadow: 0 8px 20px rgba(0, 166, 235, 0.2) !important;
 }
 .form-control:focus,
 .form-select:focus {
     border-color: var(--wp-primary) !important;
-    box-shadow: 0 0 0 0.25rem rgba(14, 165, 233, 0.15) !important;
+    box-shadow: 0 0 0 0.25rem rgba(0, 166, 235, 0.15) !important;
 }
 .badge.bg-primary {
     background-color: var(--wp-primary) !important;
