@@ -397,3 +397,22 @@
         right: 15px;
     }
 }
+
+/* Estilos de enlaces interactivos dentro del chat */
+.chat-message-content a.chat-content-link {
+    color: #00A6EB;
+    text-decoration: underline;
+    font-weight: 700;
+    transition: color 0.2s ease;
+}
+.chat-message-content a.chat-content-link:hover {
+    color: #008bc5;
+}
+.chat-message.user .chat-message-content a.chat-content-link {
+    color: #ffffff;
+    text-decoration: underline;
+    opacity: 0.9;
+}
+.chat-message.user .chat-message-content a.chat-content-link:hover {
+    opacity: 1;
+}

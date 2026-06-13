@@ -14,10 +14,11 @@ public class WebbyPointsPlugin
         _dbContext = dbContext;
     }
 
-    [KernelFunction, Description("Obtiene la lista de todos los puntos de interés de la universidad. Opcionalmente se puede filtrar por categoría (ej. Estudio, Ocio, Comida, Cultura, Romántico, Deporte, Medio Ambiente, Cívico) o por tipo de plan (ej. Solo, Pareja, Amigos).")]
+    [KernelFunction, Description("Obtiene la lista de todos los puntos de interés de la universidad. Opcionalmente se puede filtrar por categoría (ej. Estudio, Ocio, Comida, Cultura, Romántico, Deporte, Medio Ambiente, Cívico), por tipo de plan (ej. Solo, Pareja, Amigos) o realizar una búsqueda de texto libre.")]
     public async Task<string> GetPointsOfInterest(
         [Description("Categoría opcional para filtrar los lugares (ej. Estudio, Ocio, Comida, Cultura, Romántico, Deporte, Medio Ambiente, Cívico)")] string? categoria = null,
-        [Description("Tipo de plan opcional para filtrar (ej. Solo, Pareja, Amigos)")] string? planTipo = null)
+        [Description("Tipo de plan opcional para filtrar (ej. Solo, Pareja, Amigos)")] string? planTipo = null,
+        [Description("Búsqueda opcional de texto libre para buscar palabras en el nombre o descripción (ej. 'pizza', 'café', 'biblioteca')")] string? search = null)
     {
         try
         {
@@ -33,6 +34,12 @@ public class WebbyPointsPlugin
             {
                 var lowerPlan = planTipo.ToLower();
                 query = query.Where(p => p.PlanTipo.ToLower() == lowerPlan);
+            }
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                var lowerSearch = search.ToLower();
+                query = query.Where(p => p.Nombre.ToLower().Contains(lowerSearch) || p.Descripcion.ToLower().Contains(lowerSearch));
             }
 
             var puntos = await query.Take(15)
@@ -117,6 +124,34 @@ public class WebbyPointsPlugin
         catch (Exception ex)
         {
             return $"Error al obtener la información del usuario: {ex.Message}";
+        }
+    }
+
+    [KernelFunction, Description("Obtiene el historial de canjes o vouchers de recompensas activos y pasados del usuario.")]
+    public async Task<string> GetUserRedemptions(
+        [Description("El ID único del usuario actual")] int userId)
+    {
+        try
+        {
+            var canjes = await _dbContext.Canjes
+                .Where(c => c.UsuarioId == userId)
+                .OrderByDescending(c => c.FechaCanje)
+                .Select(c => new
+                {
+                    c.Id,
+                    RecompensaNombre = c.Recompensa != null ? c.Recompensa.Nombre : "Recompensa",
+                    c.FechaCanje,
+                    c.CodigoVoucher,
+                    c.Estado,
+                    c.PuntosGastados
+                })
+                .ToListAsync();
+
+            return System.Text.Json.JsonSerializer.Serialize(canjes);
+        }
+        catch (Exception ex)
+        {
+            return $"Error al obtener los canjes del usuario: {ex.Message}";
         }
     }
 }

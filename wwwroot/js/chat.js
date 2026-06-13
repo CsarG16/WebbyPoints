@@ -191,6 +191,9 @@ document.addEventListener("DOMContentLoaded", function () {
         html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
         html = html.replace(/_(.*?)_/g, "<em>$1</em>");
 
+        // Convertir enlaces Markdown [texto](url)
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="chat-content-link">$1</a>');
+
         // Convertir listas con viñetas (- elemento o * elemento)
         let lines = html.split("\n");
         let inList = false;

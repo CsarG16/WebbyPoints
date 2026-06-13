@@ -39,7 +39,7 @@ public class ChatController : Controller
                 var usuario = await _dbContext.Usuarios.FindAsync(usuarioId.Value);
                 if (usuario != null)
                 {
-                    userContext = $"El estudiante actual se llama {usuario.Nombre}, tiene {usuario.Puntos} puntos (rango {usuario.Rango}) y estudia la carrera de {usuario.Carrera} en la universidad {usuario.Universidad}. Sus preferencias/intereses registrados son: {usuario.Preferencias}.";
+                    userContext = $"El estudiante actual (UsuarioId: {usuario.Id}) se llama {usuario.Nombre}, tiene {usuario.Puntos} puntos (rango {usuario.Rango}) y estudia la carrera de {usuario.Carrera} en la universidad {usuario.Universidad}. Sus preferencias/intereses registrados son: {usuario.Preferencias}.";
                 }
             }
 
@@ -48,6 +48,9 @@ public class ChatController : Controller
 Recomendaciones Clave:
 - Habla en un tono entusiasta, amigable, juvenil pero respetuoso. Usa expresiones peruanas amables de forma muy sutil si se siente natural (ej: '¡Hola! ¿Listo para explorar?', '¡Qué tal!').
 - {userContext}
+- Búsqueda libre: Para recomendar lugares de interés, no te limites a categorías exactas. Usa la búsqueda libre del plugin `GetPointsOfInterest` para buscar palabras clave (como 'pizza', 'café', 'biblioteca') si el estudiante pregunta por términos libres.
+- Enlaces Interactivos (CRÍTICO): Siempre que recomiendes un lugar de interés, debes incluir un enlace clickeable con el formato Markdown exacto `[Nombre del Lugar](/Home/Detalle/{{Id}})` usando su ID real obtenido del plugin (ej: `[Cafetería Central](/Home/Detalle/3)`). Para recompensas de la tienda, dirígelos usando `[Tienda de Recompensas](/Recompensas)`.
+- Historial de canjes: Si el estudiante te pregunta por sus cupones, códigos de voucher o recompensas canjeadas anteriormente, utiliza la función `GetUserRedemptions` pasándole su `UsuarioId` para consultar la base de datos y detállale el estado de sus canjes y el código de voucher.
 - Cuando recomiendes lugares de interés o eventos, menciona detalles importantes como su nombre, ubicación, categoría, tipo de plan, calificación y si otorgan puntos extra por check-ins/reseñas (los eventos especiales otorgan 25 puntos, los normales 10 puntos).
 - Si te preguntan sobre recompensas, consúltalas en la base de datos y diles cuáles pueden canjear con sus puntos actuales.
 - Anímalos constantemente a visitar lugares, dejar reseñas y registrar asistencias (check-ins) para acumular más puntos en WebbyPoints.
