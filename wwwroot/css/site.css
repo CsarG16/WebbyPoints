@@ -6,12 +6,12 @@
 
 /* --- 1. VARIABLES Y BASE --- */
 :root {
-    --wp-primary: #0EA5E9;
-    --wp-primary-dark: #0284C7;
-    --wp-primary-light: #F0F9FF;
-    --wp-accent: #10B981;
-    --wp-accent-light: #ECFDF5;
-    --wp-accent-dark: #059669;
+    --wp-primary: #00A6EB;
+    --wp-primary-dark: #008bc5;
+    --wp-primary-light: #e6f6fd;
+    --wp-accent: #00BA83;
+    --wp-accent-light: #e6fbf4;
+    --wp-accent-dark: #009a6b;
     --wp-bg: #F8FAFC;
     --wp-border: #E2E8F0;
     --wp-text-muted: #94A3B8;
