@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebbyPoints.Data;
+using Microsoft.SemanticKernel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,25 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=WebbyPoints.db"));
+
+// =========================================================
+// INTELIGENCIA ARTIFICIAL: Registro de Microsoft Semantic Kernel
+// =========================================================
+builder.Services.AddTransient<Kernel>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var endpoint = config["Ollama:Endpoint"] ?? "http://localhost:11434/v1";
+    var modelId = config["Ollama:ModelId"] ?? "llama3.2";
+
+    var kernelBuilder = Kernel.CreateBuilder();
+    kernelBuilder.AddOpenAIChatCompletion(
+        modelId: modelId,
+        apiKey: config["Ollama:ApiKey"] ?? "none", // Soporta Ollama (none) o proveedores en la nube
+        endpoint: new Uri(endpoint)
+    );
+
+    return kernelBuilder.Build();
+});
 
 var app = builder.Build();
 

@@ -12,6 +12,8 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <!-- Chat IA CSS -->
+    <link rel="stylesheet" href="~/css/chat.css" asp-append-version="true" />
 </head>
 
 <body>
@@ -98,6 +100,58 @@
         });
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <!-- Chat Widget de IA Flotante -->
+    <button class="chat-widget-toggle" id="chatWidgetToggle" title="Hablar con Guía Universitario IA">
+        <i data-lucide="message-square"></i>
+    </button>
+
+    <div class="chat-widget-container" id="chatWidgetContainer">
+        <div class="chat-widget-header">
+            <div class="chat-widget-header-info">
+                <div class="chat-widget-avatar">
+                    <i data-lucide="bot"></i>
+                </div>
+                <div>
+                    <h5 class="chat-widget-title">Guía Universitario</h5>
+                    <div class="chat-widget-status">
+                        <span class="chat-widget-status-dot"></span>
+                        <span>En línea (Ollama)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-widget-header-actions">
+                <button class="chat-widget-btn-action" id="chatWidgetReset" title="Reiniciar conversación">
+                    <i data-lucide="rotate-ccw" style="width:16px;height:16px;"></i>
+                </button>
+                <button class="chat-widget-btn-action" id="chatWidgetClose" title="Cerrar chat">
+                    <i data-lucide="x" style="width:18px;height:18px;"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="chat-widget-messages" id="chatWidgetMessages">
+            <!-- Mensajes cargados dinámicamente -->
+        </div>
+
+        <div class="chat-widget-suggestions">
+            <button class="suggestion-chip" data-msg="¿Qué lugares hay para estudiar?">Estudiar 📚</button>
+            <button class="suggestion-chip" data-msg="Recomiéndame algo para hacer con amigos que dé bastantes puntos.">Amigos 👥</button>
+            <button class="suggestion-chip" data-msg="¿Qué recompensas puedo canjear con mis puntos?">Recompensas 🎁</button>
+        </div>
+
+        <div class="chat-widget-input-area">
+            <form class="chat-widget-form" id="chatWidgetForm" autocomplete="off">
+                <input type="text" class="chat-widget-input" id="chatWidgetInput" placeholder="Pregúntame algo..." required />
+                <button type="submit" class="chat-widget-send-btn">
+                    <i data-lucide="send"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="~/js/chat.js" asp-append-version="true"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
